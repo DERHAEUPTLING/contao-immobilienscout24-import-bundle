@@ -41,7 +41,7 @@ class SyncRealEstateCommand extends Command
         $this
             ->setDescription('Synchronizes the database with the API.')
             ->addArgument('id', InputArgument::OPTIONAL, 'Account id or description.')
-            ->addOption('dry', 'd', InputOption::VALUE_NONE, 'Run dry, do not apply changes.')
+            ->addOption('--dry-run', 'd', InputOption::VALUE_NONE, 'Run dry, do not apply changes.')
         ;
     }
 
