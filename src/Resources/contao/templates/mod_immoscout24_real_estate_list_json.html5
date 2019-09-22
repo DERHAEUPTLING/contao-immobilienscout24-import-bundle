@@ -1,0 +1,27 @@
+<?php
+
+use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
+
+$dataArray = array_map(function (array $account) {
+    return [
+        'accountId' => $account['id'],
+        'accountDescription' => $account['description'],
+        'realEstates' => array_map(function (RealEstate $realEstate) {
+            $realEstateData = [];
+            foreach ($this->attributes as $attribute => $label) {
+                $realEstateData[$attribute] = [
+                    'label' => $label,
+                    'value' => $this->hasData($realEstate, $attribute) ?
+                        $this->getFormatted($realEstate, $attribute) : null
+                ];
+            }
+            return $realEstateData;
+        }, $account['realEstates']),
+    ];
+}, $this->accounts);
+
+?>
+
+<!-- indexer::stop -->
+<script class="<?php echo $this->class; ?>" type="application/json"><?php echo json_encode($dataArray); ?></script>
+<!-- indexer::continue -->

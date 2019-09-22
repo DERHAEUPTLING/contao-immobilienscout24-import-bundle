@@ -1,0 +1,45 @@
+{
+  "name": "derhaeuptling/contao-immobilienscout24-import-bundle",
+  "type": "contao-bundle",
+  "description": "Immobilienscout24 import for Contao Open Source CMS",
+  "keywords": [
+    "contao",
+    "immoscout24",
+    "immobilienscout24",
+    "import"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "derhaeuptling",
+      "homepage": "https://derhaeuptling.com/"
+    },
+    {
+      "name": "Moritz Vondano",
+      "homepage": "https://github.com/m-vo",
+      "role": "developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "ext-json": "*",
+    "contao/core-bundle": "^4.8",
+    "guzzlehttp/guzzle": "^6.3",
+    "guzzlehttp/oauth-subscriber": "0.3.*",
+    "doctrine/orm": "^2.6",
+    "doctrine/annotations": "^1.6",
+    "codefog/contao-haste": "^4.9"
+  },
+  "require-dev": {
+    "contao/manager-plugin": "^2.0",
+    "friendsofphp/php-cs-fixer": "^2.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Derhaeuptling\\ContaoImmoscout24\\": "src/"
+    }
+  },
+  "extra": {
+    "contao-manager-plugin": "Derhaeuptling\\ContaoImmoscout24\\ContaoManager\\Plugin"
+  }
+}

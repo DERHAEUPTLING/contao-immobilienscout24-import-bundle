@@ -1,0 +1,19 @@
+<?php use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
+
+$this->extend('block_searchable'); ?>
+
+<?php $this->block('content'); ?>
+
+<div class="realEstate">
+    <h2><?php echo $this->realEstate->getTitle(); ?></h2>
+    <dl>
+        <?php foreach ($this->attributes as $attribute => $label): ?>
+            <?php if($this->hasData($this->realEstate, $attribute)): ?>
+                <dt><?php echo $label; ?></dt>
+                <dd><?php echo $this->getFormatted($this->realEstate, $attribute); ?></dd>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </dl>
+</div>
+
+<?php $this->endblock(); ?>

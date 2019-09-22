@@ -1,0 +1,26 @@
+services:
+    Derhaeuptling\ContaoImmoscout24\EventListener\Account:
+        arguments:
+            - '@doctrine'
+            - '@contao.translation.translator'
+        public: true
+
+    Derhaeuptling\ContaoImmoscout24\Command\SyncRealEstateCommand:
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: 'console.command', command: 'immoscout24:sync' }
+
+    Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule\RealEstateListController:
+        tags:
+            - { name: 'contao.frontend_module', category: 'immoscout24', type: 'immoscout24_real_estate_list' }
+        arguments:
+            - '@doctrine'
+            - '@contao.translation.translator'
+
+    Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule\RealEstateReaderController:
+        tags:
+            - { name: 'contao.frontend_module', category: 'immoscout24', type: 'immoscout24_real_estate_reader' }
+        arguments:
+            - '@doctrine'
+            - '@contao.translation.translator'
