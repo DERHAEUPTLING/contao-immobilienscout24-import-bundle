@@ -3,6 +3,12 @@
 This bundle allows you to import real estate objects from Immoscout24 into your
 Contao application (4.8+) and display them as native content.
 
+**Warning**: This bundle is still under development - use at your own risk. There
+             are some things missing or only partially implemented including the
+             real estate object's attachment resolution that has to be done in a
+             separate API request or custom filtering. Also, there is currently
+             only an english language file present.
+
 ## How to get going
 
 ### Setup
