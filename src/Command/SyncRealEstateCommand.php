@@ -41,12 +41,17 @@ class SyncRealEstateCommand extends Command
         $this
             ->setDescription('Synchronizes the database with the API.')
             ->addArgument('id', InputArgument::OPTIONAL, 'Account id or description.')
-            ->addOption('--dry-run', 'd', InputOption::VALUE_NONE, 'Run dry, do not apply changes.')
+            ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Run dry, do not apply changes.')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
+        $dryRun = $input->getOption('dry-run');
+        if ($dryRun) {
+            $output->writeln('Dry running without applying changes...');
+        }
+
         /** @var Account[] $accounts */
         $accounts = array_filter(
             $this->getAccounts($input->getArgument('id')),
@@ -56,7 +61,7 @@ class SyncRealEstateCommand extends Command
         );
 
         if (empty($accounts)) {
-            $output->writeln('Nothing to do - no (enabled) accounts could were found.');
+            $output->writeln('Nothing to do - no (enabled) accounts were found.');
 
             return;
         }
@@ -64,7 +69,7 @@ class SyncRealEstateCommand extends Command
         foreach ($accounts as $account) {
             $synchronizer = new Synchronizer($this->registry, $account, $output);
             $synchronizer->synchronizeAllRealEstate();
-            if (!$input->getOption('dry')) {
+            if (!$dryRun) {
                 $synchronizer->persistChanges();
             }
         }
