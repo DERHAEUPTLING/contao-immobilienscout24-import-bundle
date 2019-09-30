@@ -17,8 +17,8 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['immoscout24_real_estate_reader'] = 
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['immoscout24_accounts'] = [
     'exclude' => true,
-    'eval' => ['tl_class' => 'w50'],
+    'eval' => ['multiple' => true, 'tl_class' => 'w50'],
     'inputType' => 'checkboxWizard',
     'options_callback' => [Account::class, 'listAccounts'],
-    'sql' => 'BLOB NULL',
+    'sql' => 'blob NULL',
 ];
