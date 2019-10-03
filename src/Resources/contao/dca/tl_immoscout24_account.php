@@ -108,22 +108,22 @@ $GLOBALS['TL_DCA']['tl_immoscout24_account'] =
             'api_consumer_key' => [
                 'exclude' => true,
                 'inputType' => 'text',
-                'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+                'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50', 'preserveTags' => true],
             ],
             'api_consumer_secret' => [
                 'exclude' => true,
                 'inputType' => 'text',
-                'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+                'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50', 'preserveTags' => true],
             ],
             'api_access_token' => [
                 'exclude' => true,
                 'inputType' => 'text',
-                'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+                'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50', 'preserveTags' => true],
             ],
             'api_access_token_secret' => [
                 'exclude' => true,
                 'inputType' => 'text',
-                'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+                'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50', 'preserveTags' => true],
             ],
             'enabled' => [
                 'exclude' => true,
