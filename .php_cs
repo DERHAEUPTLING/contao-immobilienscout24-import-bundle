@@ -82,7 +82,7 @@ return PhpCsFixer\Config::create()
             'sort_algorithm' => 'none',
         ],
         'phpdoc_var_annotation_correct_order' => true,
-        'return_assignment' => true,
+        'return_assignment' => false,
         'static_lambda' => true,
         'strict_comparison' => true,
         'strict_param' => true,
