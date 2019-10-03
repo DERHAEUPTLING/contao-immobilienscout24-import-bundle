@@ -13,10 +13,16 @@ declare(strict_types=1);
 namespace Derhaeuptling\ContaoImmoscout24\Repository;
 
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class RealEstateRepository extends EntityRepository
+class RealEstateRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, RealEstate::class);
+    }
+
     public function findByRealEstateId(string $realEstateId): ?RealEstate
     {
         /** @var RealEstate $realEstate */

@@ -1,4 +1,16 @@
 services:
+    Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository:
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: 'doctrine.repository_service' }
+
+    Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository:
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: 'doctrine.repository_service' }
+
     Derhaeuptling\ContaoImmoscout24\EventListener\Account:
         arguments:
             - '@doctrine'

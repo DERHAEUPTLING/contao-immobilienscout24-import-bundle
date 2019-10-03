@@ -13,10 +13,16 @@ declare(strict_types=1);
 namespace Derhaeuptling\ContaoImmoscout24\Repository;
 
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class AccountRepository extends EntityRepository
+class AccountRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Account::class);
+    }
+
     public function findByIdOrDescription(string $identifier): ?Account
     {
         /** @var Account $account */
