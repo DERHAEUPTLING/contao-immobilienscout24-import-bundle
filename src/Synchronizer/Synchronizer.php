@@ -16,6 +16,7 @@ use Derhaeuptling\ContaoImmoscout24\Api\Client;
 use Derhaeuptling\ContaoImmoscout24\Api\ClientFactory;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
+use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,6 +25,9 @@ class Synchronizer
 {
     /** @var EntityManagerInterface */
     private $entityManager;
+
+    /** @var RealEstateRepository */
+    private $realEstateRepository;
 
     /** @var Client */
     private $client;
@@ -37,11 +41,11 @@ class Synchronizer
     /**
      * Synchronizer constructor.
      */
-    public function __construct(RegistryInterface $registry, Account $account, OutputInterface $output = null)
+    public function __construct(RegistryInterface $registry, RealEstateRepository $realEstateRepository, Account $account, OutputInterface $output = null)
     {
         $this->entityManager = $registry->getManager();
+        $this->realEstateRepository = $realEstateRepository;
         $this->client = (new ClientFactory())->create($account);
-
         $this->account = $account;
         $this->output = $output;
     }
@@ -74,12 +78,11 @@ class Synchronizer
 
         $this->entityManager->beginTransaction();
 
-        $repository = $this->entityManager->getRepository(RealEstate::class);
         $mappedElements = [];
 
         foreach ($apiItems as $apiItem) {
             /** @var RealEstate $localItem */
-            $localItem = $repository->findByRealEstateId($apiItem->getRealEstateId());
+            $localItem = $this->realEstateRepository->findByRealEstateId($apiItem->getRealEstateId());
             $mappedElements[] = $apiItem->getRealEstateId();
 
             // add new

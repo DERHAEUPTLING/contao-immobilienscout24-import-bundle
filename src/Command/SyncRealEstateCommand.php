@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Derhaeuptling\ContaoImmoscout24\Command;
 
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
-use Derhaeuptling\ContaoImmoscout24\Synchronizer\Synchronizer;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository;
+use Derhaeuptling\ContaoImmoscout24\Synchronizer\SynchronizerFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,17 +23,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SyncRealEstateCommand extends Command
 {
-    /** @var Registry */
-    private $registry;
+    /** @var SynchronizerFactory */
+    private $synchronizerFactory;
 
-    /**
-     * TestCommand constructor.
-     */
-    public function __construct(Registry $registry)
+    /** @var AccountRepository */
+    private $accountRepository;
+
+    public function __construct(SynchronizerFactory $synchronizerFactory, AccountRepository $accountRepository)
     {
-        $this->registry = $registry;
-
         parent::__construct();
+
+        $this->synchronizerFactory = $synchronizerFactory;
+        $this->accountRepository = $accountRepository;
     }
 
     protected function configure(): void
@@ -67,7 +68,8 @@ class SyncRealEstateCommand extends Command
         }
 
         foreach ($accounts as $account) {
-            $synchronizer = new Synchronizer($this->registry, $account, $output);
+            $synchronizer = $this->synchronizerFactory->create($account, $output);
+
             $synchronizer->synchronizeAllRealEstate();
             if (!$dryRun) {
                 $synchronizer->persistChanges();
@@ -80,13 +82,11 @@ class SyncRealEstateCommand extends Command
      */
     private function getAccounts(?string $id): array
     {
-        $accountRepository = $this->registry->getRepository(Account::class);
-
         if (null === $id) {
-            return $accountRepository->findAll();
+            return $this->accountRepository->findAll();
         }
 
-        $account = $accountRepository->findByIdOrDescription($id);
+        $account = $this->accountRepository->findByIdOrDescription($id);
         if (null === $account) {
             throw new \InvalidArgumentException('Could not find account - invalid id or api key.');
         }

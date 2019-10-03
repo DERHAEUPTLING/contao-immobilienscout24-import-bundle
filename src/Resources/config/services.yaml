@@ -17,9 +17,15 @@ services:
             - '@contao.translation.translator'
         public: true
 
-    Derhaeuptling\ContaoImmoscout24\Command\SyncRealEstateCommand:
+    Derhaeuptling\ContaoImmoscout24\Synchronizer\SynchronizerFactory:
         arguments:
             - '@doctrine'
+            - '@Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository'
+
+    Derhaeuptling\ContaoImmoscout24\Command\SyncRealEstateCommand:
+        arguments:
+            - '@Derhaeuptling\ContaoImmoscout24\Synchronizer\SynchronizerFactory'
+            - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
         tags:
             - { name: 'console.command', command: 'immoscout24:sync' }
 
