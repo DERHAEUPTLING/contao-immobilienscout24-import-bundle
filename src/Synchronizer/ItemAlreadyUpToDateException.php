@@ -16,11 +16,13 @@ class ItemAlreadyUpToDateException extends \RuntimeException
 {
     public function __construct(\DateTime $old, \DateTime $new)
     {
-        if ($old === $new) {
+        $difference = $old->diff($new);
+
+        if (0 === $difference->s) {
             $message = 'dates match';
         } else {
             $message = sprintf(
-                'item %dh older than existing one', $old->diff($new)->format('H:i')
+                'item %s second(s) older than existing one', $difference->s
             );
         }
 
