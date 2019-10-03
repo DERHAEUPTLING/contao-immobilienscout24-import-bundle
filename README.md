@@ -27,7 +27,7 @@ Contao application (4.8+) and display them as native content.
     this one account and `--dry-run` to only see what would be updated without
     persisting the changes.   
  
- 4. Add one or more Immoscout24 modules in your theme and use it your frontend:
+ 4. Add one or more Immoscout24 modules in your theme and use it the frontend:
     - The **Real estate list** displays a list of real estate objects. If you
       want to generate a teaser list with 'read more' links, make sure to
       specify a 'jump to' page with the appropriate reader. 
@@ -37,18 +37,18 @@ Contao application (4.8+) and display them as native content.
       
 
 ### Templates and values
-You most likely will want to adapt the templates to your need as the API offers
-lots of fields. It's easy to output the fields you need individually. You'll find
-some helpers for your convenience like following.
+The real estate listings contain lots of fields - most likely you'll want to
+adapt the templates to your needs and only output some of the fields. To do
+this, there are some helpers for your convenience.
 
-Real estate data comes in the form of an **entity instance**, you can type hint
+A) Real estate data comes in the form of an **entity instance**, you can type hint
 against it to get IDE auto-completion in your templates: 
 ```php
   /** var Derhaeuptling\ContaoImmoscout24\Entity\RealEstate $realEstate */
   $realEstate
 ```  
 
-You can also obtain a **list of all available attributes**:
+B) You can also obtain a **list of all available attributes**:
 ```php
   $this->attributes
 
@@ -56,7 +56,7 @@ You can also obtain a **list of all available attributes**:
   // e.g. 'descriptionNote' that can be accessed via $realEstate->descriptionNote
 ```
     
-To **retrieve and format data**, you can use these helper functions:    
+C) To **retrieve and format data**, you can use these helper functions:    
 ```php
   $this->hasData(RealEstate $realEstate, string $attribute) : bool
   // will return wether $realEstate holds data for the $attribute 
@@ -67,5 +67,5 @@ To **retrieve and format data**, you can use these helper functions:
   // files
 ```
 
-If you want to resolve enumerations yourself you can find all of them as public
-constants in the `RealEstate` entity.
+D) If you want to resolve enumerations yourself you can find all of them as
+public constants in the `RealEstate` entity.
