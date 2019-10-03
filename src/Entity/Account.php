@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Derhaeuptling\ContaoImmoscout24\Entity\AccountRepository")
+ * @ORM\Entity(repositoryClass="Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository")
  * @ORM\Table(name="tl_immoscout24_account")
  */
 class Account extends DcaDefault

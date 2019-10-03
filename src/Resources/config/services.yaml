@@ -1,16 +1,38 @@
 services:
+    # entity repositories
+    Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository:
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: 'doctrine.repository_service' }
+
+    Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository:
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: 'doctrine.repository_service' }
+
+    # synchronization
+    Derhaeuptling\ContaoImmoscout24\Synchronizer\SynchronizerFactory:
+        arguments:
+            - '@doctrine'
+            - '@Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository'
+
+    Derhaeuptling\ContaoImmoscout24\Command\SyncRealEstateCommand:
+        arguments:
+            - '@Derhaeuptling\ContaoImmoscout24\Synchronizer\SynchronizerFactory'
+            - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
+        tags:
+            - { name: 'console.command', command: 'immoscout24:sync' }
+
+    # backend
     Derhaeuptling\ContaoImmoscout24\EventListener\Account:
         arguments:
             - '@doctrine'
             - '@contao.translation.translator'
         public: true
 
-    Derhaeuptling\ContaoImmoscout24\Command\SyncRealEstateCommand:
-        arguments:
-            - '@doctrine'
-        tags:
-            - { name: 'console.command', command: 'immoscout24:sync' }
-
+    # frontend
     Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule\RealEstateListController:
         tags:
             - { name: 'contao.frontend_module', category: 'immoscout24', type: 'immoscout24_real_estate_list' }

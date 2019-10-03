@@ -22,7 +22,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Derhaeuptling\ContaoImmoscout24\Entity\RealEstateRepository")
+ * @ORM\Entity(repositoryClass="Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository")
  * @ORM\Table(name="tl_immoscout24_real_estate")
  */
 class RealEstate extends DcaDefault
