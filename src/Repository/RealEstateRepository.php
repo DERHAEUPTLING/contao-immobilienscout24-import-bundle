@@ -10,8 +10,9 @@ declare(strict_types=1);
  * @license    MIT
  */
 
-namespace Derhaeuptling\ContaoImmoscout24\Entity;
+namespace Derhaeuptling\ContaoImmoscout24\Repository;
 
+use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
 use Doctrine\ORM\EntityRepository;
 
 class RealEstateRepository extends EntityRepository
@@ -19,6 +20,9 @@ class RealEstateRepository extends EntityRepository
     public function findByRealEstateId(string $realEstateId): ?RealEstate
     {
         /** @var RealEstate $realEstate */
-        return $this->findOneBy(['realEstateId' => $realEstateId]);
+        $realEstate = $this->findOneBy(['realEstateId' => $realEstateId]);
+
+        // do not inline (variable used for type hinting)
+        return $realEstate;
     }
 }
