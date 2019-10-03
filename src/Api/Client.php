@@ -34,6 +34,9 @@ class Client
         $this->account = $account;
     }
 
+    /**
+     * @throws PermissionDeniedException
+     */
     public function getRealEstate(string $realEstateId): ?RealEstate
     {
         $data = $this->performRequest(sprintf('user/me/realestate/%s', $realEstateId));
@@ -51,6 +54,8 @@ class Client
     }
 
     /**
+     * @throws PermissionDeniedException
+     *
      * @return \Generator|RealEstate[]
      */
     public function getAllRealEstate(int $pageNumberOffset = 0, int $pageSize = 100): \Generator
@@ -87,6 +92,9 @@ class Client
         }
     }
 
+    /**
+     * @throws PermissionDeniedException
+     */
     private function performRequest($endpoint): ?array
     {
         try {
@@ -101,11 +109,24 @@ class Client
 
             return \is_array($data) ? $data : null;
         } catch (ClientException $e) {
+            // handle 401 (unauthorized)
+            if ((null !== ($response = $e->getResponse())) && 401 === $response->getStatusCode()) {
+                try {
+                    // in case of an error the API ignores the accept header and always returns XML
+                    /** @noinspection PhpComposerExtensionStubsInspection */
+                    $contents = json_decode(json_encode(
+                        (array) simplexml_load_string($response->getBody()->getContents())
+                    ), true);
+                    $message = $contents['message']['message'];
+                } catch (\Exception $e2) {
+                    $message = $e->getMessage();
+                }
+
+                throw new PermissionDeniedException($message);
+            }
+
             // ignore
             return null;
-
-            // todo handle 404?
-            // todo log 401
         }
     }
 }

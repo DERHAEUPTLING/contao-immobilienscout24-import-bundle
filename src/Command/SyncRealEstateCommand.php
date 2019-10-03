@@ -46,7 +46,7 @@ class SyncRealEstateCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $dryRun = $input->getOption('dry-run');
         if ($dryRun) {
@@ -64,17 +64,20 @@ class SyncRealEstateCommand extends Command
         if (empty($accounts)) {
             $output->writeln('Nothing to do - no (enabled) accounts were found.');
 
-            return;
+            return 1;
         }
 
+        $error = false;
         foreach ($accounts as $account) {
             $synchronizer = $this->synchronizerFactory->create($account, $output);
 
-            $synchronizer->synchronizeAllRealEstate();
+            $error |= !$synchronizer->synchronizeAllRealEstate();
             if (!$dryRun) {
                 $synchronizer->persistChanges();
             }
         }
+
+        return $error ? 1 : 0;
     }
 
     /**

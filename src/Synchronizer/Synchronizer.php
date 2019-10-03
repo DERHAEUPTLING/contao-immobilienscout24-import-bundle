@@ -14,6 +14,7 @@ namespace Derhaeuptling\ContaoImmoscout24\Synchronizer;
 
 use Derhaeuptling\ContaoImmoscout24\Api\Client;
 use Derhaeuptling\ContaoImmoscout24\Api\ClientFactory;
+use Derhaeuptling\ContaoImmoscout24\Api\PermissionDeniedException;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
 use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
@@ -53,22 +54,28 @@ class Synchronizer
     /**
      * Collect data from the API and merge it into the local copy.
      */
-    public function synchronizeAllRealEstate(bool $removeIfUnavailable = true): void
+    public function synchronizeAllRealEstate(bool $removeIfUnavailable = true): bool
     {
         // gather data from API
         $this->output("\n<comment>[{$this->account->getDescription()}]</comment>\n");
         $this->output(' > Importing from API...');
 
         $apiItems = [];
-        $startTime = microtime(true);
-        foreach ($this->client->getAllRealEstate() as $apiItem) {
-            $apiItems[] = $apiItem;
-            $this->output("   * Real Estate ID {$apiItem->getRealEstateId()} ({$apiItem->getTitle()})");
-        }
-        $duration = round(microtime(true) - $startTime, 2);
-        $count = \count($apiItems);
+        try {
+            $startTime = microtime(true);
+            foreach ($this->client->getAllRealEstate() as $apiItem) {
+                $apiItems[] = $apiItem;
+                $this->output("   * Real Estate ID {$apiItem->getRealEstateId()} ({$apiItem->getTitle()})");
+            }
+            $duration = round(microtime(true) - $startTime, 2);
+            $count = \count($apiItems);
 
-        $this->output(" > Downloaded {$count} elements in {$duration}s.\n");
+            $this->output(" > Downloaded {$count} elements in {$duration}s.\n");
+        } catch (PermissionDeniedException $e) {
+            $this->output(" > <error>API access for account '{$this->account->getDescription()}' failed: '{$e->getMessage()}'</error>");
+
+            return false;
+        }
 
         // synchronize
         $this->output(' > Synchronizing...');
@@ -150,6 +157,8 @@ class Synchronizer
         $this->entityManager->commit();
 
         $this->output(" > Done - created: $created | updated: $updated | removed: $removed");
+
+        return true;
     }
 
     /**
