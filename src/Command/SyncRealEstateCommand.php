@@ -70,11 +70,13 @@ class SyncRealEstateCommand extends Command
         $error = false;
         foreach ($accounts as $account) {
             $synchronizer = $this->synchronizerFactory->create($account, $output);
+            $success = $synchronizer->synchronizeAllRealEstate();
 
-            $error |= !$synchronizer->synchronizeAllRealEstate();
-            if (!$dryRun) {
+            if ($success && !$dryRun) {
                 $synchronizer->persistChanges();
             }
+
+            $error |= !$success;
         }
 
         return $error ? 1 : 0;
@@ -91,7 +93,7 @@ class SyncRealEstateCommand extends Command
 
         $account = $this->accountRepository->findByIdOrDescription($id);
         if (null === $account) {
-            throw new \InvalidArgumentException('Could not find account - invalid id or api key.');
+            throw new \InvalidArgumentException('Could not find account - invalid id or description.');
         }
 
         return [$account];
