@@ -28,9 +28,10 @@ services:
     # backend
     Derhaeuptling\ContaoImmoscout24\EventListener\Account:
         arguments:
-            - '@doctrine'
+            - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
             - '@contao.translation.translator'
-        public: true
+        tags:
+            - { name: 'contao.callback', table: 'tl_immoscout24_account', target: 'list.label.label' }
 
     # frontend
     Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule\RealEstateListController:

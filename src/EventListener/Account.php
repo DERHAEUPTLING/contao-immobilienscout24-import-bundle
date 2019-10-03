@@ -12,52 +12,31 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\EventListener;
 
-use Contao\DataContainer;
+use Contao\CoreBundle\Translation\Translator;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account as AccountEntity;
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Symfony\Component\Translation\TranslatorInterface;
+use Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository;
 
 class Account
 {
-    /** @var Registry */
-    private $doctrineRegistry;
+    /** @var AccountRepository */
+    private $accountRepository;
 
-    /** @var TranslatorInterface */
+    /** @var Translator */
     private $translator;
 
     /**
      * Account constructor.
      */
-    public function __construct(Registry $doctrineRegistry, TranslatorInterface $translator)
+    public function __construct(AccountRepository $accountRepository, Translator $translator)
     {
-        $this->doctrineRegistry = $doctrineRegistry;
+        $this->accountRepository = $accountRepository;
         $this->translator = $translator;
     }
 
-    public function onDelete(DataContainer $dc): void
-    {
-        // todo: check if needed (DELETE cascade)
-
-        /** @var AccountEntity $element */
-        $element = $this->doctrineRegistry
-            ->getRepository(AccountEntity::class)
-            ->find($dc->id)
-        ;
-
-        if (null !== $element) {
-            $manager = $this->doctrineRegistry->getManager();
-            $manager->remove($element);
-            $manager->flush();
-        }
-    }
-
-    public function onGenerateLabel(array $row): string
+    public function onLabelCallback(array $row): string
     {
         /** @var AccountEntity $account */
-        $account = $this->doctrineRegistry
-            ->getRepository(AccountEntity::class)
-            ->find($row['id'])
-        ;
+        $account = $this->accountRepository->find($row['id']);
 
         $syncedElementsLabel = sprintf(
             $this->translator->trans('tl_immoscout24_account.imported_elements', [], 'contao_default'),
@@ -74,10 +53,7 @@ class Account
     public function listAccounts(): array
     {
         /** @var AccountEntity $account */
-        $accounts = $this->doctrineRegistry
-            ->getRepository(AccountEntity::class)
-            ->findAll()
-        ;
+        $accounts = $this->accountRepository->findAll();
 
         $accountList = [];
 

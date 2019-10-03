@@ -19,9 +19,6 @@ $GLOBALS['TL_DCA']['tl_immoscout24_account'] =
             'dataContainer' => 'Table',
             'switchToEdit' => true,
             'enableVersioning' => true,
-            'ondelete_callback' => [
-                [Account::class, 'onDelete'],
-            ],
         ],
 
         // List
@@ -34,7 +31,6 @@ $GLOBALS['TL_DCA']['tl_immoscout24_account'] =
             ],
             'label' => [
                 'fields' => [''],
-                'label_callback' => [Account::class, 'onGenerateLabel'],
             ],
             'global_operations' => [],
             'operations' => [
