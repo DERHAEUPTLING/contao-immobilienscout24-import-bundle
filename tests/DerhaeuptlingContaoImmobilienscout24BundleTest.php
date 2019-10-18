@@ -18,7 +18,7 @@ class DerhaeuptlingContaoImmobilienscout24BundleTest extends TestCase
 {
     public function testCanBeInstantiated(): void
     {
-        $bundle = new DerhaueptlingContaoImmobilienscout24Bundle();
-        $this->assertInstanceOf(DerhaueptlingContaoImmobilienscout24Bundle::class, $bundle);
+        $bundle = new DerhaeuptlingContaoImmobilienscout24Bundle();
+        $this->assertInstanceOf(DerhaeuptlingContaoImmobilienscout24Bundle::class, $bundle);
     }
 }

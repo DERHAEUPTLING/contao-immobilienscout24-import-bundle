@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class DerhaueptlingContaoImmobilienscout24Extension extends Extension
+class DerhaeuptlingContaoImmobilienscout24Extension extends Extension
 {
     /**
      * Loads a specific configuration.

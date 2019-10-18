@@ -17,7 +17,7 @@ use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use Contao\ManagerPlugin\Config\ConfigPluginInterface;
-use Derhaeuptling\ContaoImmoscout24\DerhaueptlingContaoImmobilienscout24Bundle;
+use Derhaeuptling\ContaoImmoscout24\DerhaeuptlingContaoImmobilienscout24Bundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 class Plugin implements BundlePluginInterface, ConfigPluginInterface
@@ -28,7 +28,7 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface
     public function getBundles(ParserInterface $parser)
     {
         return [
-            BundleConfig::create(DerhaueptlingContaoImmobilienscout24Bundle::class)
+            BundleConfig::create(DerhaeuptlingContaoImmobilienscout24Bundle::class)
                 ->setLoadAfter([ContaoCoreBundle::class]),
         ];
     }

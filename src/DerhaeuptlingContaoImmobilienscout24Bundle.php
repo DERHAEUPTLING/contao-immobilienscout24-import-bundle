@@ -15,7 +15,7 @@ namespace Derhaeuptling\ContaoImmoscout24;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class DerhaueptlingContaoImmobilienscout24Bundle extends Bundle
+class DerhaeuptlingContaoImmobilienscout24Bundle extends Bundle
 {
     public function boot(): void
     {
