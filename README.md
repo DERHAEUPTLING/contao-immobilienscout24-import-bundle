@@ -27,7 +27,7 @@ Contao application (4.8+) and display them as native content.
     this one account and `--dry-run` to only see what would be updated without
     persisting the changes.   
  
- 4. Add one or more Immoscout24 modules in your theme and use it the frontend:
+ 4. Add one or more Immoscout24 modules in your theme and use it in the frontend:
     - The **Real estate list** displays a list of real estate objects. If you
       want to generate a teaser list with 'read more' links, make sure to
       specify a 'jump to' page with the appropriate reader. 
