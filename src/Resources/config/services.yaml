@@ -26,12 +26,19 @@ services:
             - { name: 'console.command', command: 'immoscout24:sync' }
 
     # backend
-    Derhaeuptling\ContaoImmoscout24\EventListener\Account:
+    Derhaeuptling\ContaoImmoscout24\EventListener\DataContainer\Account:
         arguments:
             - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
             - '@contao.translation.translator'
         tags:
-            - { name: 'contao.callback', table: 'tl_immoscout24_account', target: 'list.label.label' }
+            - { name: 'terminal42_service_annotation' }
+
+    Derhaeuptling\ContaoImmoscout24\EventListener\DataContainer\Module:
+        arguments:
+            - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
+            - '@contao.translation.translator'
+        tags:
+            - { name: 'terminal42_service_annotation' }
 
     # frontend
     Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule\RealEstateListController:

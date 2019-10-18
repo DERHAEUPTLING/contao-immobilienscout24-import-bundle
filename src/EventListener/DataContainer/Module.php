@@ -10,13 +10,16 @@ declare(strict_types=1);
  * @license    MIT
  */
 
-namespace Derhaeuptling\ContaoImmoscout24\EventListener;
+namespace Derhaeuptling\ContaoImmoscout24\EventListener\DataContainer;
 
+use Contao\CoreBundle\ServiceAnnotation\Callback;
 use Contao\CoreBundle\Translation\Translator;
+use Contao\DataContainer;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account as AccountEntity;
 use Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository;
+use Terminal42\ServiceAnnotationBundle\ServiceAnnotationInterface;
 
-class Account
+class Module implements ServiceAnnotationInterface
 {
     /** @var AccountRepository */
     private $accountRepository;
@@ -33,23 +36,9 @@ class Account
         $this->translator = $translator;
     }
 
-    public function onLabelCallback(array $row): string
-    {
-        /** @var AccountEntity $account */
-        $account = $this->accountRepository->find($row['id']);
-
-        $syncedElementsLabel = sprintf(
-            $this->translator->trans('tl_immoscout24_account.imported_elements', [], 'contao_default'),
-            \count($account->getRealEstates())
-        );
-
-        return sprintf(
-            '%s<span style="color: #999; margin-left: .5em;">[%s]</span>',
-            $account->getDescription(),
-            $syncedElementsLabel
-        );
-    }
-
+    /**
+     * @Callback(table="tl_module", target="fields.immoscout24_accounts.options")
+     */
     public function listAccounts(): array
     {
         /** @var AccountEntity $account */
@@ -62,5 +51,15 @@ class Account
         }
 
         return $accountList;
+    }
+
+    /**
+     * @Callback(table="tl_module", target="fields.immoscout24_filter.save")
+     */
+    public function validateExpression(?string $value, DataContainer $dc): ?string
+    {
+        // todo
+
+        return $value;
     }
 }

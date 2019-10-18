@@ -10,8 +10,6 @@ declare(strict_types=1);
  * @license    MIT
  */
 
-use Derhaeuptling\ContaoImmoscout24\EventListener\Account;
-
 $GLOBALS['TL_DCA']['tl_immoscout24_account'] =
     [
         // Config
