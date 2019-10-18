@@ -1,4 +1,6 @@
 services:
+    Derhaeuptling\ContaoImmoscout24\ExpressionLanguage\RealEstateFilterEvaluator:
+
     # entity repositories
     Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository:
         arguments:
@@ -9,6 +11,7 @@ services:
     Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository:
         arguments:
             - '@doctrine'
+            - '@Derhaeuptling\ContaoImmoscout24\ExpressionLanguage\RealEstateFilterEvaluator'
         tags:
             - { name: 'doctrine.repository_service' }
 
@@ -36,17 +39,18 @@ services:
     Derhaeuptling\ContaoImmoscout24\EventListener\DataContainer\Module:
         arguments:
             - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
-            - '@contao.translation.translator'
+            - '@Derhaeuptling\ContaoImmoscout24\ExpressionLanguage\RealEstateFilterEvaluator'
         tags:
             - { name: 'terminal42_service_annotation' }
 
     # frontend
     Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule\RealEstateListController:
+        arguments:
+            - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
+            - '@Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository'
+            - '@contao.translation.translator'
         tags:
             - { name: 'contao.frontend_module', category: 'immoscout24', type: 'immoscout24_real_estate_list' }
-        arguments:
-            - '@doctrine'
-            - '@contao.translation.translator'
 
     Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule\RealEstateReaderController:
         tags:

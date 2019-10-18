@@ -28,6 +28,7 @@
     "guzzlehttp/oauth-subscriber": "0.3.*",
     "doctrine/orm": "^2.6",
     "doctrine/annotations": "^1.6",
+    "symfony/expression-language": "^4.3",
     "codefog/contao-haste": "^4.9"
   },
   "require-dev": {

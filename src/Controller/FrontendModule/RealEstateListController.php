@@ -20,7 +20,7 @@ use Contao\Template;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
 use Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,19 +29,25 @@ class RealEstateListController extends AbstractRealEstateController
     /** @var AccountRepository */
     private $accountRepository;
 
+    /** @var RealEstateRepository */
+    private $realEstateRepository;
+
     /**
      * RealEstateList constructor.
      */
-    public function __construct(Registry $doctrineRegistry, Translator $translator)
+    public function __construct(AccountRepository $accountRepository, RealEstateRepository $realEstateRepository, Translator $translator)
     {
         parent::__construct($translator);
 
-        $this->accountRepository = $doctrineRegistry->getRepository(Account::class);
+        $this->accountRepository = $accountRepository;
+        $this->realEstateRepository = $realEstateRepository;
     }
 
     protected function getResponse(Template $template, ModuleModel $model, Request $request): ?Response
     {
         $accountIds = StringUtil::deserialize($model->immoscout24_accounts, true);
+        $conditionExpression = (string) $model->immoscout24_filter;
+        $maxResult = (int) $model->immoscout24_number_of_items;
 
         // real estate data by account
         $accountData = [];
@@ -52,11 +58,9 @@ class RealEstateListController extends AbstractRealEstateController
                 continue;
             }
 
-            $realEstates = $account->getRealEstates()->toArray();
-            usort($realEstates, static function (RealEstate $a, RealEstate $b) {
-                // sort real estates by last update
-                return $a->modifiedAt <=> $b->modifiedAt;
-            });
+            $realEstates = $this->realEstateRepository
+                ->findByAccountAndConditionExpression($account, $conditionExpression, $maxResult)
+            ;
 
             $accountData[] = [
                 'id' => $account->getId(),

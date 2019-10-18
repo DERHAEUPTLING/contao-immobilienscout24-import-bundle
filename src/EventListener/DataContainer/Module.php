@@ -13,10 +13,11 @@ declare(strict_types=1);
 namespace Derhaeuptling\ContaoImmoscout24\EventListener\DataContainer;
 
 use Contao\CoreBundle\ServiceAnnotation\Callback;
-use Contao\CoreBundle\Translation\Translator;
 use Contao\DataContainer;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account as AccountEntity;
+use Derhaeuptling\ContaoImmoscout24\ExpressionLanguage\RealEstateFilterEvaluator;
 use Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository;
+use Symfony\Component\ExpressionLanguage\SyntaxError;
 use Terminal42\ServiceAnnotationBundle\ServiceAnnotationInterface;
 
 class Module implements ServiceAnnotationInterface
@@ -24,16 +25,16 @@ class Module implements ServiceAnnotationInterface
     /** @var AccountRepository */
     private $accountRepository;
 
-    /** @var Translator */
-    private $translator;
+    /** @var RealEstateFilterEvaluator */
+    private $realEstateFilterEvaluator;
 
     /**
      * Account constructor.
      */
-    public function __construct(AccountRepository $accountRepository, Translator $translator)
+    public function __construct(AccountRepository $accountRepository, RealEstateFilterEvaluator $realEstateFilterEvaluator)
     {
         $this->accountRepository = $accountRepository;
-        $this->translator = $translator;
+        $this->realEstateFilterEvaluator = $realEstateFilterEvaluator;
     }
 
     /**
@@ -58,8 +59,44 @@ class Module implements ServiceAnnotationInterface
      */
     public function validateExpression(?string $value, DataContainer $dc): ?string
     {
-        // todo
+        if (null === $value) {
+            return $value;
+        }
+
+        try {
+            $this->realEstateFilterEvaluator->validate($value);
+        } catch (SyntaxError $e) {
+            throw new \InvalidArgumentException('Invalid filter expression: '.$e->getMessage());
+        }
 
         return $value;
+    }
+
+    /**
+     * @Callback(table="tl_module", target="fields.immoscout24_filter_explanation.input_field")
+     */
+    public function compileExplanation(DataContainer $dc): string
+    {
+        $operators = array_map(
+            static function (string $v) {
+                return "<li>$v</li>";
+            },
+            ['and', 'or', '==', '>', '>=', '<', '<=', '(', ')']
+        );
+
+        $mappings = array_map(
+            static function (string $v) {
+                return "<li>$v</li>";
+            },
+            $this->realEstateFilterEvaluator->getAvailableVariables()
+        );
+
+        return sprintf(
+            '<div class="widget m12 immoscout24_filter_explanation">'.
+            '<ul class="operators">%s</ul><ul class="mappings">%s</ul>'.
+            '</div>',
+            implode('', $operators),
+            implode('', $mappings)
+        );
     }
 }
