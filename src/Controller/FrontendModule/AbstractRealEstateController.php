@@ -48,7 +48,7 @@ abstract class AbstractRealEstateController extends AbstractFrontendModuleContro
      */
     protected function hasData(RealEstate $realEstate, string $attribute): bool
     {
-        return property_exists($realEstate, $attribute) && $realEstate->$attribute;
+        return property_exists($realEstate, $attribute) && null !== $realEstate->$attribute;
     }
 
     /**
