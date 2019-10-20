@@ -11,6 +11,8 @@ $GLOBALS['TL_LANG']['FMD']['immoscout24_real_estate_list'] = ['Real estate list'
 $GLOBALS['TL_LANG']['FMD']['immoscout24_real_estate_reader'] = ['Real estate reader'];
 
 // attribute labels
+$GLOBALS['TL_LANG']['immoscout24']['realEstateId'] = 'Real estate ID';
+$GLOBALS['TL_LANG']['immoscout24']['title'] = 'Title';
 $GLOBALS['TL_LANG']['immoscout24']['createdAt'] = 'Offer created at';
 $GLOBALS['TL_LANG']['immoscout24']['modifiedAt'] = 'Offer last modified at';
 $GLOBALS['TL_LANG']['immoscout24']['listed'] = 'Listed';

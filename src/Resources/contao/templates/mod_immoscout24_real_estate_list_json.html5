@@ -9,8 +9,6 @@ $dataArray = array_map(function (array $account) {
         'realEstates' => array_map(function (RealEstate $realEstate) {
             $realEstateData = [
                     ['label' => 'id', 'value' => $realEstate->getId()],
-                    ['label' => 'realEstateId', 'value' => $realEstate->getRealEstateId()],
-                    ['label' => 'title', 'value' => $realEstate->getTitle()]
             ];
             foreach ($this->attributes as $attribute => $label) {
                 $realEstateData[$attribute] = [

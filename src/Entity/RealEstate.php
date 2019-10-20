@@ -701,7 +701,7 @@ class RealEstate extends DcaDefault
      *
      * @var string
      */
-    private $realEstateId = '';
+    public $realEstateId = '';
 
     /**
      * @ORM\Column(name="title")
@@ -709,7 +709,7 @@ class RealEstate extends DcaDefault
      *
      * @var string
      */
-    private $title = '';
+    public $title = '';
 
     /**
      * @ORM\ManyToOne(targetEntity="Derhaeuptling\ContaoImmoscout24\Entity\Account", inversedBy="realEstates")
