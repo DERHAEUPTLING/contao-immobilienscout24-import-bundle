@@ -29,6 +29,29 @@ class RealEstate extends DcaDefault
 {
     use Immoscout24ApiMapperTrait;
 
+    public const OBJECT_TYPE_REAL_ESTATE = 0;
+    public const OBJECT_TYPE_HOUSE_BUY = 1;
+    public const OBJECT_TYPE_HOUSE_RENT = 2;
+    public const OBJECT_TYPE_GARAGE_RENT = 3;
+    public const OBJECT_TYPE_GARAGE_BUY = 4;
+    public const OBJECT_TYPE_SENIOR_CARE = 5;
+    public const OBJECT_TYPE_ASSISTED_LIVING = 6;
+    public const OBJECT_TYPE_APARTMENT_RENT = 7;
+    public const OBJECT_TYPE_APARTMENT_BUY = 8;
+    public const OBJECT_TYPE_COMPULSORY_AUCTION = 9;
+    public const OBJECT_TYPE_SHORT_TERM_ACCOMMODATION = 10;
+    public const OBJECT_TYPE_INVESTMENT = 11;
+    public const OBJECT_TYPE_OFFICE = 12;
+    public const OBJECT_TYPE_STORE = 13;
+    public const OBJECT_TYPE_GASTRONOMY = 14;
+    public const OBJECT_TYPE_INDUSTRY = 15;
+    public const OBJECT_TYPE_SPECIAL_PURPOSE = 16;
+    public const OBJECT_TYPE_LIVING_BUY_SITE = 17;
+    public const OBJECT_TYPE_LIVING_RENT_SITE = 18;
+    public const OBJECT_TYPE_TRADE_SITE = 19;
+    public const OBJECT_TYPE_HOUSE_TYPE = 20;
+    public const OBJECT_TYPE_FLAT_SHARE_ROOM = 21;
+
     public const STATUS_INACTIVE = 0;
     public const STATUS_ACTIVE = 1;
     public const STATUS_DRAFT = 2;
@@ -123,6 +146,37 @@ class RealEstate extends DcaDefault
     public const PARKING_SPACE_TYPE_DUPLEX = 5;
     public const PARKING_SPACE_TYPE_CAR_PARK = 6;
     public const PARKING_SPACE_TYPE_UNDERGROUND_GARAGE = 7;
+
+    /**
+     * @ORM\Column(name="object_type", type="smallint")
+     * @Immoscout24Api(name="_object_type", mandatory=true, enum={
+     *      "realestates.realEstate" = RealEstate::OBJECT_TYPE_REAL_ESTATE,
+     *      "realestates.houseBuy" = RealEstate::OBJECT_TYPE_HOUSE_BUY,
+     *      "realestates.houseRent" = RealEstate::OBJECT_TYPE_HOUSE_RENT,
+     *      "realestates.garageRent" = RealEstate::OBJECT_TYPE_GARAGE_RENT,
+     *      "realestates.garageBuy" = RealEstate::OBJECT_TYPE_GARAGE_BUY,
+     *      "realestates.seniorCare" = RealEstate::OBJECT_TYPE_SENIOR_CARE,
+     *      "realestates.assistedLiving" = RealEstate::OBJECT_TYPE_ASSISTED_LIVING,
+     *      "realestates.apartmentRent" = RealEstate::OBJECT_TYPE_APARTMENT_RENT,
+     *      "realestates.apartmentBuy" = RealEstate::OBJECT_TYPE_APARTMENT_BUY,
+     *      "realestates.compulsoryAuction" = RealEstate::OBJECT_TYPE_COMPULSORY_AUCTION,
+     *      "realestates.shortTermAccommodation" = RealEstate::OBJECT_TYPE_SHORT_TERM_ACCOMMODATION ,
+     *      "realestates.investment" = RealEstate::OBJECT_TYPE_INVESTMENT ,
+     *      "realestates.office" = RealEstate::OBJECT_TYPE_OFFICE ,
+     *      "realestates.store" = RealEstate::OBJECT_TYPE_STORE ,
+     *      "realestates.gastronomy" = RealEstate::OBJECT_TYPE_GASTRONOMY ,
+     *      "realestates.industry" = RealEstate::OBJECT_TYPE_INDUSTRY ,
+     *      "realestates.specialPurpose" = RealEstate::OBJECT_TYPE_SPECIAL_PURPOSE ,
+     *      "realestates.livingBuySite" = RealEstate::OBJECT_TYPE_LIVING_BUY_SITE ,
+     *      "realestates.livingRentSite" = RealEstate::OBJECT_TYPE_LIVING_RENT_SITE ,
+     *      "realestates.tradeSite" = RealEstate::OBJECT_TYPE_TRADE_SITE ,
+     *      "realestates.houseType" = RealEstate::OBJECT_TYPE_HOUSE_TYPE ,
+     *      "realestates.flatShareRoom" = RealEstate::OBJECT_TYPE_FLAT_SHARE_ROOM
+     * })
+     *
+     * @var int
+     */
+    public $objectType = self::OBJECT_TYPE_REAL_ESTATE;
 
     /**
      * @ORM\Column(name="state", type="smallint")
@@ -802,6 +856,11 @@ class RealEstate extends DcaDefault
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    public function getObjectType(): int
+    {
+        return $this->objectType;
     }
 
     private static function getDateTime(string $value, \DateTime $fallback = null): \DateTime

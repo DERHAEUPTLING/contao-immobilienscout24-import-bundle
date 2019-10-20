@@ -61,6 +61,30 @@ $GLOBALS['TL_LANG']['immoscout24']['yes'] = 'Yes';
 $GLOBALS['TL_LANG']['immoscout24']['no'] = 'No';
 
 // enumerations
+$GLOBALS['TL_LANG']['immoscout24']['objectType'] = 'Object type';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_REAL_ESTATE] = 'default';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_HOUSE_BUY] = 'house buy';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_HOUSE_RENT] = 'house rent';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_GARAGE_RENT] = 'garage rent';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_GARAGE_BUY] = 'garage buy';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_SENIOR_CARE] = 'senior care';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_ASSISTED_LIVING] = 'assisted living';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_APARTMENT_RENT] = 'apartment rent';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_APARTMENT_BUY] = 'apartment buy';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_COMPULSORY_AUCTION] = 'auction';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_SHORT_TERM_ACCOMMODATION] = 'short term accommodation';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_INVESTMENT] = 'investment';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_OFFICE] = 'office';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_STORE] = 'store';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_GASTRONOMY] = 'gastronomy';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_INDUSTRY] = 'industry';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_SPECIAL_PURPOSE] = 'special purpose';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_LIVING_BUY_SITE] = 'living buy site';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_LIVING_RENT_SITE] = 'living rent site';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_TRADE_SITE] = 'trade site';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_HOUSE_TYPE] = 'house type';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_FLAT_SHARE_ROOM] = 'flat share room';
+
 $GLOBALS['TL_LANG']['immoscout24']['state'] = 'Status';
 $GLOBALS['TL_LANG']['immoscout24']['state_'][RE::STATUS_INACTIVE] = 'inactive';
 $GLOBALS['TL_LANG']['immoscout24']['state_'][RE::STATUS_ACTIVE] = 'active';

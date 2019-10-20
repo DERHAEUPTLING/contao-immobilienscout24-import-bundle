@@ -39,18 +39,15 @@ class Client
      */
     public function getRealEstate(string $realEstateId): ?RealEstate
     {
-        $data = $this->performRequest(sprintf('user/me/realestate/%s', $realEstateId));
+        $data = $this->extractAndTagResponse(
+            $this->performRequest(sprintf('user/me/realestate/%s', $realEstateId))
+        );
+
         if (null === $data) {
             return null;
         }
 
-        $realEstate = array_shift($data);
-
-        if (null === $realEstate) {
-            return null;
-        }
-
-        return RealEstate::createFromApiResponse($realEstate, $this->account);
+        return RealEstate::createFromApiResponse($data, $this->account);
     }
 
     /**
@@ -90,6 +87,24 @@ class Client
         if (null !== $next) {
             yield from $this->getAllRealEstate($pageNumberOffset + 1, $pageSize);
         }
+    }
+
+    private function extractAndTagResponse($data): ?array
+    {
+        if (!\is_array($data)) {
+            return null;
+        }
+
+        $objectType = array_key_first($data);
+        if (!\is_string($objectType)) {
+            return null;
+        }
+
+        // tag data with object type
+        $realEstateData = $data[$objectType];
+        $realEstateData['_object_type'] = $objectType;
+
+        return $realEstateData;
     }
 
     /**
