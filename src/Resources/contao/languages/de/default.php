@@ -58,7 +58,46 @@ $GLOBALS['TL_LANG']['immoscout24']['none'] = '-';
 $GLOBALS['TL_LANG']['immoscout24']['yes'] = 'Ja';
 $GLOBALS['TL_LANG']['immoscout24']['no'] = 'Nein';
 
-// enumerations
+// enumerations Object types
+
+
+// Möbliertes Wohnen/ Wohnen auf Zeit
+
+// Einzelhandel
+// Halle/ Produktion
+// Spezialgewerbeimmobilien
+
+// Grundstück Kauf
+// Grundstück Miete
+// Grundstück Gewerbe
+
+
+$GLOBALS['TL_LANG']['immoscout24']['objectType'] = 'Object type';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_REAL_ESTATE] = 'default';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_HOUSE_BUY] = 'Haus Kauf';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_HOUSE_RENT] = 'Haus Miete';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_GARAGE_RENT] = 'Garage Miete';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_GARAGE_BUY] = 'Garage Kauf';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_SENIOR_CARE] = 'Seniorenbetreuung';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_ASSISTED_LIVING] = 'betreutes Wohnen';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_APARTMENT_RENT] = 'Wohnung Miete';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_APARTMENT_BUY] = 'Wohnung Kauf';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_COMPULSORY_AUCTION] = 'Versteigerung';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_SHORT_TERM_ACCOMMODATION] = 'kurzfristige Unterkunft';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_INVESTMENT] = 'Anlageobjekt';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_OFFICE] = 'Büro/ Praxis';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_STORE] = 'Geschäft';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_GASTRONOMY] = 'Gastronomie';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_INDUSTRY] = 'Industrie';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_SPECIAL_PURPOSE] = 'special purpose';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_LIVING_BUY_SITE] = 'living buy site';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_LIVING_RENT_SITE] = 'living rent site';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_TRADE_SITE] = 'trade site';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_HOUSE_TYPE] = 'Art des Hauses';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_FLAT_SHARE_ROOM] = 'WG-Zimmer';
+
+
+// enumerations 
 $GLOBALS['TL_LANG']['immoscout24']['state'] = 'Status';
 $GLOBALS['TL_LANG']['immoscout24']['state_'][RE::STATUS_INACTIVE] = 'inactive';
 $GLOBALS['TL_LANG']['immoscout24']['state_'][RE::STATUS_ACTIVE] = 'active';
@@ -74,12 +113,12 @@ $GLOBALS['TL_LANG']['immoscout24']['priceIntervalType_'][RE::PRICE_INTERVAL_MONT
 $GLOBALS['TL_LANG']['immoscout24']['priceIntervalType_'][RE::PRICE_INTERVAL_YEAR] = 'yearly';
 
 $GLOBALS['TL_LANG']['immoscout24']['priceMarketingType'] = 'Price marketing';
-$GLOBALS['TL_LANG']['immoscout24']['priceMarketingType_'][RE::PRICE_MARKETING_TYPE_PURCHASE] = 'purchase';
-$GLOBALS['TL_LANG']['immoscout24']['priceMarketingType_'][RE::PRICE_MARKETING_TYPE_PURCHASE_PER_SQM] = 'purchase per m²';
-$GLOBALS['TL_LANG']['immoscout24']['priceMarketingType_'][RE::PRICE_MARKETING_TYPE_RENT] = 'rent';
-$GLOBALS['TL_LANG']['immoscout24']['priceMarketingType_'][RE::PRICE_MARKETING_TYPE_RENT_PER_SQM] = 'rent per m²';
+$GLOBALS['TL_LANG']['immoscout24']['priceMarketingType_'][RE::PRICE_MARKETING_TYPE_PURCHASE] = 'Kauf';
+$GLOBALS['TL_LANG']['immoscout24']['priceMarketingType_'][RE::PRICE_MARKETING_TYPE_PURCHASE_PER_SQM] = 'Kauf pro m²';
+$GLOBALS['TL_LANG']['immoscout24']['priceMarketingType_'][RE::PRICE_MARKETING_TYPE_RENT] = 'Miete';
+$GLOBALS['TL_LANG']['immoscout24']['priceMarketingType_'][RE::PRICE_MARKETING_TYPE_RENT_PER_SQM] = 'Miete pro m²';
 $GLOBALS['TL_LANG']['immoscout24']['priceMarketingType_'][RE::PRICE_MARKETING_TYPE_LEASE] = 'lease';
-$GLOBALS['TL_LANG']['immoscout24']['priceMarketingType_'][RE::PRICE_MARKETING_TYPE_LEASEHOLD] = 'lease hold';
+$GLOBALS['TL_LANG']['immoscout24']['priceMarketingType_'][RE::PRICE_MARKETING_TYPE_LEASEHOLD] = 'Pacht';
 $GLOBALS['TL_LANG']['immoscout24']['priceMarketingType_'][RE::PRICE_MARKETING_TYPE_BUDGET_RENT] = 'budget rent';
 $GLOBALS['TL_LANG']['immoscout24']['priceMarketingType_'][RE::PRICE_MARKETING_TYPE_RENT_AND_BUY] = 'rent and buy';
 
