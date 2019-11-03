@@ -59,41 +59,28 @@ $GLOBALS['TL_LANG']['immoscout24']['yes'] = 'Ja';
 $GLOBALS['TL_LANG']['immoscout24']['no'] = 'Nein';
 
 // enumerations Object types
-
-
-// Möbliertes Wohnen/ Wohnen auf Zeit
-
-// Einzelhandel
-// Halle/ Produktion
-// Spezialgewerbeimmobilien
-
-// Grundstück Kauf
-// Grundstück Miete
-// Grundstück Gewerbe
-
-
 $GLOBALS['TL_LANG']['immoscout24']['objectType'] = 'Object type';
 $GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_REAL_ESTATE] = 'default';
 $GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_HOUSE_BUY] = 'Haus Kauf';
 $GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_HOUSE_RENT] = 'Haus Miete';
 $GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_GARAGE_RENT] = 'Garage Miete';
 $GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_GARAGE_BUY] = 'Garage Kauf';
-$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_SENIOR_CARE] = 'Seniorenbetreuung';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_SENIOR_CARE] = 'Altenpflege';
 $GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_ASSISTED_LIVING] = 'betreutes Wohnen';
 $GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_APARTMENT_RENT] = 'Wohnung Miete';
 $GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_APARTMENT_BUY] = 'Wohnung Kauf';
-$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_COMPULSORY_AUCTION] = 'Versteigerung';
-$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_SHORT_TERM_ACCOMMODATION] = 'kurzfristige Unterkunft';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_COMPULSORY_AUCTION] = 'Zwangsversteigerung';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_SHORT_TERM_ACCOMMODATION] = 'Wohnen auf Zeit';
 $GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_INVESTMENT] = 'Anlageobjekt';
 $GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_OFFICE] = 'Büro/ Praxis';
-$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_STORE] = 'Geschäft';
-$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_GASTRONOMY] = 'Gastronomie';
-$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_INDUSTRY] = 'Industrie';
-$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_SPECIAL_PURPOSE] = 'special purpose';
-$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_LIVING_BUY_SITE] = 'living buy site';
-$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_LIVING_RENT_SITE] = 'living rent site';
-$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_TRADE_SITE] = 'trade site';
-$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_HOUSE_TYPE] = 'Art des Hauses';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_STORE] = 'Einzelhandel';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_GASTRONOMY] = 'Gastronomie / Hotel';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_INDUSTRY] = 'Halle';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_SPECIAL_PURPOSE] = 'Spezialgewerbe purpose';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_LIVING_BUY_SITE] = 'Wohngrundstück zum Kauf';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_LIVING_RENT_SITE] = 'Wohngrundstück zur Miete';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_TRADE_SITE] = 'Gewerbegrundstück';
+$GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_HOUSE_TYPE] = 'Typenhaus';
 $GLOBALS['TL_LANG']['immoscout24']['objectType_'][RE::OBJECT_TYPE_FLAT_SHARE_ROOM] = 'WG-Zimmer';
 
 
