@@ -83,4 +83,24 @@ trait Immoscout24ApiMapperTrait
 
         return true;
     }
+
+    private static function getDateTime(string $value, \DateTime $fallback = null): \DateTime
+    {
+        try {
+            // extract and remove fractions as they won't be stored in the database (ISO 8601)
+            $dateTime = new \DateTime(
+                (new \DateTime($value))->format('c'),
+                new \DateTimeZone('GMT')
+            );
+        } catch (\Exception $e) {
+            // ignore
+            $dateTime = null;
+        }
+
+        if (!$dateTime instanceof \DateTime) {
+            $dateTime = $fallback ?? new \DateTime();
+        }
+
+        return $dateTime;
+    }
 }

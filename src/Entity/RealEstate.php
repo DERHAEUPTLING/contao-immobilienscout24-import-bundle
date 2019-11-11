@@ -775,14 +775,7 @@ class RealEstate extends DcaDefault
     private $immoscoutAccount;
 
     /**
-     * @ORM\Column(name="attachment_data", type="blob")
-     *
-     * @var string
-     */
-    private $attachmentData;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Derhaeuptling\ContaoImmoscout24\Entity\Attachment", mappedBy="realEstate")
+     * @ORM\OneToMany(targetEntity="Derhaeuptling\ContaoImmoscout24\Entity\Attachment", mappedBy="realEstate", cascade={"persist", "remove"})
      *
      * @var Collection|Attachment[]
      */
@@ -809,7 +802,6 @@ class RealEstate extends DcaDefault
         $realEstate->immoscoutAccount = $account;
         $realEstate->createdAt = self::getDateTime($data['creationDate'] ?? '');
         $realEstate->modifiedAt = self::getDateTime($data['lastModificationDate'] ?? '', $realEstate->createdAt);
-        $realEstate->attachmentData = serialize($data['attachments'] ?? null);
 
         // todo: arrays
         // firingTypes
@@ -863,23 +855,11 @@ class RealEstate extends DcaDefault
         return $this->objectType;
     }
 
-    private static function getDateTime(string $value, \DateTime $fallback = null): \DateTime
+    /**
+     * @param Attachment[] $attachments
+     */
+    public function setAttachments(array $attachments): void
     {
-        try {
-            // extract and remove fractions as they won't be stored in the database (ISO 8601)
-            $dateTime = new \DateTime(
-                (new \DateTime($value))->format('c'),
-                new \DateTimeZone('GMT')
-            );
-        } catch (\Exception $e) {
-            // ignore
-            $dateTime = null;
-        }
-
-        if (!$dateTime instanceof \DateTime) {
-            $dateTime = $fallback ?? new \DateTime();
-        }
-
-        return $dateTime;
+        $this->attachments = new ArrayCollection($attachments);
     }
 }
