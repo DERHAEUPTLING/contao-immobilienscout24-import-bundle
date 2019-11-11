@@ -31,7 +31,7 @@ class Attachment extends DcaDefault
      *
      * @var \DateTime
      */
-    public $createdAt;
+    private $createdAt;
 
     /**
      * @ORM\Column(name="modified_at", type="datetime")
@@ -39,7 +39,7 @@ class Attachment extends DcaDefault
      *
      * @var \DateTime
      */
-    public $modifiedAt;
+    private $modifiedAt;
 
     /**
      * @ORM\Column(name="title")
@@ -47,7 +47,7 @@ class Attachment extends DcaDefault
      *
      * @var string
      */
-    public $title = '';
+    private $title = '';
 
     /**
      * @ORM\Column(name="is_floor_plan", type="boolean")
@@ -58,7 +58,7 @@ class Attachment extends DcaDefault
      *
      * @var bool
      */
-    public $isFloorPlan = false;
+    private $isFloorPlan = false;
 
     /**
      * @ORM\Column(name="is_title_picture", type="boolean")
@@ -69,7 +69,7 @@ class Attachment extends DcaDefault
      *
      * @var bool
      */
-    public $isTitlePicture = false;
+    private $isTitlePicture = false;
 
     /**
      * @ORM\ManyToOne(targetEntity="Derhaeuptling\ContaoImmoscout24\Entity\RealEstate", inversedBy="attachments")
