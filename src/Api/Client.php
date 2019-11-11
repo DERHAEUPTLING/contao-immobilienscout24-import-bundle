@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Derhaeuptling\ContaoImmoscout24\Api;
 
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
+use Derhaeuptling\ContaoImmoscout24\Entity\Attachment;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
@@ -51,8 +52,6 @@ class Client
     }
 
     /**
-     * @throws PermissionDeniedException
-     *
      * @return \Generator|RealEstate[]
      */
     public function getAllRealEstate(int $pageNumberOffset = 0, int $pageSize = 100): \Generator
@@ -87,6 +86,28 @@ class Client
         if (null !== $next) {
             yield from $this->getAllRealEstate($pageNumberOffset + 1, $pageSize);
         }
+    }
+
+    /**
+     * @return Attachment[]
+     */
+    public function getAttachments(RealEstate $realEstate): array
+    {
+        $response = $this->performRequest(sprintf('user/me/realestate/%s/attachment', $realEstate->realEstateId));
+
+        if (null === ($attachmentData = $response['common.attachments'][0]['attachment'] ?? null)) {
+            return [];
+        }
+
+        return array_filter(
+            array_map(static function ($data) use ($realEstate) {
+                if (!\is_array($data)) {
+                    return null;
+                }
+
+                return Attachment::createFromApiResponse($data, $realEstate);
+            }, $attachmentData)
+        );
     }
 
     private function extractAndTagResponse($data): ?array

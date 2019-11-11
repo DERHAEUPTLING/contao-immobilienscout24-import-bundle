@@ -65,7 +65,12 @@ class Synchronizer
             $startTime = microtime(true);
             foreach ($this->client->getAllRealEstate() as $apiItem) {
                 $apiItems[] = $apiItem;
-                $this->output("   * Real Estate ID {$apiItem->getRealEstateId()} ({$apiItem->getTitle()})");
+                $this->output("   * Real Estate ID {$apiItem->getRealEstateId()}");
+                $this->output("     - Title: {$apiItem->getTitle()}");
+
+                $attachments = $this->client->getAttachments($apiItem);
+                $apiItem->setAttachments($attachments);
+                $this->output(sprintf('     - %d Attachment(s)', \count($attachments)));
             }
             $duration = round(microtime(true) - $startTime, 2);
             $count = \count($apiItems);
