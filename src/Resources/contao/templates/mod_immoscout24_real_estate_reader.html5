@@ -1,19 +1,67 @@
-<?php use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
+<?php
+use Derhaeuptling\ContaoImmoscout24\Entity\Attachment;
+use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
 
 $this->extend('block_searchable'); ?>
 
 <?php $this->block('content'); ?>
 
 <div class="realEstate">
-    <h2><?php echo $this->realEstate->getTitle(); ?></h2>
+    <?php /** @var RealEstate $realEstate */ $realEstate = $this->realEstate; ?>
+    <h2><?php echo $realEstate->getTitle(); ?></h2>
+
+    <!-- title picture -->
+    <?php if(null !== ($titlePicture = $realEstate->getTitlePictureAttachment())): ?>
+        <figure class="titlePicture">
+            <?php if($titlePicture->getTitle()): ?>
+                <label><?php echo $titlePicture->getTitle(); ?></label>
+            <?php endif; ?>
+            <span><?php echo $titlePicture->getImage(); ?></span>
+        </figure>
+    <?php endif; ?>
+
+    <!-- attributes -->
     <dl>
         <?php foreach ($this->attributes as $attribute => $label): ?>
             <?php if($this->hasData($this->realEstate, $attribute)): ?>
                 <dt><?php echo $label; ?></dt>
-                <dd><?php echo $this->getFormatted($this->realEstate, $attribute); ?></dd>
+                <dd><?php echo $this->getFormatted($realEstate, $attribute); ?></dd>
             <?php endif; ?>
         <?php endforeach; ?>
     </dl>
+
+    <!-- floor plans -->
+    <?php if(!empty($floorPlans = $realEstate->getFloorPlanAttachments())): ?>
+        <div class="floorPlans">
+            <?php
+            /** @var Attachment $floorPlan */
+            foreach ($floorPlans as $floorPlan): ?>
+                <figure>
+                    <?php if($floorPlan->getTitle()): ?>
+                        <label><?php echo $floorPlan->getTitle(); ?></label>
+                    <?php endif; ?>
+                    <span><?php echo $floorPlan->getImage(); ?></span>
+                </figure>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+
+    <!-- other pictures -->
+    <?php if(!empty($pictures = $realEstate->getPictureAttachments(true, true))): ?>
+        <div class="pictures">
+            <?php
+            /** @var Attachment $picture */
+            foreach ($pictures as $picture): ?>
+                <figure>
+                    <?php if($picture->getTitle()): ?>
+                        <label><?php echo $picture->getTitle(); ?></label>
+                    <?php endif; ?>
+                    <span><?php echo $picture->getImage(); ?></span>
+                </figure>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+
 </div>
 
 <?php $this->endblock(); ?>

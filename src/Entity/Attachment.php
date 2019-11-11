@@ -88,6 +88,31 @@ class Attachment extends DcaDefault
      */
     private $scraperUrls;
 
+    public function isPicture(): bool
+    {
+        return true;
+    }
+
+    public function isTitlePicture(): bool
+    {
+        return $this->isPicture() && $this->isTitlePicture;
+    }
+
+    public function isFloorPlan(): bool
+    {
+        return $this->isPicture() && $this->isFloorPlan;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getImage(): string
+    {
+        return $this->scraperUrls;
+    }
+
     /**
      * @throws AnnotationException
      *

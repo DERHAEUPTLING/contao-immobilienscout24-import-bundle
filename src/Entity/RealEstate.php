@@ -862,4 +862,51 @@ class RealEstate extends DcaDefault
     {
         $this->attachments = new ArrayCollection($attachments);
     }
+
+    /**
+     * Get the first picture attachment which is tagged as 'title picture'.
+     */
+    public function getTitlePictureAttachment(): ?Attachment
+    {
+        $titleImages = array_filter(
+            $this->attachments->toArray(),
+            static function (Attachment $attachment) {
+                return $attachment->isTitlePicture();
+            }
+        );
+
+        return $titleImages[0] ?? null;
+    }
+
+    /**
+     * Get an array of picture attachments.
+     *
+     * @return Attachment[]
+     */
+    public function getPictureAttachments(bool $skipFloorPlans = true, bool $skipTitlePicture = true): array
+    {
+        return array_filter(
+            $this->attachments->toArray(),
+            static function (Attachment $attachment) use ($skipFloorPlans, $skipTitlePicture) {
+                return
+                    !($skipFloorPlans && $attachment->isFloorPlan()) &&
+                    !($skipTitlePicture && $attachment->isTitlePicture());
+            }
+        );
+    }
+
+    /**
+     * Get an array of picture attachments which are tagged as 'floor plan'.
+     *
+     * @return Attachment[]
+     */
+    public function getFloorPlanAttachments(): array
+    {
+        return array_filter(
+            $this->attachments->toArray(),
+            static function (Attachment $attachment) {
+                return $attachment->isFloorPlan();
+            }
+        );
+    }
 }
