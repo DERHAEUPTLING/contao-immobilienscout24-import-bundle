@@ -15,7 +15,13 @@ services:
         tags:
             - { name: 'doctrine.repository_service' }
 
-    # synchronization
+    Derhaeuptling\ContaoImmoscout24\Repository\AttachmentRepository:
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: 'doctrine.repository_service' }
+
+    # synchronization & scraping
     Derhaeuptling\ContaoImmoscout24\Synchronizer\SynchronizerFactory:
         arguments:
             - '@doctrine'
@@ -27,6 +33,19 @@ services:
             - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
         tags:
             - { name: 'console.command', command: 'immoscout24:sync' }
+
+    Derhaeuptling\ContaoImmoscout24\Command\ScrapeAttachmentsCommand:
+        arguments:
+            - '@Derhaeuptling\ContaoImmoscout24\Repository\AttachmentRepository'
+            - '@Derhaeuptling\ContaoImmoscout24\Synchronizer\FileScraper'
+            - '@doctrine'
+            - '%kernel.project_dir%'
+        tags:
+            - { name: 'console.command', command: 'immoscout24:scrape-attachments' }
+
+    Derhaeuptling\ContaoImmoscout24\Synchronizer\FileScraper:
+        arguments:
+            - '%kernel.project_dir%'
 
     # backend
     Derhaeuptling\ContaoImmoscout24\EventListener\DataContainer\Account:

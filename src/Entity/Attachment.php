@@ -12,18 +12,28 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\Entity;
 
+use Contao\FilesModel;
+use Contao\StringUtil;
 use Derhaeuptling\ContaoImmoscout24\Annotation\Immoscout24Api;
 use Derhaeuptling\ContaoImmoscout24\Annotation\Immoscout24ApiMapperTrait;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Derhaeuptling\ContaoImmoscout24\Repository\AttachmentRepository")
  * @ORM\Table(name="tl_immoscout24_attachment")
  */
 class Attachment extends DcaDefault
 {
     use Immoscout24ApiMapperTrait;
+
+    public const TYPE_UNKNOWN = 0;
+    public const TYPE_PICTURE = 1;
+    public const TYPE_VIDEO = 2;
+
+    public const CONTENT_NONE = 0;
+    public const CONTENT_WAITING_TO_BE_SCRAPED = 0;
+    public const CONTENT_READY = 1;
 
     /**
      * @ORM\Column(name="created_at", type="datetime")
@@ -40,6 +50,17 @@ class Attachment extends DcaDefault
      * @var \DateTime
      */
     private $modifiedAt;
+
+    /**
+     * @ORM\Column(name="type", type="smallint")
+     * @Immoscout24Api(name="@xsi.type", enum={
+     *      "common:Picture" = Attachment::TYPE_PICTURE,
+     *      "common:Video" = Attachment::TYPE_VIDEO,
+     * })
+     *
+     * @var int
+     */
+    private $type = self::TYPE_UNKNOWN;
 
     /**
      * @ORM\Column(name="title")
@@ -84,13 +105,32 @@ class Attachment extends DcaDefault
      * @ORM\Column(name="scraper_urls", type="blob")
      * [manually mapped]
      *
-     * @var string
+     * @var resource
      */
     private $scraperUrls;
 
+    /**
+     * @ORM\Column(name="uuid", type="binary_string", length=16, options={"fixed": true}, nullable=true)
+     */
+    private $uuid;
+
+    /**
+     * Get the attachment state.
+     */
+    public function getState(): int
+    {
+        if (!$this->isPicture()) {
+            // todo: other content types
+
+            return self::CONTENT_NONE;
+        }
+
+        return null === $this->uuid ? self::CONTENT_WAITING_TO_BE_SCRAPED : self::CONTENT_READY;
+    }
+
     public function isPicture(): bool
     {
-        return true;
+        return self::TYPE_PICTURE === $this->type;
     }
 
     public function isTitlePicture(): bool
@@ -108,9 +148,48 @@ class Attachment extends DcaDefault
         return $this->title;
     }
 
-    public function getImage(): string
+    public function getFile(): ?FilesModel
     {
-        return $this->scraperUrls;
+        if (self::CONTENT_READY !== $this->getState()) {
+            return null;
+        }
+
+        return FilesModel::findByUuid($this->uuid);
+    }
+
+    public function getScrapingUrl(): ?string
+    {
+        $urlCandidates = StringUtil::deserialize(stream_get_contents($this->scraperUrls), true);
+
+        if (empty($urlCandidates)) {
+            return null;
+        }
+
+        $urlCandidate = (array_pop($urlCandidates))['@href'] ?? null;
+        if (null === $urlCandidate) {
+            return null;
+        }
+
+        // strip cloud front image url parameters
+        if (0 !== ($position = strpos($urlCandidate, '/ORIG'))) {
+            return substr($urlCandidate, 0, $position);
+        }
+
+        return $urlCandidate;
+    }
+
+    public function setImage(FilesModel $file): void
+    {
+        if (self::CONTENT_WAITING_TO_BE_SCRAPED !== $this->getState()) {
+            throw new \RuntimeException('This attachment does not await scraping results.');
+        }
+
+        $this->uuid = $file->uuid;
+    }
+
+    public function getRealEstate(): RealEstate
+    {
+        return $this->realEstate;
     }
 
     /**
