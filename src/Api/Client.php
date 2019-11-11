@@ -59,7 +59,7 @@ class Client
         $pageSize = max(1, min(100, $pageSize)); // must be in the range [1 .. 100]
         $pageNumber = max(1, $pageNumberOffset + 1); // must be >= 1
 
-        $requestUrl = sprintf('user/me/realestate?pageSize=%s&pagenumber=%s', $pageSize, $pageNumber);
+        $requestUrl = sprintf('user/me/realestate?pageSize=%s&pagenumber=%s&archivedobjectsincluded=true', $pageSize, $pageNumber);
         $data = $this->performRequest($requestUrl);
 
         $list = $data['realestates.realEstates']['realEstateList']['realEstateElement'] ?? null;
