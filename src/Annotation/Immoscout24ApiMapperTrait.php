@@ -41,7 +41,7 @@ trait Immoscout24ApiMapperTrait
             }
 
             // step 1: find the corresponding value in the api data
-            $path = explode('.', $annotationData->name);
+            $path = explode('::', $annotationData->name);
             $apiValue = $apiData;
 
             do {

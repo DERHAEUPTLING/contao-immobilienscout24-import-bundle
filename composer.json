@@ -29,7 +29,8 @@
     "doctrine/orm": "^2.6",
     "doctrine/annotations": "^1.6",
     "symfony/expression-language": "^4.3",
-    "codefog/contao-haste": "^4.9"
+    "codefog/contao-haste": "^4.9",
+    "webmozart/path-util": "^2.3"
   },
   "require-dev": {
     "contao/manager-plugin": "^2.0",

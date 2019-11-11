@@ -238,7 +238,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="address_street")
-     * @Immoscout24Api(name="address.street")
+     * @Immoscout24Api(name="address::street")
      *
      * @var string
      */
@@ -246,7 +246,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="address_house_number")
-     * @Immoscout24Api(name="address.houseNumber")
+     * @Immoscout24Api(name="address::houseNumber")
      *
      * @var string
      */
@@ -254,7 +254,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="address_zip")
-     * @Immoscout24Api(name="address.postcode")
+     * @Immoscout24Api(name="address::postcode")
      *
      * @var string
      */
@@ -262,7 +262,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="address_city")
-     * @Immoscout24Api(name="address.city")
+     * @Immoscout24Api(name="address::city")
      *
      * @var string
      */
@@ -270,7 +270,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="address_latitude", type="decimal", precision=10, scale=8, nullable=true)
-     * @Immoscout24Api(name="address.wgs84Coordinate.latitude")
+     * @Immoscout24Api(name="address::wgs84Coordinate::latitude")
      *
      * @var ?float
      */
@@ -278,7 +278,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="address_longitude", type="decimal", precision=11, scale=8, nullable=true)
-     * @Immoscout24Api(name="address.wgs84Coordinate.longitude")
+     * @Immoscout24Api(name="address::wgs84Coordinate::longitude")
      *
      * @var ?float
      */
@@ -286,7 +286,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2, nullable=true)
-     * @Immoscout24Api(name="price.value")
+     * @Immoscout24Api(name="price::value")
      *
      * @var ?float
      */
@@ -294,7 +294,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="price_interval_type", type="integer")
-     * @Immoscout24Api(name="price.priceIntervalType", enum={
+     * @Immoscout24Api(name="price::priceIntervalType", enum={
      *      "ONE_TIME_CHARGE" = RealEstate::PRICE_INTERVAL_ONE_TIME_CHARGE,
      *      "DAY" = RealEstate::PRICE_INTERVAL_DAY,
      *      "WEEK" = RealEstate::PRICE_INTERVAL_WEEK,
@@ -308,7 +308,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="price_marketing_type", type="integer")
-     * @Immoscout24Api(name="price.marketingType", enum={
+     * @Immoscout24Api(name="price::marketingType", enum={
      *      "PURCHASE" = RealEstate::PRICE_MARKETING_TYPE_PURCHASE,
      *      "PURCHASE_PER_SQM" = RealEstate::PRICE_MARKETING_TYPE_PURCHASE_PER_SQM,
      *      "RENT" = RealEstate::PRICE_MARKETING_TYPE_RENT,
@@ -598,7 +598,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="energy_certificate_availability", type="smallint")
-     * @Immoscout24Api(name="energyCertificate.energyCertificateAvailability", enum={
+     * @Immoscout24Api(name="energyCertificate::energyCertificateAvailability", enum={
      *      "NO_INFORMATION" = RealEstate::ENERGY_CERTIFICATE_AVAILABILITY_NO_INFORMATION,
      *      "AVAILABLE" = RealEstate::ENERGY_CERTIFICATE_AVAILABILITY_AVAILABLE,
      *      "NOT_AVAILABLE_YET" = RealEstate::ENERGY_CERTIFICATE_AVAILABILITY_NOT_AVAILABLE_YET,
@@ -611,7 +611,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="energy_certificate_creation_date", type="smallint")
-     * @Immoscout24Api(name="energyCertificate.energyCertificateCreationDate", enum={
+     * @Immoscout24Api(name="energyCertificate::energyCertificateCreationDate", enum={
      *      "NOT_APPLICABLE" = RealEstate::ENERGY_CERTIFICATE_CREATION_DATE_NO_INFORMATION,
      *      "BEFORE_01_MAY_2014" = RealEstate::ENERGY_CERTIFICATE_CREATION_DATE_BEFORE_01_MAY_2014,
      *      "FROM_01_MAY_2014" = RealEstate::ENERGY_CERTIFICATE_CREATION_DATE_FROM_01_MAY_2014
@@ -623,7 +623,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="energy_certificate_efficiency_class")
-     * @Immoscout24Api(name="energyCertificate.energyEfficiencyClass")
+     * @Immoscout24Api(name="energyCertificate::energyEfficiencyClass")
      *
      * @var string
      */
@@ -707,7 +707,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="courtage", type="boolean", nullable=true)
-     * @Immoscout24Api(name="courtage.hasCourtage", enum={
+     * @Immoscout24Api(name="courtage::hasCourtage", enum={
      *      "YES" = true,
      *      "NO" = false,
      *      "NOT_APPLICABLE" = null
@@ -719,7 +719,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="courtage_value")
-     * @Immoscout24Api(name="courtage.courtage")
+     * @Immoscout24Api(name="courtage::courtage")
      *
      * @var string
      */
@@ -727,7 +727,7 @@ class RealEstate extends DcaDefault
 
     /**
      * @ORM\Column(name="courtage_note")
-     * @Immoscout24Api(name="courtage.courtageNote")
+     * @Immoscout24Api(name="courtage::courtageNote")
      *
      * @var string
      */
@@ -871,7 +871,9 @@ class RealEstate extends DcaDefault
         $titleImages = array_filter(
             $this->attachments->toArray(),
             static function (Attachment $attachment) {
-                return $attachment->isTitlePicture();
+                return
+                    Attachment::CONTENT_READY === $attachment->getState() &&
+                    $attachment->isTitlePicture();
             }
         );
 
@@ -889,6 +891,7 @@ class RealEstate extends DcaDefault
             $this->attachments->toArray(),
             static function (Attachment $attachment) use ($skipFloorPlans, $skipTitlePicture) {
                 return
+                    Attachment::CONTENT_READY === $attachment->getState() &&
                     !($skipFloorPlans && $attachment->isFloorPlan()) &&
                     !($skipTitlePicture && $attachment->isTitlePicture());
             }
@@ -905,7 +908,9 @@ class RealEstate extends DcaDefault
         return array_filter(
             $this->attachments->toArray(),
             static function (Attachment $attachment) {
-                return $attachment->isFloorPlan();
+                return
+                    Attachment::CONTENT_READY === $attachment->getState() &&
+                    $attachment->isFloorPlan();
             }
         );
     }
