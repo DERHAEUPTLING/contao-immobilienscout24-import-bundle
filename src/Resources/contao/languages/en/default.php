@@ -133,6 +133,8 @@ $GLOBALS['TL_LANG']['immoscout24']['buildingType_'][RE::BUILDING_TYPE_NON_DETACH
 $GLOBALS['TL_LANG']['immoscout24']['buildingType_'][RE::BUILDING_TYPE_CITY_VILLA] = 'city villa';
 $GLOBALS['TL_LANG']['immoscout24']['buildingType_'][RE::BUILDING_TYPE_VILLA] = 'villa';
 $GLOBALS['TL_LANG']['immoscout24']['buildingType_'][RE::BUILDING_TYPE_SEMI_DETACHED_HOUSE_PAIR] = 'semi detached house pair';
+$GLOBALS['TL_LANG']['immoscout24']['buildingType_'][RE::BUILDING_TYPE_SINGLE_FAMILY_HOUSE] = 'single family house';
+$GLOBALS['TL_LANG']['immoscout24']['buildingType_'][RE::BUILDING_TYPE_MID_TERRACE_HOUSE] = 'mid terrace house';
 
 $GLOBALS['TL_LANG']['immoscout24']['constructionPhase'] = 'Construction phase';
 $GLOBALS['TL_LANG']['immoscout24']['constructionPhase_'][RE::CONSTRUCTION_PHASE_NO_INFORMATION] = 'no information';
@@ -270,10 +272,10 @@ $GLOBALS['TL_LANG']['immoscout24']['officeType_'][RE::OFFICE_TYPE_OFFICE_AND_COM
 
 $GLOBALS['TL_LANG']['immoscout24']['officeRentDuration'] = 'Office rent duration';
 $GLOBALS['TL_LANG']['immoscout24']['officeRentDuration_'][RE::OFFICE_RENT_DURATION_NO_INFORMATION] = 'no information';
-$GLOBALS['TL_LANG']['immoscout24']['officeRentDuration_'][RE::OFFICE_RENT_DURATION_WEEKLY] = 'weekly';
-$GLOBALS['TL_LANG']['immoscout24']['officeRentDuration_'][RE::OFFICE_RENT_DURATION_MONTHLY] = 'monthly';
-$GLOBALS['TL_LANG']['immoscout24']['officeRentDuration_'][RE::OFFICE_RENT_DURATION_YEARLY] = 'yearly';
-$GLOBALS['TL_LANG']['immoscout24']['officeRentDuration_'][RE::OFFICE_RENT_DURATION_LONG_TERM] = 'long term';
+$GLOBALS['TL_LANG']['immoscout24']['officeRentDuration_'][RE::FLAG__OFFICE_RENT_DURATION_WEEKLY] = 'weekly';
+$GLOBALS['TL_LANG']['immoscout24']['officeRentDuration_'][RE::FLAG__OFFICE_RENT_DURATION_MONTHLY] = 'monthly';
+$GLOBALS['TL_LANG']['immoscout24']['officeRentDuration_'][RE::FLAG__OFFICE_RENT_DURATION_YEARLY] = 'yearly';
+$GLOBALS['TL_LANG']['immoscout24']['officeRentDuration_'][RE::FLAG__OFFICE_RENT_DURATION_LONG_TERM] = 'long term';
 
 $GLOBALS['TL_LANG']['immoscout24']['garageType'] = 'Garage type';
 $GLOBALS['TL_LANG']['immoscout24']['garageType_'][RE::GARAGE_TYPE_NO_INFORMATION] = 'no information';
@@ -295,18 +297,19 @@ $GLOBALS['TL_LANG']['immoscout24']['commercializationType_'][RE::COMMERCIALIZATI
 
 $GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse'] = 'Recommended site use';
 $GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::RECOMMENDED_USE_NO_INFORMATION] = 'no information';
-$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::RECOMMENDED_USE_FUTURE_DEVELOPMENT_LAND] = 'future development land';
-$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::RECOMMENDED_USE_TWINHOUSE] = 'twin house';
-$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::RECOMMENDED_USE_SINGLE_FAMILY_HOUSE] = 'single family house';
-$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::RECOMMENDED_USE_GARAGE] = 'garage';
-$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::RECOMMENDED_USE_GARDEN] = 'garden';
-$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::RECOMMENDED_USE_NO_DEVELOPMENT] = 'no development';
-$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::RECOMMENDED_USE_APARTMENT_BUILDING] = 'apartment building';
-$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::RECOMMENDED_USE_ORCHARD] = 'orchard';
-$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::RECOMMENDED_USE_TERRACE_HOUSE] = 'terrace house';
-$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::RECOMMENDED_USE_PARKING_SPACE] = 'parking space';
-$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::RECOMMENDED_USE_VILLA] = 'villa';
-$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::RECOMMENDED_USE_FORREST] = 'forrest';
+$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::FLAG__RECOMMENDED_USE_FUTURE_DEVELOPMENT_LAND] = 'future development land';
+$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::FLAG__RECOMMENDED_USE_TWINHOUSE] = 'twin house';
+$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::FLAG__RECOMMENDED_USE_SINGLE_FAMILY_HOUSE] = 'single family house';
+$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::FLAG__RECOMMENDED_USE_GARAGE] = 'garage';
+$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::FLAG__RECOMMENDED_USE_GARDEN] = 'garden';
+$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::FLAG__RECOMMENDED_USE_NO_DEVELOPMENT] = 'no development';
+$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::FLAG__RECOMMENDED_USE_APARTMENT_BUILDING] = 'apartment building';
+$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::FLAG__RECOMMENDED_USE_ORCHARD] = 'orchard';
+$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::FLAG__RECOMMENDED_USE_TERRACE_HOUSE] = 'terrace house';
+$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::FLAG__RECOMMENDED_USE_PARKING_SPACE] = 'parking space';
+$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::FLAG__RECOMMENDED_USE_VILLA] = 'villa';
+$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::FLAG__RECOMMENDED_USE_FORREST] = 'forrest';
+$GLOBALS['TL_LANG']['immoscout24']['recommendedSiteUse_'][RE::FLAG__RECOMMENDED_USE_FARMLAND] = 'farmland';
 
 $GLOBALS['TL_LANG']['immoscout24']['storeType'] = 'Store type';
 $GLOBALS['TL_LANG']['immoscout24']['storeType_'][RE::STORE_TYPE_NO_INFORMATION] = 'no information';

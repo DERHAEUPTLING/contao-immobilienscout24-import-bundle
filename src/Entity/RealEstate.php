@@ -87,6 +87,8 @@ class RealEstate extends DcaDefault
     public const BUILDING_TYPE_CITY_VILLA = 11;
     public const BUILDING_TYPE_VILLA = 12;
     public const BUILDING_TYPE_SEMI_DETACHED_HOUSE_PAIR = 13;
+    public const BUILDING_TYPE_SINGLE_FAMILY_HOUSE = 14;
+    public const BUILDING_TYPE_MID_TERRACE_HOUSE = 15;
 
     public const CONSTRUCTION_PHASE_NO_INFORMATION = 0;
     public const CONSTRUCTION_PHASE_COMPLETED = 1;
@@ -211,10 +213,10 @@ class RealEstate extends DcaDefault
     public const OFFICE_TYPE_OFFICE_AND_COMMERCIAL_BUILDING = 13;
 
     public const OFFICE_RENT_DURATION_NO_INFORMATION = 0;
-    public const OFFICE_RENT_DURATION_WEEKLY = 1;
-    public const OFFICE_RENT_DURATION_MONTHLY = 2;
-    public const OFFICE_RENT_DURATION_YEARLY = 3;
-    public const OFFICE_RENT_DURATION_LONG_TERM = 4;
+    public const FLAG__OFFICE_RENT_DURATION_WEEKLY = 1 << 0;
+    public const FLAG__OFFICE_RENT_DURATION_MONTHLY = 1 << 1;
+    public const FLAG__OFFICE_RENT_DURATION_YEARLY = 1 << 2;
+    public const FLAG__OFFICE_RENT_DURATION_LONG_TERM = 1 << 3;
 
     public const GARAGE_TYPE_NO_INFORMATION = 0;
     public const GARAGE_TYPE_GARAGE = 1;
@@ -233,18 +235,19 @@ class RealEstate extends DcaDefault
     public const COMMERCIALIZATION_TYPE_RENT_AND_BUY = 6;
 
     public const RECOMMENDED_USE_NO_INFORMATION = 0;
-    public const RECOMMENDED_USE_FUTURE_DEVELOPMENT_LAND = 1;
-    public const RECOMMENDED_USE_TWINHOUSE = 2;
-    public const RECOMMENDED_USE_SINGLE_FAMILY_HOUSE = 3;
-    public const RECOMMENDED_USE_GARAGE = 4;
-    public const RECOMMENDED_USE_GARDEN = 5;
-    public const RECOMMENDED_USE_NO_DEVELOPMENT = 6;
-    public const RECOMMENDED_USE_APARTMENT_BUILDING = 7;
-    public const RECOMMENDED_USE_ORCHARD = 8;
-    public const RECOMMENDED_USE_TERRACE_HOUSE = 9;
-    public const RECOMMENDED_USE_PARKING_SPACE = 10;
-    public const RECOMMENDED_USE_VILLA = 11;
-    public const RECOMMENDED_USE_FORREST = 12;
+    public const FLAG__RECOMMENDED_USE_FUTURE_DEVELOPMENT_LAND = 1 << 0;
+    public const FLAG__RECOMMENDED_USE_TWINHOUSE = 1 << 1;
+    public const FLAG__RECOMMENDED_USE_SINGLE_FAMILY_HOUSE = 1 << 2;
+    public const FLAG__RECOMMENDED_USE_GARAGE = 1 << 3;
+    public const FLAG__RECOMMENDED_USE_GARDEN = 1 << 4;
+    public const FLAG__RECOMMENDED_USE_NO_DEVELOPMENT = 1 << 5;
+    public const FLAG__RECOMMENDED_USE_APARTMENT_BUILDING = 1 << 6;
+    public const FLAG__RECOMMENDED_USE_ORCHARD = 1 << 7;
+    public const FLAG__RECOMMENDED_USE_TERRACE_HOUSE = 1 << 8;
+    public const FLAG__RECOMMENDED_USE_PARKING_SPACE = 1 << 9;
+    public const FLAG__RECOMMENDED_USE_VILLA = 1 << 10;
+    public const FLAG__RECOMMENDED_USE_FORREST = 1 << 11;
+    public const FLAG__RECOMMENDED_USE_FARMLAND = 1 << 12;
 
     public const STORE_TYPE_NO_INFORMATION = 0;
     public const STORE_TYPE_SHOWROOM_SPACE = 1;
@@ -311,8 +314,12 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="listed", type="boolean", nullable=true)
      * @Immoscout24Api(name="listed", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -474,8 +481,12 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="cellar", type="boolean", nullable=true)
      * @Immoscout24Api(name="cellar", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -486,8 +497,12 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="built_in_kitchen", type="boolean", nullable=true)
      * @Immoscout24Api(name="builtInKitchen", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -498,8 +513,12 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="balcony", type="boolean", nullable=true)
      * @Immoscout24Api(name="balcony", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -510,8 +529,12 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="garden", type="boolean", nullable=true)
      * @Immoscout24Api(name="garden", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -522,8 +545,12 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="guest_toilet", type="boolean", nullable=true)
      * @Immoscout24Api(name="guestToilet", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -552,7 +579,7 @@ class RealEstate extends DcaDefault
      *      "NO_INFORMATION" = RealEstate::BUILDING_TYPE_NO_INFORMATION,
      *      "BLOCKHOUSE" = RealEstate::BUILDING_TYPE_BLOCKHOUSE,
      *      "BUNGALOW" = RealEstate::BUILDING_TYPE_BUNGALOW,
-     *      "SEMI_DETACHED_HOUSE" = RealEstate::BUILDING_TYPE_SEMI_DETACHED_HOUSE,
+     *      "SEMIDETACHED_HOUSE" = RealEstate::BUILDING_TYPE_SEMI_DETACHED_HOUSE,
      *      "ONE_FAMILY_HOUSE" = RealEstate::BUILDING_TYPE_ONE_FAMILY_HOUSE,
      *      "FAMILY_HOUSE_WITH_LODGER_FLAT" = RealEstate::BUILDING_TYPE_FAMILY_HOUSE_WITH_LODGER_FLAT,
      *      "TUDOR_HOUSE" = RealEstate::BUILDING_TYPE_TUDOR_HOUSE,
@@ -562,7 +589,9 @@ class RealEstate extends DcaDefault
      *      "NON_DETACHED_HOUSE" = RealEstate::BUILDING_TYPE_NON_DETACHED_HOUSE,
      *      "CITY_VILLA" = RealEstate::BUILDING_TYPE_CITY_VILLA ,
      *      "VILLA" = RealEstate::BUILDING_TYPE_VILLA,
-     *      "SEMI_DETACHED_HOUSE_PAIR" = RealEstate::BUILDING_TYPE_SEMI_DETACHED_HOUSE_PAIR
+     *      "SEMI_DETACHED_HOUSE_PAIR" = RealEstate::BUILDING_TYPE_SEMI_DETACHED_HOUSE_PAIR,
+     *      "SINGLE_FAMILY_HOUSE" = RealEstate::BUILDING_TYPE_SINGLE_FAMILY_HOUSE,
+     *      "MID_TERRACE_HOUSE" = RealEstate::BUILDING_TYPE_MID_TERRACE_HOUSE
      * })
      *
      * @var int
@@ -573,8 +602,12 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="lodger_flat", type="boolean", nullable=true)
      * @Immoscout24Api(name="lodgerFlat", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -585,8 +618,13 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="summer_residence_practical", type="boolean", nullable=true)
      * @Immoscout24Api(name="summerResidencePractical", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "NEGOTIABLE" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -597,8 +635,12 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="rented", type="boolean", nullable=true)
      * @Immoscout24Api(name="summerResidencePractical", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -756,8 +798,13 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="energy_consumption_contains_warm_water", type="boolean", nullable=true)
      * @Immoscout24Api(name="energyConsumptionContainsWarmWater", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "NEGOTIABLE" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -768,8 +815,12 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="energy_performance_certificate", type="boolean", nullable=true)
      * @Immoscout24Api(name="energyPerformanceCertificate", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -812,8 +863,12 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="handicapped_accessible", type="boolean", nullable=true)
      * @Immoscout24Api(name="handicappedAccessible", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -824,8 +879,13 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="courtage", type="boolean", nullable=true)
      * @Immoscout24Api(name="courtage::hasCourtage", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "NEGOTIABLE" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -932,8 +992,13 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="heating_costs_in_service_charge", type="boolean", nullable=true)
      * @Immoscout24Api(name="heatingCostsInServiceCharge", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "NEGOTIABLE" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -944,8 +1009,13 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="pets_allowed", type="boolean", nullable=true)
      * @Immoscout24Api(name="petsAllowed", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "NEGOTIABLE" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -956,8 +1026,12 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="basement", type="boolean", nullable=true)
      * @Immoscout24Api(name="basement", enum={
      *      "YES" = true,
+     *      "true" = true,
      *      "NO" = false,
-     *      "NOT_APPLICABLE" = null
+     *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "" = null
      * })
      *
      * @var ?bool
@@ -967,8 +1041,13 @@ class RealEstate extends DcaDefault
     /**
      * @ORM\Column(name="building_permission", type="boolean", nullable=true)
      * @Immoscout24Api(name="buildingPermission", enum={
+     *      "YES" = true,
      *      "true" = true,
+     *      "NO" = false,
      *      "false" = false,
+     *      "NOT_APPLICABLE" = null,
+     *      "NO_INFORMATION" = null,
+     *      "NEGOTIABLE" = null,
      *      "" = null
      * })
      *
@@ -1075,11 +1154,11 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="office_rent_duration", type="smallint")
      * @Immoscout24Api(name="officeRentDurations", enum={
      *      "NO_INFORMATION" = RealEstate::OFFICE_RENT_DURATION_NO_INFORMATION,
-     *      "WEEKLY" = RealEstate::OFFICE_RENT_DURATION_WEEKLY,
-     *      "MONTHLY" = RealEstate::OFFICE_RENT_DURATION_MONTHLY,
-     *      "YEARLY" = RealEstate::OFFICE_RENT_DURATION_YEARLY,
-     *      "LONG_TERM" = RealEstate::OFFICE_RENT_DURATION_LONG_TERM
-     * })
+     *      "WEEKLY" = RealEstate::FLAG__OFFICE_RENT_DURATION_WEEKLY,
+     *      "MONTHLY" = RealEstate::FLAG__OFFICE_RENT_DURATION_MONTHLY,
+     *      "YEARLY" = RealEstate::FLAG__OFFICE_RENT_DURATION_YEARLY,
+     *      "LONG_TERM" = RealEstate::FLAG__OFFICE_RENT_DURATION_LONG_TERM
+     * }, flags=true)
      *
      * @var int
      */
@@ -1118,22 +1197,23 @@ class RealEstate extends DcaDefault
     public $commercializationType = self::COMMERCIALIZATION_TYPE_NO_INFORMATION;
 
     /**
-     * @ORM\Column(name="recommended_site_use", type="smallint")
+     * @ORM\Column(name="recommended_site_use", type="integer")
      * @Immoscout24Api(name="recommendedUseTypes", enum={
      *      "NO_INFORMATION" = RealEstate::RECOMMENDED_USE_NO_INFORMATION,
-     *      "FUTURE_DEVELOPMENT_LAND" = RealEstate::RECOMMENDED_USE_FUTURE_DEVELOPMENT_LAND,
-     *      "TWINHOUSE" = RealEstate::RECOMMENDED_USE_TWINHOUSE,
-     *      "SINGLE_FAMILY_HOUSE" = RealEstate::RECOMMENDED_USE_SINGLE_FAMILY_HOUSE,
-     *      "GARAGE" = RealEstate::RECOMMENDED_USE_GARAGE,
-     *      "GARDEN" = RealEstate::RECOMMENDED_USE_GARDEN,
-     *      "NO_DEVELOPMENT" = RealEstate::RECOMMENDED_USE_NO_DEVELOPMENT,
-     *      "APARTMENT_BUILDING" = RealEstate::RECOMMENDED_USE_APARTMENT_BUILDING,
-     *      "ORCHARD" = RealEstate::RECOMMENDED_USE_ORCHARD,
-     *      "TERRACE_HOUSE" = RealEstate::RECOMMENDED_USE_TERRACE_HOUSE,
-     *      "PARKING_SPACE" = RealEstate::RECOMMENDED_USE_PARKING_SPACE,
-     *      "VILLA" = RealEstate::RECOMMENDED_USE_VILLA,
-     *      "FORREST" = RealEstate::RECOMMENDED_USE_FORREST
-     * })
+     *      "FUTURE_DEVELOPMENT_LAND" = RealEstate::FLAG__RECOMMENDED_USE_FUTURE_DEVELOPMENT_LAND,
+     *      "TWINHOUSE" = RealEstate::FLAG__RECOMMENDED_USE_TWINHOUSE,
+     *      "SINGLE_FAMILY_HOUSE" = RealEstate::FLAG__RECOMMENDED_USE_SINGLE_FAMILY_HOUSE,
+     *      "GARAGE" = RealEstate::FLAG__RECOMMENDED_USE_GARAGE,
+     *      "GARDEN" = RealEstate::FLAG__RECOMMENDED_USE_GARDEN,
+     *      "NO_DEVELOPMENT" = RealEstate::FLAG__RECOMMENDED_USE_NO_DEVELOPMENT,
+     *      "APARTMENT_BUILDING" = RealEstate::FLAG__RECOMMENDED_USE_APARTMENT_BUILDING,
+     *      "ORCHARD" = RealEstate::FLAG__RECOMMENDED_USE_ORCHARD,
+     *      "TERRACE_HOUSE" = RealEstate::FLAG__RECOMMENDED_USE_TERRACE_HOUSE,
+     *      "PARKING_SPACE" = RealEstate::FLAG__RECOMMENDED_USE_PARKING_SPACE,
+     *      "VILLA" = RealEstate::FLAG__RECOMMENDED_USE_VILLA,
+     *      "FORREST" = RealEstate::FLAG__RECOMMENDED_USE_FORREST,
+     *      "FARMLAND" = RealEstate::FLAG__RECOMMENDED_USE_FARMLAND
+     * }, flags=true)
      *
      * @var int
      */
