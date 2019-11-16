@@ -147,6 +147,121 @@ class RealEstate extends DcaDefault
     public const PARKING_SPACE_TYPE_CAR_PARK = 6;
     public const PARKING_SPACE_TYPE_UNDERGROUND_GARAGE = 7;
 
+    public const APARTMENT_TYPE_NO_INFORMATION = 0;
+    public const APARTMENT_TYPE_ROOF_STOREY = 1;
+    public const APARTMENT_TYPE_LOFT = 2;
+    public const APARTMENT_TYPE_MAISONETTE = 3;
+    public const APARTMENT_TYPE_PENTHOUSE = 4;
+    public const APARTMENT_TYPE_TERRACED_FLAT = 5;
+    public const APARTMENT_TYPE_GROUND_FLOOR = 6;
+    public const APARTMENT_TYPE_APARTMENT = 7;
+    public const APARTMENT_TYPE_RAISED_GROUND_FLOOR = 8;
+    public const APARTMENT_TYPE_HALF_BASEMENT = 9;
+    public const APARTMENT_TYPE_OTHER = 10;
+
+    public const INDUSTRY_TYPE_NO_INFORMATION = 0;
+    public const INDUSTRY_TYPE_SHOWROOM_SPACE = 1;
+    public const INDUSTRY_TYPE_HALL = 2;
+    public const INDUSTRY_TYPE_HIGH_LACK_STORAGE = 3;
+    public const INDUSTRY_TYPE_INDUSTRY_HALL = 4;
+    public const INDUSTRY_TYPE_INDUSTRY_HALL_WITH_OPEN_AREA = 5;
+    public const INDUSTRY_TYPE_COLD_STORAGE = 6;
+    public const INDUSTRY_TYPE_MULTIDECK_CABINET_STORAGE = 7;
+    public const INDUSTRY_TYPE_STORAGE_WITH_OPEN_AREA = 8;
+    public const INDUSTRY_TYPE_STORAGE_AREA = 9;
+    public const INDUSTRY_TYPE_STORAGE_HALL = 10;
+    public const INDUSTRY_TYPE_SERVICE_AREA = 11;
+    public const INDUSTRY_TYPE_SHIPPING_STORAGE = 12;
+    public const INDUSTRY_TYPE_REPAIR_SHOP = 13;
+
+    public const INVESTMENT_TYPE_NO_INFORMATION = 0;
+    public const INVESTMENT_TYPE_SINGLE_FAMILY_HOUSE = 1;
+    public const INVESTMENT_TYPE_MULTI_FAMILY_HOUSE = 2;
+    public const INVESTMENT_TYPE_FREEHOLD_FLAT = 3;
+    public const INVESTMENT_TYPE_SHOPPING_CENTRE = 4;
+    public const INVESTMENT_TYPE_RESTAURANT = 5;
+    public const INVESTMENT_TYPE_HOTEL = 6;
+    public const INVESTMENT_TYPE_LEISURE_FACILITY = 7;
+    public const INVESTMENT_TYPE_COMMERCIAL_UNIT = 8;
+    public const INVESTMENT_TYPE_OFFICE_BUILDING = 9;
+    public const INVESTMENT_TYPE_COMMERCIAL_BUILDING = 10;
+    public const INVESTMENT_TYPE_COMMERCIAL_PROPERTY = 11;
+    public const INVESTMENT_TYPE_HALL_STORAGE = 12;
+    public const INVESTMENT_TYPE_INDUSTRIAL_PROPERTY = 13;
+    public const INVESTMENT_TYPE_SHOP_SALES_FLOOR = 14;
+    public const INVESTMENT_TYPE_SERVICE_CENTRE = 15;
+    public const INVESTMENT_TYPE_OTHER = 16;
+    public const INVESTMENT_TYPE_SUPERMARKET = 17;
+    public const INVESTMENT_TYPE_LIVING_BUSINESS_HOUSE = 18;
+    public const INVESTMENT_TYPE_HOUSING_ESTATE = 19;
+
+    public const OFFICE_TYPE_NO_INFORMATION = 0;
+    public const OFFICE_TYPE_LOFT = 1;
+    public const OFFICE_TYPE_STUDIO = 2;
+    public const OFFICE_TYPE_OFFICE = 3;
+    public const OFFICE_TYPE_OFFICE_FLOOR = 4;
+    public const OFFICE_TYPE_OFFICE_BUILDING = 5;
+    public const OFFICE_TYPE_OFFICE_CENTRE = 6;
+    public const OFFICE_TYPE_OFFICE_STORAGE_BUILDING = 7;
+    public const OFFICE_TYPE_SURGERY = 8;
+    public const OFFICE_TYPE_SURGERY_FLOOR = 9;
+    public const OFFICE_TYPE_SURGERY_BUILDING = 10;
+    public const OFFICE_TYPE_COMMERCIAL_CENTRE = 11;
+    public const OFFICE_TYPE_LIVING_AND_COMMERCIAL_BUILDING = 12;
+    public const OFFICE_TYPE_OFFICE_AND_COMMERCIAL_BUILDING = 13;
+
+    public const OFFICE_RENT_DURATION_NO_INFORMATION = 0;
+    public const OFFICE_RENT_DURATION_WEEKLY = 1;
+    public const OFFICE_RENT_DURATION_MONTHLY = 2;
+    public const OFFICE_RENT_DURATION_YEARLY = 3;
+    public const OFFICE_RENT_DURATION_LONG_TERM = 4;
+
+    public const GARAGE_TYPE_NO_INFORMATION = 0;
+    public const GARAGE_TYPE_GARAGE = 1;
+    public const GARAGE_TYPE_STREET_PARKING = 2;
+    public const GARAGE_TYPE_CARPORT = 3;
+    public const GARAGE_TYPE_DUPLEX = 4;
+    public const GARAGE_TYPE_CAR_PARK = 5;
+    public const GARAGE_TYPE_UNDERGROUND_GARAGE = 6;
+
+    public const COMMERCIALIZATION_TYPE_NO_INFORMATION = 0;
+    public const COMMERCIALIZATION_TYPE_BUY = 1;
+    public const COMMERCIALIZATION_TYPE_RENT = 2;
+    public const COMMERCIALIZATION_TYPE_LEASE = 3;
+    public const COMMERCIALIZATION_TYPE_LEASEHOLD = 4;
+    public const COMMERCIALIZATION_TYPE_COMPULSORY_AUCTION = 5;
+    public const COMMERCIALIZATION_TYPE_RENT_AND_BUY = 6;
+
+    public const RECOMMENDED_USE_NO_INFORMATION = 0;
+    public const RECOMMENDED_USE_FUTURE_DEVELOPMENT_LAND = 1;
+    public const RECOMMENDED_USE_TWINHOUSE = 2;
+    public const RECOMMENDED_USE_SINGLE_FAMILY_HOUSE = 3;
+    public const RECOMMENDED_USE_GARAGE = 4;
+    public const RECOMMENDED_USE_GARDEN = 5;
+    public const RECOMMENDED_USE_NO_DEVELOPMENT = 6;
+    public const RECOMMENDED_USE_APARTMENT_BUILDING = 7;
+    public const RECOMMENDED_USE_ORCHARD = 8;
+    public const RECOMMENDED_USE_TERRACE_HOUSE = 9;
+    public const RECOMMENDED_USE_PARKING_SPACE = 10;
+    public const RECOMMENDED_USE_VILLA = 11;
+    public const RECOMMENDED_USE_FORREST = 12;
+
+    public const STORE_TYPE_NO_INFORMATION = 0;
+    public const STORE_TYPE_SHOWROOM_SPACE = 1;
+    public const STORE_TYPE_SHOPPING_CENTRE = 2;
+    public const STORE_TYPE_FACTORY_OUTLET = 3;
+    public const STORE_TYPE_DEPARTMENT_STORE = 4;
+    public const STORE_TYPE_KIOSK = 5;
+    public const STORE_TYPE_STORE = 6;
+    public const STORE_TYPE_SELF_SERVICE_MARKET = 7;
+    public const STORE_TYPE_SALES_AREA = 8;
+    public const STORE_TYPE_SALES_HALL = 9;
+
+    public const TRADE_SITE_UTILIZATION_NO_INFORMATION = 0;
+    public const TRADE_SITE_UTILIZATION_LEISURE = 1;
+    public const TRADE_SITE_UTILIZATION_AGRICULTURE_FORESTRY = 2;
+    public const TRADE_SITE_UTILIZATION_TRADE = 3;
+
     /**
      * @ORM\Column(name="object_type", type="smallint")
      * @Immoscout24Api(name="_object_type", mandatory=true, enum={
@@ -764,6 +879,297 @@ class RealEstate extends DcaDefault
      * @var string
      */
     public $title = '';
+
+    /**
+     * @ORM\Column(name="number_of_lifts", type="integer", nullable=true)
+     * @Immoscout24Api(name="lift")
+     *
+     * @var ?int
+     */
+    public $numberOfLifts;
+
+    /**
+     * @ORM\Column(name="free_from_year", type="integer", nullable=true)
+     * @Immoscout24Api(name="freeFrom")
+     *
+     * @var ?int
+     */
+    public $freeFromYear;
+
+    /**
+     * @ORM\Column(name="base_rent", type="decimal", precision=10, scale=2, nullable=true)
+     * @Immoscout24Api(name="baseRent")
+     *
+     * @var ?float
+     */
+    public $baseRent;
+
+    /**
+     * @ORM\Column(name="total_rent", type="decimal", precision=10, scale=2, nullable=true)
+     * @Immoscout24Api(name="totalRent")
+     *
+     * @var ?float
+     */
+    public $totalRent;
+
+    /**
+     * @ORM\Column(name="heating_costs", type="decimal", precision=10, scale=2, nullable=true)
+     * @Immoscout24Api(name="heatingCosts")
+     *
+     * @var ?float
+     */
+    public $heatingCosts;
+
+    /**
+     * @ORM\Column(name="currency")
+     * @Immoscout24Api(name="price::currency")
+     *
+     * @var string
+     */
+    public $currency = '';
+
+    /**
+     * @ORM\Column(name="heating_costs_in_service_charge", type="boolean", nullable=true)
+     * @Immoscout24Api(name="heatingCostsInServiceCharge", enum={
+     *      "YES" = true,
+     *      "NO" = false,
+     *      "NOT_APPLICABLE" = null
+     * })
+     *
+     * @var ?bool
+     */
+    public $heatingCostsInServiceCharge;
+
+    /**
+     * @ORM\Column(name="pets_allowed", type="boolean", nullable=true)
+     * @Immoscout24Api(name="petsAllowed", enum={
+     *      "YES" = true,
+     *      "NO" = false,
+     *      "NOT_APPLICABLE" = null
+     * })
+     *
+     * @var ?bool
+     */
+    public $petsAllowed;
+
+    /**
+     * @ORM\Column(name="basement", type="boolean", nullable=true)
+     * @Immoscout24Api(name="basement", enum={
+     *      "YES" = true,
+     *      "NO" = false,
+     *      "NOT_APPLICABLE" = null
+     * })
+     *
+     * @var ?bool
+     */
+    public $basement;
+
+    /**
+     * @ORM\Column(name="building_permission", type="boolean", nullable=true)
+     * @Immoscout24Api(name="buildingPermission", enum={
+     *      "true" = true,
+     *      "false" = false,
+     *      "" = null
+     * })
+     *
+     * @var ?bool
+     */
+    public $buildingPermission;
+
+    /**
+     * @ORM\Column(name="apartment_type", type="smallint")
+     * @Immoscout24Api(name="apartmentType", enum={
+     *      "NO_INFORMATION" = RealEstate::APARTMENT_TYPE_NO_INFORMATION,
+     *      "ROOF_STOREY" = RealEstate::APARTMENT_TYPE_ROOF_STOREY,
+     *      "LOFT" = RealEstate::APARTMENT_TYPE_LOFT,
+     *      "MAISONETTE" = RealEstate::APARTMENT_TYPE_MAISONETTE,
+     *      "PENTHOUSE" = RealEstate::APARTMENT_TYPE_PENTHOUSE,
+     *      "TERRACED_FLAT" = RealEstate::APARTMENT_TYPE_TERRACED_FLAT,
+     *      "GROUND_FLOOR" = RealEstate::APARTMENT_TYPE_GROUND_FLOOR,
+     *      "APARTMENT" = RealEstate::APARTMENT_TYPE_APARTMENT,
+     *      "RAISED_GROUND_FLOOR" = RealEstate::APARTMENT_TYPE_RAISED_GROUND_FLOOR,
+     *      "HALF_BASEMENT" = RealEstate::APARTMENT_TYPE_HALF_BASEMENT,
+     *      "OTHER" = RealEstate::APARTMENT_TYPE_OTHER
+     * })
+     *
+     * @var int
+     */
+    public $apartmentType = self::APARTMENT_TYPE_NO_INFORMATION;
+
+    /**
+     * @ORM\Column(name="industry_type", type="smallint")
+     * @Immoscout24Api(name="industryType", enum={
+     *      "NO_INFORMATION" = RealEstate::INDUSTRY_TYPE_NO_INFORMATION,
+     *      "SHOWROOM_SPACE" = RealEstate::INDUSTRY_TYPE_SHOWROOM_SPACE,
+     *      "HALL" = RealEstate::INDUSTRY_TYPE_HALL,
+     *      "HIGH_LACK_STORAGE" = RealEstate::INDUSTRY_TYPE_HIGH_LACK_STORAGE,
+     *      "INDUSTRY_HALL" = RealEstate::INDUSTRY_TYPE_INDUSTRY_HALL,
+     *      "INDUSTRY_HALL_WITH_OPEN_AREA" = RealEstate::INDUSTRY_TYPE_INDUSTRY_HALL_WITH_OPEN_AREA,
+     *      "COLD_STORAGE" = RealEstate::INDUSTRY_TYPE_COLD_STORAGE,
+     *      "MULTIDECK_CABINET_STORAGE" = RealEstate::INDUSTRY_TYPE_MULTIDECK_CABINET_STORAGE,
+     *      "STORAGE_WITH_OPEN_AREA" = RealEstate::INDUSTRY_TYPE_STORAGE_WITH_OPEN_AREA,
+     *      "STORAGE_AREA" = RealEstate::INDUSTRY_TYPE_STORAGE_AREA,
+     *      "STORAGE_HALL" = RealEstate::INDUSTRY_TYPE_STORAGE_HALL,
+     *      "SERVICE_AREA" = RealEstate::INDUSTRY_TYPE_SERVICE_AREA,
+     *      "SHIPPING_STORAGE" = RealEstate::INDUSTRY_TYPE_SHIPPING_STORAGE,
+     *      "REPAIR_SHOP" = RealEstate::INDUSTRY_TYPE_REPAIR_SHOP
+     * })
+     *
+     * @var int
+     */
+    public $industryType = self::INDUSTRY_TYPE_NO_INFORMATION;
+
+    /**
+     * @ORM\Column(name="investment_type", type="smallint")
+     * @Immoscout24Api(name="investmentType", enum={
+     *      "NO_INFORMATION" = RealEstate::INVESTMENT_TYPE_NO_INFORMATION,
+     *      "SINGLE_FAMILY_HOUSE" = RealEstate::INVESTMENT_TYPE_SINGLE_FAMILY_HOUSE,
+     *      "MULTI_FAMILY_HOUSE" = RealEstate::INVESTMENT_TYPE_MULTI_FAMILY_HOUSE,
+     *      "FREEHOLD_FLAT" = RealEstate::INVESTMENT_TYPE_FREEHOLD_FLAT,
+     *      "SHOPPING_CENTRE" = RealEstate::INVESTMENT_TYPE_SHOPPING_CENTRE,
+     *      "RESTAURANT" = RealEstate::INVESTMENT_TYPE_RESTAURANT,
+     *      "HOTEL" = RealEstate::INVESTMENT_TYPE_HOTEL,
+     *      "LEISURE_FACILITY" = RealEstate::INVESTMENT_TYPE_LEISURE_FACILITY,
+     *      "COMMERCIAL_UNIT" = RealEstate::INVESTMENT_TYPE_COMMERCIAL_UNIT,
+     *      "OFFICE_BUILDING" = RealEstate::INVESTMENT_TYPE_OFFICE_BUILDING,
+     *      "COMMERCIAL_BUILDING" = RealEstate::INVESTMENT_TYPE_COMMERCIAL_BUILDING,
+     *      "COMMERCIAL_PROPERTY" = RealEstate::INVESTMENT_TYPE_COMMERCIAL_PROPERTY,
+     *      "HALL_STORAGE" = RealEstate::INVESTMENT_TYPE_HALL_STORAGE,
+     *      "INDUSTRIAL_PROPERTY" = RealEstate::INVESTMENT_TYPE_INDUSTRIAL_PROPERTY,
+     *      "SHOP_SALES_FLOOR" = RealEstate::INVESTMENT_TYPE_SHOP_SALES_FLOOR,
+     *      "SERVICE_CENTRE" = RealEstate::INVESTMENT_TYPE_SERVICE_CENTRE,
+     *      "OTHER" = RealEstate::INVESTMENT_TYPE_OTHER,
+     *      "SUPERMARKET" = RealEstate::INVESTMENT_TYPE_SUPERMARKET,
+     *      "LIVING_BUSINESS_HOUSE" = RealEstate::INVESTMENT_TYPE_LIVING_BUSINESS_HOUSE,
+     *      "HOUSING_ESTATE" = RealEstate::INVESTMENT_TYPE_HOUSING_ESTATE
+     * })
+     *
+     * @var int
+     */
+    public $investmentType = self::INVESTMENT_TYPE_NO_INFORMATION;
+
+    /**
+     * @ORM\Column(name="office_type", type="smallint")
+     * @Immoscout24Api(name="officeType", enum={
+     *      "NO_INFORMATION" = RealEstate::OFFICE_TYPE_NO_INFORMATION,
+     *      "LOFT" = RealEstate::OFFICE_TYPE_LOFT,
+     *      "STUDIO" = RealEstate::OFFICE_TYPE_STUDIO,
+     *      "OFFICE" = RealEstate::OFFICE_TYPE_OFFICE,
+     *      "OFFICE_FLOOR" = RealEstate::OFFICE_TYPE_OFFICE_FLOOR,
+     *      "OFFICE_BUILDING" = RealEstate::OFFICE_TYPE_OFFICE_BUILDING,
+     *      "OFFICE_CENTRE" = RealEstate::OFFICE_TYPE_OFFICE_CENTRE,
+     *      "OFFICE_STORAGE_BUILDING" = RealEstate::OFFICE_TYPE_OFFICE_STORAGE_BUILDING,
+     *      "SURGERY" = RealEstate::OFFICE_TYPE_SURGERY,
+     *      "SURGERY_FLOOR" = RealEstate::OFFICE_TYPE_SURGERY_FLOOR,
+     *      "SURGERY_BUILDING" = RealEstate::OFFICE_TYPE_SURGERY_BUILDING,
+     *      "COMMERCIAL_CENTRE" = RealEstate::OFFICE_TYPE_COMMERCIAL_CENTRE,
+     *      "LIVING_AND_COMMERCIAL_BUILDING" = RealEstate::OFFICE_TYPE_LIVING_AND_COMMERCIAL_BUILDING,
+     *      "OFFICE_AND_COMMERCIAL_BUILDING" = RealEstate::OFFICE_TYPE_OFFICE_AND_COMMERCIAL_BUILDING
+     * })
+     *
+     * @var int
+     */
+    public $officeType = self::OFFICE_TYPE_NO_INFORMATION;
+
+    /**
+     * @ORM\Column(name="office_rent_duration", type="smallint")
+     * @Immoscout24Api(name="officeRentDurations", enum={
+     *      "NO_INFORMATION" = RealEstate::OFFICE_RENT_DURATION_NO_INFORMATION,
+     *      "WEEKLY" = RealEstate::OFFICE_RENT_DURATION_WEEKLY,
+     *      "MONTHLY" = RealEstate::OFFICE_RENT_DURATION_MONTHLY,
+     *      "YEARLY" = RealEstate::OFFICE_RENT_DURATION_YEARLY,
+     *      "LONG_TERM" = RealEstate::OFFICE_RENT_DURATION_LONG_TERM
+     * })
+     *
+     * @var int
+     */
+    public $officeRentDuration = self::OFFICE_RENT_DURATION_NO_INFORMATION;
+
+    /**
+     * @ORM\Column(name="garage_type", type="smallint")
+     * @Immoscout24Api(name="garageType", enum={
+     *      "NO_INFORMATION" = RealEstate::GARAGE_TYPE_NO_INFORMATION,
+     *      "GARAGE" = RealEstate::GARAGE_TYPE_GARAGE,
+     *      "STREET_PARKING" = RealEstate::GARAGE_TYPE_STREET_PARKING,
+     *      "CARPORT" = RealEstate::GARAGE_TYPE_CARPORT,
+     *      "DUPLEX" = RealEstate::GARAGE_TYPE_DUPLEX,
+     *      "CAR_PARK" = RealEstate::GARAGE_TYPE_CAR_PARK,
+     *      "UNDERGROUND_GARAGE" = RealEstate::GARAGE_TYPE_UNDERGROUND_GARAGE
+     * })
+     *
+     * @var int
+     */
+    public $garageType = self::GARAGE_TYPE_NO_INFORMATION;
+
+    /**
+     * @ORM\Column(name="commercialization_type", type="smallint")
+     * @Immoscout24Api(name="commercializationType", enum={
+     *      "NO_INFORMATION" = RealEstate::COMMERCIALIZATION_TYPE_NO_INFORMATION,
+     *      "BUY" = RealEstate::COMMERCIALIZATION_TYPE_BUY,
+     *      "RENT" = RealEstate::COMMERCIALIZATION_TYPE_RENT,
+     *      "LEASE" = RealEstate::COMMERCIALIZATION_TYPE_LEASE,
+     *      "LEASEHOLD" = RealEstate::COMMERCIALIZATION_TYPE_LEASEHOLD,
+     *      "COMPULSORY_AUCTION" = RealEstate::COMMERCIALIZATION_TYPE_COMPULSORY_AUCTION,
+     *      "RENT_AND_BUY" = RealEstate::COMMERCIALIZATION_TYPE_RENT_AND_BUY
+     * })
+     *
+     * @var int
+     */
+    public $commercializationType = self::COMMERCIALIZATION_TYPE_NO_INFORMATION;
+
+    /**
+     * @ORM\Column(name="recommended_site_use", type="smallint")
+     * @Immoscout24Api(name="recommendedUseTypes", enum={
+     *      "NO_INFORMATION" = RealEstate::RECOMMENDED_USE_NO_INFORMATION,
+     *      "FUTURE_DEVELOPMENT_LAND" = RealEstate::RECOMMENDED_USE_FUTURE_DEVELOPMENT_LAND,
+     *      "TWINHOUSE" = RealEstate::RECOMMENDED_USE_TWINHOUSE,
+     *      "SINGLE_FAMILY_HOUSE" = RealEstate::RECOMMENDED_USE_SINGLE_FAMILY_HOUSE,
+     *      "GARAGE" = RealEstate::RECOMMENDED_USE_GARAGE,
+     *      "GARDEN" = RealEstate::RECOMMENDED_USE_GARDEN,
+     *      "NO_DEVELOPMENT" = RealEstate::RECOMMENDED_USE_NO_DEVELOPMENT,
+     *      "APARTMENT_BUILDING" = RealEstate::RECOMMENDED_USE_APARTMENT_BUILDING,
+     *      "ORCHARD" = RealEstate::RECOMMENDED_USE_ORCHARD,
+     *      "TERRACE_HOUSE" = RealEstate::RECOMMENDED_USE_TERRACE_HOUSE,
+     *      "PARKING_SPACE" = RealEstate::RECOMMENDED_USE_PARKING_SPACE,
+     *      "VILLA" = RealEstate::RECOMMENDED_USE_VILLA,
+     *      "FORREST" = RealEstate::RECOMMENDED_USE_FORREST
+     * })
+     *
+     * @var int
+     */
+    public $recommendedSiteUse = self::RECOMMENDED_USE_NO_INFORMATION;
+
+    /**
+     * @ORM\Column(name="store_type", type="smallint")
+     * @Immoscout24Api(name="storeType", enum={
+     *      "NO_INFORMATION" = RealEstate::STORE_TYPE_NO_INFORMATION,
+     *      "SHOWROOM_SPACE" = RealEstate::STORE_TYPE_SHOWROOM_SPACE,
+     *      "SHOPPING_CENTRE" = RealEstate::STORE_TYPE_SHOPPING_CENTRE,
+     *      "FACTORY_OUTLET" = RealEstate::STORE_TYPE_FACTORY_OUTLET,
+     *      "DEPARTMENT_STORE" = RealEstate::STORE_TYPE_DEPARTMENT_STORE,
+     *      "KIOSK" = RealEstate::STORE_TYPE_KIOSK,
+     *      "STORE" = RealEstate::STORE_TYPE_STORE,
+     *      "SELF_SERVICE_MARKET" = RealEstate::STORE_TYPE_SELF_SERVICE_MARKET,
+     *      "SALES_AREA" = RealEstate::STORE_TYPE_SALES_AREA,
+     *      "SALES_HALL" = RealEstate::STORE_TYPE_SALES_HALL
+     * })
+     *
+     * @var int
+     */
+    public $storeType = self::STORE_TYPE_NO_INFORMATION;
+
+    /**
+     * @ORM\Column(name="trade_site_utilization", type="smallint")
+     * @Immoscout24Api(name="utilizationTradeSite", enum={
+     *      "NO_INFORMATION" = RealEstate::TRADE_SITE_UTILIZATION_NO_INFORMATION,
+     *      "LEISURE" = RealEstate::TRADE_SITE_UTILIZATION_LEISURE,
+     *      "AGRICULTURE_FORESTRY" = RealEstate::TRADE_SITE_UTILIZATION_AGRICULTURE_FORESTRY,
+     *      "TRADE" = RealEstate::TRADE_SITE_UTILIZATION_TRADE
+     * })
+     *
+     * @var int
+     */
+    public $tradeSiteUtilization = self::TRADE_SITE_UTILIZATION_NO_INFORMATION;
 
     /**
      * @ORM\ManyToOne(targetEntity="Derhaeuptling\ContaoImmoscout24\Entity\Account", inversedBy="realEstates")
