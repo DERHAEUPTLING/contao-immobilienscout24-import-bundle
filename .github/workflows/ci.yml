@@ -7,6 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: 7.3
+        extension-csv: dom, fileinfo, filter, gd, hash, intl, json, mbstring, pcre, pdo, zlib
+        coverage: none       
+
     - name: Checkout 
       uses: actions/checkout@v1
     
