@@ -63,6 +63,13 @@ trait Immoscout24ApiMapperTrait
 
             // mapped enum
             if ($annotationData->enum) {
+                if (!\array_key_exists($apiValue, $annotationData->enum)) {
+                    trigger_error(
+                        "Warning: enumeration for `{$annotationData->name}` does not contain the value `$apiValue`.",
+                        E_USER_WARNING
+                    );
+                }
+
                 $enumValue = $annotationData->enum[$apiValue] ?? null;
 
                 if (null === $enumValue) {
