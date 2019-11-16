@@ -48,6 +48,10 @@ class RealEstateFilterEvaluator
      */
     public function validate(string $conditionExpression): void
     {
+        if ('' === $conditionExpression) {
+            return;
+        }
+
         // throws if invalid
         $this->expressionLanguage->evaluate($conditionExpression, $this->compileValues());
     }
