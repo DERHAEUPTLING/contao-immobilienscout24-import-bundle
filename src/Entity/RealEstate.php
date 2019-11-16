@@ -1289,10 +1289,6 @@ class RealEstate extends DcaDefault
         $realEstate->createdAt = self::getDateTime($data['creationDate'] ?? '');
         $realEstate->modifiedAt = self::getDateTime($data['lastModificationDate'] ?? '', $realEstate->createdAt);
 
-        // todo: arrays
-        // firingTypes
-        // energySourcesEnEV2014
-
         // automatically mapped values
         if (self::autoMap($realEstate, $data)) {
             return $realEstate;
