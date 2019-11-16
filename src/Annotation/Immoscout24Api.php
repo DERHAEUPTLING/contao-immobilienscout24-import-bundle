@@ -26,6 +26,9 @@ class Immoscout24Api extends Annotation
     /** @var array */
     public $enum;
 
+    /** @var int */
+    public $flags;
+
     /** @var bool */
     public $mandatory;
 }
