@@ -56,6 +56,10 @@ class Synchronizer
      */
     public function synchronizeAllRealEstate(bool $removeIfUnavailable = true): bool
     {
+        set_error_handler(function (string $code, string $message): void {
+            $this->output(" ! <error>$message</error>");
+        });
+
         // gather data from API
         $this->output("\n<comment>[{$this->account->getDescription()}]</comment>\n");
         $this->output(' > Importing from API...');

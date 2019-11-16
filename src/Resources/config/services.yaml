@@ -31,6 +31,7 @@ services:
         arguments:
             - '@Derhaeuptling\ContaoImmoscout24\Synchronizer\SynchronizerFactory'
             - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
+            - '@database_connection'
         tags:
             - { name: 'console.command', command: 'immoscout24:sync' }
 

@@ -80,13 +80,31 @@ abstract class AbstractRealEstateController extends AbstractFrontendModuleContro
 
         // try to resolve enumerations
         if (\is_int($rawValue)) {
-            $key = sprintf('immoscout24.%s_.%d', $attribute, $rawValue);
-            $value = $this->translator->trans($key, [], 'contao_default');
-            if ($key !== $value) {
-                return $value;
+            if ($rawValue >= 0) {
+                return $this->getEnumerationValue($attribute, $rawValue);
             }
 
-            return (string) $rawValue;
+            // resolve flags
+            $flags = [];
+            $value = -$rawValue;
+            $i = 0;
+
+            while (0 !== $value) {
+                if ($value & 1) {
+                    $flags[] = 1 << $i;
+                }
+
+                ++$i;
+                $value >>= 1;
+            }
+
+            // list as combined string
+            return implode(
+                ' / ',
+                array_map(function ($value) use ($attribute) {
+                    return $this->getEnumerationValue($attribute, $value);
+                }, $flags)
+            );
         }
 
         // parse dates
@@ -115,5 +133,17 @@ abstract class AbstractRealEstateController extends AbstractFrontendModuleContro
         }
 
         return $attributesWithLabels;
+    }
+
+    private function getEnumerationValue(string $attribute, int $rawValue): string
+    {
+        $key = sprintf('immoscout24.%s_.%d', $attribute, $rawValue);
+        $value = $this->translator->trans($key, [], 'contao_default');
+
+        if ($key !== $value) {
+            return $value;
+        }
+
+        return (string) $rawValue;
     }
 }

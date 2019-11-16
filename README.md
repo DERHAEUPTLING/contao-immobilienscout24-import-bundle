@@ -25,15 +25,21 @@ Contao application (4.8+) and display them as native content.
     yourself to import real estate objects from the API into your application.
     You can pass an account's id or description as a parameter to only sync
     this one account and `--dry-run` to only see what would be updated without
-    persisting the changes.   
+    persisting the changes. Use the option `--purge` to clear the database
+    table completely beforehand.
+    
+ 4. If you also want to import attachments, set up a cron job that executes
+    the `immoscout24:scrape-attachments` command afterwards.  
  
- 4. Add one or more Immoscout24 modules in your theme and use it in the frontend:
+ 5. Add one or more Immoscout24 modules in your theme and use it in the frontend:
     - The **Real estate list** displays a list of real estate objects. If you
       want to generate a teaser list with 'read more' links, make sure to
       specify a 'jump to' page with the appropriate reader. 
             
     - The **Real estate reader** displays a single real estate object based on
       the url parameter (id).
+      
+    - List items can be constrained individually by using a filter expression.
       
 
 ### Templates and values
@@ -68,4 +74,19 @@ C) To **retrieve and format data**, you can use these helper functions:
 ```
 
 D) If you want to resolve enumerations yourself you can find all of them as
-public constants in the `RealEstate` entity.
+public constants in the `RealEstate` entity. 
+
+Some enumeration values can occur multiple times per value. In this case
+they are implemented as binary flags:
+```php
+  FLAG__TYPE_A = 1;
+  FLAG__TYPE_B = 2;
+  FLAG__TYPE_C = 4;
+  FLAG__TYPE_D = 8;
+  FLAG__TYPE_E = 16;
+
+  // n-of-value selecting 'type A' and 'type E'
+  $value = -(FLAG__TYPE_A | FLAG__TYPE_E); // = 17
+```
+Note that flagged values are stored as **negative numbers**, so that they can
+easily be differentiated from regular enumeration values. 

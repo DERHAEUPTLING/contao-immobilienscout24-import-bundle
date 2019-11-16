@@ -63,7 +63,77 @@ trait Immoscout24ApiMapperTrait
 
             // mapped enum
             if ($annotationData->enum) {
-                $enumValue = $annotationData->enum[$apiValue] ?? null;
+                $extractValue = static function ($container, $key) use ($annotationData) {
+                    if (!\is_array($container) || !\is_string($key)) {
+                        trigger_error(
+                            "Warning: Cannot extract data of enumeration for `{$annotationData->name}`. Illegal types.",
+                            E_USER_WARNING
+                        );
+
+                        return null;
+                    }
+
+                    if (!\array_key_exists($key, $container)) {
+                        trigger_error(
+                            "Warning: Enumeration for `{$annotationData->name}` does not contain the value `$key`.",
+                            E_USER_WARNING
+                        );
+                    }
+
+                    return $container[$key] ?? null;
+                };
+
+                $extractFirstScalarArray = static function ($container) {
+                    $array = $container;
+
+                    while (true) {
+                        if (!\is_array($array) || empty($array)) {
+                            return [];
+                        }
+
+                        $value = $array[array_key_first($array)];
+
+                        if (is_scalar($value)) {
+                            break;
+                        }
+
+                        $array = $value;
+                    }
+
+                    return array_values($array);
+                };
+
+                // enum with flags
+                if ($annotationData->flags) {
+                    $enumValue = 0;
+
+                    if (!\is_array($apiValue)) {
+                        trigger_error(
+                            "Warning: Cannot parse enumeration for `{$annotationData->name}`. Should be multi dimensional.",
+                            E_USER_WARNING
+                        );
+                    } else {
+                        foreach ($extractFirstScalarArray($apiValue)  as $apiFlagValue) {
+                            $flag = $extractValue(
+                                $annotationData->enum,
+                                $apiFlagValue
+                            );
+
+                            if (!is_numeric($flag) || 0 === (int) $flag) {
+                                trigger_error(
+                                    "Warning: Illegal flag `$flag` in enumeration for `{$annotationData->name}`.",
+                                    E_USER_WARNING
+                                );
+                            } else {
+                                // store flags as negative numbers to be able
+                                // to differentiate them from regular enums
+                                $enumValue -= (int) $flag;
+                            }
+                        }
+                    }
+                } else {
+                    $enumValue = $extractValue($annotationData->enum, $apiValue);
+                }
 
                 if (null === $enumValue) {
                     if ($annotationData->mandatory) {

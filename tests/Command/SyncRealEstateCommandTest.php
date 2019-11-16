@@ -16,6 +16,7 @@ use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository;
 use Derhaeuptling\ContaoImmoscout24\Synchronizer\Synchronizer;
 use Derhaeuptling\ContaoImmoscout24\Synchronizer\SynchronizerFactory;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
 use PHPUnit\Framework\TestCase;
@@ -59,7 +60,9 @@ class SyncRealEstateCommandTest extends TestCase
             [$account, $this->getSynchronizer(true, $this->once(), $this->never())],
         ]);
 
-        $tester = new CommandTester(new SyncRealEstateCommand($synchronizerFactory, $accountRepository));
+        $tester = new CommandTester(
+            new SyncRealEstateCommand($synchronizerFactory, $accountRepository, $this->createMock(Connection::class))
+        );
         $code = $tester->execute([]);
 
         $this->assertSame(1, $code);
@@ -80,7 +83,9 @@ class SyncRealEstateCommandTest extends TestCase
             [$barAccount, $this->getSynchronizer(false, $this->never(), $this->never())],
         ]);
 
-        $tester = new CommandTester(new SyncRealEstateCommand($synchronizerFactory, $accountRepository));
+        $tester = new CommandTester(
+            new SyncRealEstateCommand($synchronizerFactory, $accountRepository, $this->createMock(Connection::class))
+        );
         $code = $tester->execute(['id' => 'foo']);
 
         $this->assertSame(0, $code);
@@ -124,7 +129,7 @@ class SyncRealEstateCommandTest extends TestCase
             [$disabledAccount, $this->getSynchronizer(false, $this->never(), $this->never())],
         ]);
 
-        return new SyncRealEstateCommand($synchronizerFactory, $accountRepository);
+        return new SyncRealEstateCommand($synchronizerFactory, $accountRepository, $this->createMock(Connection::class));
     }
 
     private function getCommandWithFooAccount(bool $enabled, Invocation $shouldRun)
@@ -139,7 +144,7 @@ class SyncRealEstateCommandTest extends TestCase
             [$account, $this->getSynchronizer(false, $shouldRun, $this->any())],
         ]);
 
-        return new SyncRealEstateCommand($synchronizerFactory, $accountRepository);
+        return new SyncRealEstateCommand($synchronizerFactory, $accountRepository, $this->createMock(Connection::class));
     }
 
     private function getAccount(bool $enabled): Account
