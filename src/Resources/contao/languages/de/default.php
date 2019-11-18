@@ -29,11 +29,11 @@ $GLOBALS['TL_LANG']['immoscout24']['addressLongitude'] = 'Longitude';
 $GLOBALS['TL_LANG']['immoscout24']['price'] = 'Preis in €';
 $GLOBALS['TL_LANG']['immoscout24']['numberOfFloors'] = 'Etagenzahl';
 $GLOBALS['TL_LANG']['immoscout24']['numberOfRooms'] = 'Zimmerzahl';
-$GLOBALS['TL_LANG']['immoscout24']['numberOfBathrooms'] = 'Anzahl Badezimmer';
-$GLOBALS['TL_LANG']['immoscout24']['numberOfBedrooms'] = 'Anzahl Schlafzimmer';
+$GLOBALS['TL_LANG']['immoscout24']['numberOfBathrooms'] = 'Badezimmer';
+$GLOBALS['TL_LANG']['immoscout24']['numberOfBedrooms'] = 'Schlafzimmer';
 $GLOBALS['TL_LANG']['immoscout24']['cellar'] = 'Keller';
 $GLOBALS['TL_LANG']['immoscout24']['builtInKitchen'] = 'Einbauküche';
-$GLOBALS['TL_LANG']['immoscout24']['balcony'] = 'Balkon';
+$GLOBALS['TL_LANG']['immoscout24']['balcony'] = 'Balkon/ Terasse';
 $GLOBALS['TL_LANG']['immoscout24']['garden'] = 'Garten';
 $GLOBALS['TL_LANG']['immoscout24']['guestToilet'] = 'Gäste WC';
 $GLOBALS['TL_LANG']['immoscout24']['livingSpace'] = 'Wöhnfläche';
@@ -48,14 +48,14 @@ $GLOBALS['TL_LANG']['immoscout24']['thermalCharacteristic'] = 'Energieverbrauchs
 $GLOBALS['TL_LANG']['immoscout24']['energyConsumptionContainsWarmWater'] = 'Energieverbrauch enthält Warmwasser';
 $GLOBALS['TL_LANG']['immoscout24']['energyPerformanceCertificate'] = 'Energieausweis';
 $GLOBALS['TL_LANG']['immoscout24']['energyCertificateEfficiencyClass'] = 'Effizienzklasse des Energieausweises';
-$GLOBALS['TL_LANG']['immoscout24']['numberOfParkingSpaces'] = 'Anzahl Stellplätze';
+$GLOBALS['TL_LANG']['immoscout24']['numberOfParkingSpaces'] = 'Garage/ Stellplatz';
 $GLOBALS['TL_LANG']['immoscout24']['parkingSpacePrice'] = 'Stellplatz Preis'; // Stellplatz Miete / Stellplatz Kaufpreis
 $GLOBALS['TL_LANG']['immoscout24']['handicappedAccessible'] = 'Barrierefrei';
 $GLOBALS['TL_LANG']['immoscout24']['courtage'] = 'Provisionspflichtig';
 $GLOBALS['TL_LANG']['immoscout24']['courtageValue'] = 'Provisionsbetrag';
 $GLOBALS['TL_LANG']['immoscout24']['courtageNote'] = 'Provisionshinweis';
 $GLOBALS['TL_LANG']['immoscout24']['numberOfLifts'] = 'Aufzug';
-$GLOBALS['TL_LANG']['immoscout24']['freeFromYear'] = 'Frei ab';
+$GLOBALS['TL_LANG']['immoscout24']['freeFromYear'] = 'Bezugsfrei ab'; // frei ab
 $GLOBALS['TL_LANG']['immoscout24']['baseRent'] = 'Kaltmiete';
 $GLOBALS['TL_LANG']['immoscout24']['totalRent'] = 'Warmmiete';
 $GLOBALS['TL_LANG']['immoscout24']['heatingCosts'] = 'Heizkosten';
@@ -102,7 +102,8 @@ $GLOBALS['TL_LANG']['immoscout24']['state_'][RE::STATUS_ARCHIVED] = 'archived';
 $GLOBALS['TL_LANG']['immoscout24']['state_'][RE::STATUS_TO_BE_DELETED] = 'to be deleted';
 
 $GLOBALS['TL_LANG']['immoscout24']['priceIntervalType'] = 'Zahlungsintervall';
-$GLOBALS['TL_LANG']['immoscout24']['priceIntervalType_'][RE::PRICE_INTERVAL_ONE_TIME_CHARGE] = 'Einalzahlung';
+$GLOBALS['TL_LANG']['immoscout24']['priceIntervalType_'][RE::PRICE_INTERVAL_ONE_TIME_CHARGE] = '
+Einmalige Zahlung';
 $GLOBALS['TL_LANG']['immoscout24']['priceIntervalType_'][RE::PRICE_INTERVAL_DAY] = 'täglich';
 $GLOBALS['TL_LANG']['immoscout24']['priceIntervalType_'][RE::PRICE_INTERVAL_WEEK] = 'wöchentlich';
 $GLOBALS['TL_LANG']['immoscout24']['priceIntervalType_'][RE::PRICE_INTERVAL_MONTH] = 'montalich';
@@ -185,7 +186,7 @@ $GLOBALS['TL_LANG']['immoscout24']['buildingEnergyRatingType_'][RE::ENERGY_RATIN
 $GLOBALS['TL_LANG']['immoscout24']['buildingEnergyRatingType_'][RE::ENERGY_RATING_TYPE_ENERGY_REQUIRED] = 'Endenergiebedarf';
 $GLOBALS['TL_LANG']['immoscout24']['buildingEnergyRatingType_'][RE::ENERGY_RATING_TYPE_ENERGY_CONSUMPTION] = 'Energieverbrauchskennwert';
 
-$GLOBALS['TL_LANG']['immoscout24']['energyCertificateAvailability'] = 'Energy certificate';
+$GLOBALS['TL_LANG']['immoscout24']['energyCertificateAvailability'] = 'Energy Zertifikat';
 $GLOBALS['TL_LANG']['immoscout24']['energyCertificateAvailability_'][RE::ENERGY_CERTIFICATE_AVAILABILITY_NO_INFORMATION] = 'no information';
 $GLOBALS['TL_LANG']['immoscout24']['energyCertificateAvailability_'][RE::ENERGY_CERTIFICATE_AVAILABILITY_AVAILABLE] = 'available';
 $GLOBALS['TL_LANG']['immoscout24']['energyCertificateAvailability_'][RE::ENERGY_CERTIFICATE_AVAILABILITY_NOT_AVAILABLE_YET] = 'not available yet';
@@ -196,7 +197,7 @@ $GLOBALS['TL_LANG']['immoscout24']['energyCertificateCreationDate_'][RE::ENERGY_
 $GLOBALS['TL_LANG']['immoscout24']['energyCertificateCreationDate_'][RE::ENERGY_CERTIFICATE_CREATION_DATE_BEFORE_01_MAY_2014] = 'before May 1st, 2014';
 $GLOBALS['TL_LANG']['immoscout24']['energyCertificateCreationDate_'][RE::ENERGY_CERTIFICATE_CREATION_DATE_FROM_01_MAY_2014] = 'after May 1st, 2014';
 
-$GLOBALS['TL_LANG']['immoscout24']['parkingSpaceType'] = 'Parkplatz';
+$GLOBALS['TL_LANG']['immoscout24']['parkingSpaceType'] = 'Parkplatz Typ';
 $GLOBALS['TL_LANG']['immoscout24']['parkingSpaceType_'][RE::PARKING_SPACE_TYPE_NO_INFORMATION] = 'keine Angabe';
 $GLOBALS['TL_LANG']['immoscout24']['parkingSpaceType_'][RE::PARKING_SPACE_TYPE_GARAGE] = 'Garage';
 $GLOBALS['TL_LANG']['immoscout24']['parkingSpaceType_'][RE::PARKING_SPACE_TYPE_OUTSIDE] = 'Außenstellplatz';
