@@ -12,6 +12,11 @@ $this->extend('block_unsearchable'); ?>
         <?php /** @var RealEstate $realEstate */ foreach ($account['realEstates'] as $realEstate): ?>
         <div class="realEstate">
             <h2><?php echo $realEstate->getTitle(); ?></h2>
+            <?php if(null !== ($titlePicture = $realEstate->getTitlePictureAttachment())): ?>
+                <figure class="titlePicture">
+                    <?php echo $titlePicture->render($this->defaultImageSize); ?>
+                </figure>
+            <?php endif; ?>
             <p><?php echo $realEstate->descriptionNote; ?></p>
             <span class="more"><a href="<?php echo $this->getJumpToUrl($realEstate); ?>"><?php echo $this->trans('MSC.more'); ?></a></span>
         </div>

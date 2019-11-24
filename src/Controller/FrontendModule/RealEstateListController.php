@@ -71,6 +71,9 @@ class RealEstateListController extends AbstractRealEstateController
 
         $template->accounts = $accountData;
 
+        // attachment meta data
+        $template->defaultImageSize = StringUtil::deserialize($model->imgSize, true);
+
         // labels & data extraction helpers
         $this->addDataHelpers($template);
 

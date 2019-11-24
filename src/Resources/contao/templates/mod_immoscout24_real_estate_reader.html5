@@ -13,7 +13,7 @@ $this->extend('block_searchable'); ?>
     <!-- title picture -->
     <?php if(null !== ($titlePicture = $realEstate->getTitlePictureAttachment())): ?>
         <figure class="titlePicture">
-            <img src="<?php echo $titlePicture->getFile()->path; ?>" alt="<?php echo $titlePicture->getTitle(); ?>">
+            <?php echo $titlePicture->render($this->defaultImageSize); ?>
         </figure>
     <?php endif; ?>
 
@@ -37,7 +37,7 @@ $this->extend('block_searchable'); ?>
             foreach ($floorPlans as $floorPlan): ?>
                 <li>
                     <figure>
-                        <img src="<?php echo $floorPlan->getFile()->path; ?>" alt="<?php echo $floorPlan->getTitle(); ?>">
+                        <?php echo $floorPlan->render($this->alternativeImageSize); ?>
                         <?php if($floorPlan->getTitle()): ?>
                             <label><?php echo $floorPlan->getTitle(); ?></label>
                         <?php endif; ?>
@@ -56,7 +56,7 @@ $this->extend('block_searchable'); ?>
             foreach ($pictures as $picture): ?>
                 <li>
                     <figure>
-                        <img src="<?php echo $picture->getFile()->path; ?>" alt="<?php echo $picture->getTitle(); ?>">
+                        <?php echo $picture->render($this->alternativeImageSize); ?>
                         <?php if($picture->getTitle()): ?>
                             <label><?php echo $picture->getTitle(); ?></label>
                         <?php endif; ?>
