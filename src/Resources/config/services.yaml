@@ -21,6 +21,14 @@ services:
         tags:
             - { name: 'doctrine.repository_service' }
 
+    # attachments
+    Derhaeuptling\ContaoImmoscout24\EventListener\AttachmentListener:
+        arguments:
+            - '@contao.image.picture_factory'
+            - '%kernel.project_dir%'
+        tags:
+            - { name: 'doctrine.event_listener', event: 'postLoad' }
+
     # synchronization & scraping
     Derhaeuptling\ContaoImmoscout24\Synchronizer\SynchronizerFactory:
         arguments:

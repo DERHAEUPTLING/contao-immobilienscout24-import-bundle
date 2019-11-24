@@ -12,7 +12,9 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\Entity;
 
+use Contao\CoreBundle\Image\PictureFactory;
 use Contao\FilesModel;
+use Contao\FrontendTemplate;
 use Contao\StringUtil;
 use Derhaeuptling\ContaoImmoscout24\Annotation\Immoscout24Api;
 use Derhaeuptling\ContaoImmoscout24\Annotation\Immoscout24ApiMapperTrait;
@@ -34,6 +36,12 @@ class Attachment extends DcaDefault
     public const CONTENT_NONE = 0;
     public const CONTENT_WAITING_TO_BE_SCRAPED = 0;
     public const CONTENT_READY = 1;
+
+    /** @var PictureFactory */
+    private $pictureFactory;
+
+    /** @var string */
+    private $projectDir;
 
     /**
      * @ORM\Column(name="created_at", type="datetime")
@@ -114,6 +122,12 @@ class Attachment extends DcaDefault
      */
     private $uuid;
 
+    public function setPictureRendererService(PictureFactory $pictureFactory, string $projectDir): void
+    {
+        $this->pictureFactory = $pictureFactory;
+        $this->projectDir = $projectDir;
+    }
+
     /**
      * Get the attachment state.
      */
@@ -190,6 +204,40 @@ class Attachment extends DcaDefault
     public function getRealEstate(): RealEstate
     {
         return $this->realEstate;
+    }
+
+    /**
+     * Render the attachment as html markup.
+     *
+     * @param mixed|null $imageSize
+     */
+    public function render($imageSize = null): ?string
+    {
+        // currently only supports pictures
+        if (!$this->isPicture()) {
+            return null;
+        }
+
+        $file = $this->getFile();
+        if (null === $file) {
+            return null;
+        }
+
+        if (null === $this->pictureFactory || null === $this->projectDir) {
+            throw new \RuntimeException('Picture factory or project dir was not set.');
+        }
+
+        $path = $this->projectDir.'/'.$file->path;
+        $picture = $this->pictureFactory->create($path, $imageSize);
+
+        $template = new FrontendTemplate('picture_default');
+        $template->setData([
+            'alt' => $this->title,
+            'img' => $picture->getImg($this->projectDir),
+            'sources' => $picture->getSources($this->projectDir),
+        ]);
+
+        return $template->parse();
     }
 
     /**
