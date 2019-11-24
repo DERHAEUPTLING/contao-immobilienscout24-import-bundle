@@ -34,11 +34,11 @@ abstract class AbstractRealEstateController extends AbstractFrontendModuleContro
     {
         $template->attributes = $this->getAllAttributesWithLabels();
 
-        $template->hasData = function (RealEstate $realEstate, string $attribute) {
+        $template->hasData = function (RealEstate $realEstate, string $attribute): bool {
             return $this->hasData($realEstate, $attribute);
         };
 
-        $template->getFormatted = function (RealEstate $realEstate, string $attribute) {
+        $template->getFormatted = function (RealEstate $realEstate, string $attribute): ?string {
             return $this->getFormatted($realEstate, $attribute);
         };
     }

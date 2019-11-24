@@ -19,7 +19,7 @@ use Contao\ModuleModel;
 use Contao\StringUtil;
 use Contao\Template;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
-use Derhaeuptling\ContaoImmoscout24\Entity\RealEstateRepository;
+use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
