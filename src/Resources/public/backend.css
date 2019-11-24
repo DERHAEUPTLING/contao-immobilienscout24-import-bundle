@@ -2,6 +2,8 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: 1em;
+    overflow: auto;
+    max-height: 28em;
 }
 
 .immoscout24_filter_explanation li {

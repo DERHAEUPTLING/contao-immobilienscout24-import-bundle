@@ -16,9 +16,10 @@ use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Translation\Translator;
 use Contao\Input;
 use Contao\ModuleModel;
+use Contao\StringUtil;
 use Contao\Template;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
-use Derhaeuptling\ContaoImmoscout24\Entity\RealEstateRepository;
+use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,6 +50,10 @@ class RealEstateReaderController extends AbstractRealEstateController
 
         // real estate data
         $template->realEstate = $realEstate;
+
+        // attachment meta data
+        $template->defaultImageSize = StringUtil::deserialize($model->imgSize, true);
+        $template->alternativeImageSize = StringUtil::deserialize($model->immoscout24_alt_image_size, true);
 
         // labels & data extraction helpers
         $this->addDataHelpers($template);

@@ -90,3 +90,18 @@ they are implemented as binary flags:
 ```
 Note that flagged values are stored as **negative numbers**, so that they can
 easily be differentiated from regular enumeration values. 
+
+### Attachments
+Real estate objects can have multiple attachments. Note: that currently only images
+are supported attachment types.
+
+To render an attachment (as picture tag) you can utilize it's `render()` function.
+It allows passing in an image size configuration:
+```php
+  // use the settings from the modules ...
+  echo $attachment->render($this->defaultImageSize);
+  echo $attachment->render($this->alternativeImageSize);
+ 
+  // ... or define your own
+  echo $attachment->render($myImageSizeConfiguration);
+``` 
