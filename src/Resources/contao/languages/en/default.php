@@ -137,6 +137,8 @@ $GLOBALS['TL_LANG']['immoscout24']['buildingType_'][RE::BUILDING_TYPE_SINGLE_FAM
 $GLOBALS['TL_LANG']['immoscout24']['buildingType_'][RE::BUILDING_TYPE_MID_TERRACE_HOUSE] = 'mid terrace house';
 $GLOBALS['TL_LANG']['immoscout24']['buildingType_'][RE::BUILDING_TYPE_END_TERRACE_HOUSE] = 'end terrace house';
 $GLOBALS['TL_LANG']['immoscout24']['buildingType_'][RE::BUILDING_TYPE_MULTI_FAMILY_HOUSE] = 'multi family house';
+$GLOBALS['TL_LANG']['immoscout24']['buildingType_'][RE::BUILDING_TYPE_FARMHOUSE] = 'farm house';
+$GLOBALS['TL_LANG']['immoscout24']['buildingType_'][RE::BUILDING_TYPE_OTHER] = 'other';
 
 $GLOBALS['TL_LANG']['immoscout24']['constructionPhase'] = 'Construction phase';
 $GLOBALS['TL_LANG']['immoscout24']['constructionPhase_'][RE::CONSTRUCTION_PHASE_NO_INFORMATION] = 'no information';
