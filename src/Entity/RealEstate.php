@@ -91,6 +91,8 @@ class RealEstate extends DcaDefault
     public const BUILDING_TYPE_MID_TERRACE_HOUSE = 15;
     public const BUILDING_TYPE_END_TERRACE_HOUSE = 16;
     public const BUILDING_TYPE_MULTI_FAMILY_HOUSE = 17;
+    public const BUILDING_TYPE_FARMHOUSE = 18;
+    public const BUILDING_TYPE_OTHER = 19;
 
     public const CONSTRUCTION_PHASE_NO_INFORMATION = 0;
     public const CONSTRUCTION_PHASE_COMPLETED = 1;
@@ -595,7 +597,9 @@ class RealEstate extends DcaDefault
      *      "SINGLE_FAMILY_HOUSE" = RealEstate::BUILDING_TYPE_SINGLE_FAMILY_HOUSE,
      *      "MID_TERRACE_HOUSE" = RealEstate::BUILDING_TYPE_MID_TERRACE_HOUSE,
      *      "END_TERRACE_HOUSE" = RealEstate::BUILDING_TYPE_END_TERRACE_HOUSE,
-     *      "MULTI_FAMILY_HOUSE" = RealEstate::BUILDING_TYPE_MULTI_FAMILY_HOUSE
+     *      "MULTI_FAMILY_HOUSE" = RealEstate::BUILDING_TYPE_MULTI_FAMILY_HOUSE,
+     *      "FARMHOUSE" = RealEstate::BUILDING_TYPE_FARMHOUSE,
+     *      "OTHER" = RealEstate::BUILDING_TYPE_OTHER
      * })
      *
      * @var int
