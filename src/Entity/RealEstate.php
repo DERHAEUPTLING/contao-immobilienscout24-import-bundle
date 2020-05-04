@@ -1269,7 +1269,7 @@ class RealEstate extends DcaDefault
     private $immoscoutAccount;
 
     /**
-     * @ORM\OneToMany(targetEntity="Derhaeuptling\ContaoImmoscout24\Entity\Attachment", mappedBy="realEstate", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Derhaeuptling\ContaoImmoscout24\Entity\Attachment", mappedBy="realEstate", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @var Collection|Attachment[]
      */
