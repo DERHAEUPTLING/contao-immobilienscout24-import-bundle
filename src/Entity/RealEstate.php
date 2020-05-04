@@ -1283,6 +1283,11 @@ class RealEstate extends DcaDefault
         $this->attachments = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return "realEstate#{$this->realEstateId}";
+    }
+
     /**
      * @throws AnnotationException
      *
