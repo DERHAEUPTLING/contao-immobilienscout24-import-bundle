@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Derhaeuptling\ContaoImmoscout24\Entity;
 
 use Contao\CoreBundle\Image\PictureFactory;
+use Contao\File;
 use Contao\FilesModel;
 use Contao\FrontendTemplate;
 use Contao\StringUtil;
@@ -24,6 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="Derhaeuptling\ContaoImmoscout24\Repository\AttachmentRepository")
  * @ORM\Table(name="tl_immoscout24_attachment")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Attachment extends DcaDefault
 {
@@ -128,6 +130,20 @@ class Attachment extends DcaDefault
         $this->projectDir = $projectDir;
     }
 
+    public function getTargetIdentifier(): string
+    {
+        return md5($this->getScrapingUrl() ?? '');
+    }
+
+    public function update(self $newVersion): void
+    {
+        $this->createdAt = $newVersion->createdAt;
+        $this->modifiedAt = $newVersion->modifiedAt;
+        $this->title = $newVersion->title;
+        $this->isFloorPlan = $newVersion->isFloorPlan;
+        $this->isTitlePicture = $newVersion->isTitlePicture;
+    }
+
     /**
      * Get the attachment state.
      */
@@ -173,7 +189,8 @@ class Attachment extends DcaDefault
 
     public function getScrapingUrl(): ?string
     {
-        $urlCandidates = StringUtil::deserialize(stream_get_contents($this->scraperUrls), true);
+        $data = \is_resource($this->scraperUrls) ? stream_get_contents($this->scraperUrls) : $this->scraperUrls;
+        $urlCandidates = StringUtil::deserialize($data, true);
 
         if (empty($urlCandidates)) {
             return null;
@@ -204,6 +221,11 @@ class Attachment extends DcaDefault
     public function getRealEstate(): RealEstate
     {
         return $this->realEstate;
+    }
+
+    public function setRealEstate(RealEstate $realEstate): void
+    {
+        $this->realEstate = $realEstate;
     }
 
     /**
@@ -238,6 +260,31 @@ class Attachment extends DcaDefault
         ]);
 
         return $template->parse();
+    }
+
+    /**
+     * @ORM\PreRemove()
+     *
+     * @internal
+     */
+    public function drop(): void
+    {
+        // todo: In the future this could be put into a separate class/event
+        //       handler which checks things like if the same file (uuid) is
+        //       referenced anywhere else and if there aren't any pending
+        //       deletes for this same file and then act accordingly. For now
+        //       a 1:1 relationship between files (uuid) and attachments is
+        //       assumed.
+
+        $file = $this->getFile();
+
+        if (null === $file) {
+            return;
+        }
+
+        (new File($file->path))->delete();
+
+        $this->uuid = null;
     }
 
     /**
