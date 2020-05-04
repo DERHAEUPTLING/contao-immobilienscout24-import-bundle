@@ -128,6 +128,20 @@ class Attachment extends DcaDefault
         $this->projectDir = $projectDir;
     }
 
+    public function getTargetIdentifier(): string
+    {
+        return md5($this->getScrapingUrl() ?? '');
+    }
+
+    public function update(self $newVersion): void
+    {
+        $this->createdAt = $newVersion->createdAt;
+        $this->modifiedAt = $newVersion->modifiedAt;
+        $this->title = $newVersion->title;
+        $this->isFloorPlan = $newVersion->isFloorPlan;
+        $this->isTitlePicture = $newVersion->isTitlePicture;
+    }
+
     /**
      * Get the attachment state.
      */
@@ -173,7 +187,8 @@ class Attachment extends DcaDefault
 
     public function getScrapingUrl(): ?string
     {
-        $urlCandidates = StringUtil::deserialize(stream_get_contents($this->scraperUrls), true);
+        $data = \is_resource($this->scraperUrls) ? stream_get_contents($this->scraperUrls) : $this->scraperUrls;
+        $urlCandidates = StringUtil::deserialize($data, true);
 
         if (empty($urlCandidates)) {
             return null;
@@ -204,6 +219,11 @@ class Attachment extends DcaDefault
     public function getRealEstate(): RealEstate
     {
         return $this->realEstate;
+    }
+
+    public function setRealEstate(RealEstate $realEstate): void
+    {
+        $this->realEstate = $realEstate;
     }
 
     /**

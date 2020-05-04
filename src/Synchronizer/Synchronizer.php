@@ -128,7 +128,7 @@ class Synchronizer
             }
 
             try {
-                $apiItem->mergeInto($localItem, $this->entityManager);
+                $localItem->update($apiItem);
                 ++$updated;
 
                 $this->output(

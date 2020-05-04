@@ -18,7 +18,6 @@ use Derhaeuptling\ContaoImmoscout24\Synchronizer\ItemAlreadyUpToDateException;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -1313,21 +1312,57 @@ class RealEstate extends DcaDefault
     /**
      * @throws ItemAlreadyUpToDateException
      */
-    public function mergeInto(self $existing, EntityManagerInterface $entityManager): void
+    public function update(self $newVersion): void
     {
-        if ($this->realEstateId !== $existing->realEstateId) {
+        if ($this->realEstateId !== $newVersion->realEstateId) {
             throw new \RuntimeException('Cannot merge items with different real estate ids.');
         }
 
-        if ($existing->modifiedAt >= $this->modifiedAt) {
-            throw new ItemAlreadyUpToDateException($existing->modifiedAt, $this->modifiedAt);
+        if ($this->modifiedAt >= $newVersion->modifiedAt) {
+            throw new ItemAlreadyUpToDateException($this->modifiedAt, $newVersion->modifiedAt);
         }
 
-        $entityManager->detach($existing);
+        // merge basic properties
+        $properties = array_diff(
+            array_keys(get_object_vars($this)),
+            ['id', 'realEstateId', 'attachments', 'immoscoutAccount']
+        );
 
-        // take the existing item's id, but overwrite everything else
-        $this->id = $existing->id;
-        $entityManager->merge($this);
+        foreach ($properties as $property) {
+            $this->$property = $newVersion->$property;
+        }
+
+        // merge attachments
+        $getAttachmentLookupTable = static function (self $entity) {
+            $attachments = $entity->attachments->toArray();
+
+            return array_combine(
+                array_map(static function (Attachment $attachment): string {
+                    return $attachment->getTargetIdentifier();
+                }, $attachments),
+                $attachments
+            );
+        };
+
+        $currentAttachments = $getAttachmentLookupTable($this);
+        $newAttachments = $getAttachmentLookupTable($newVersion);
+
+        /** @var Attachment $currentAttachment */
+        foreach ($currentAttachments as $key => $currentAttachment) {
+            if (null !== ($newAttachment = $newAttachments[$key] ?? null)) {
+                $currentAttachment->update($newAttachment);
+            } else {
+                $this->attachments->removeElement($currentAttachment);
+            }
+
+            unset($newAttachments[$key]);
+        }
+
+        /** @var Attachment $newAttachment */
+        foreach ($newAttachments as $newAttachment) {
+            $newAttachment->setRealEstate($this);
+            $this->attachments->add($newAttachment);
+        }
     }
 
     public function getImmoscoutAccount(): Account
