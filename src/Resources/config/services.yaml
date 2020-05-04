@@ -39,7 +39,8 @@ services:
         arguments:
             - '@Derhaeuptling\ContaoImmoscout24\Synchronizer\SynchronizerFactory'
             - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
-            - '@database_connection'
+            - '@Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository'
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: 'console.command', command: 'immoscout24:sync' }
 

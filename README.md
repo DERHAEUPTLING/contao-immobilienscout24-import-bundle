@@ -26,8 +26,8 @@ Contao application (4.8+) and display them as native content.
     You can pass an account's id or description as a parameter to only sync
     this one account and `--dry-run` to only see what would be updated without
     persisting the changes. Use the option `--purge` to clear the database
-    table completely beforehand.
-    
+    table and all downloaded files completely beforehand.
+
  4. If you also want to import attachments, set up a cron job that executes
     the `immoscout24:scrape-attachments` command afterwards.  
  
@@ -105,3 +105,6 @@ It allows passing in an image size configuration:
   // ... or define your own
   echo $attachment->render($myImageSizeConfiguration);
 ``` 
+
+Keep in mind, that the attachment owns the referenced file. This means: Once the
+attachment is deleted the file will be gone as well.

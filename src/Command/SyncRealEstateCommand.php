@@ -14,8 +14,9 @@ namespace Derhaeuptling\ContaoImmoscout24\Command;
 
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository;
+use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
 use Derhaeuptling\ContaoImmoscout24\Synchronizer\SynchronizerFactory;
-use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,16 +31,20 @@ class SyncRealEstateCommand extends Command
     /** @var AccountRepository */
     private $accountRepository;
 
-    /** @var Connection */
-    private $connection;
+    /** @var RealEstateRepository */
+    private $realEstateRepository;
 
-    public function __construct(SynchronizerFactory $synchronizerFactory, AccountRepository $accountRepository, Connection $connection)
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
+    public function __construct(SynchronizerFactory $synchronizerFactory, AccountRepository $accountRepository, RealEstateRepository $realEstateRepository, EntityManagerInterface $entityManager)
     {
         parent::__construct();
 
         $this->synchronizerFactory = $synchronizerFactory;
         $this->accountRepository = $accountRepository;
-        $this->connection = $connection;
+        $this->realEstateRepository = $realEstateRepository;
+        $this->entityManager = $entityManager;
     }
 
     protected function configure(): void
@@ -47,7 +52,7 @@ class SyncRealEstateCommand extends Command
         $this
             ->setDescription('Synchronizes the database with the API.')
             ->addArgument('id', InputArgument::OPTIONAL, 'Account id or description.')
-            ->addOption('purge', 'p', InputOption::VALUE_NONE, 'Purge the real estate table.')
+            ->addOption('purge', 'p', InputOption::VALUE_NONE, 'Purge the database and downloaded files.')
             ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Run dry, do not apply changes.')
         ;
     }
@@ -64,11 +69,15 @@ class SyncRealEstateCommand extends Command
         }
 
         if ($purge) {
-            // note: do not use truncate - we need to execute per-row actions (such as FK cascades)
-            /* @noinspection SqlWithoutWhere */
-            $this->connection->executeQuery('DELETE FROM tl_immoscout24_real_estate');
+            $output->writeln('Purging... (this may take a while if there are many files)');
 
-            $output->writeln('Purged real estate table.');
+            foreach ($this->realEstateRepository->findAll() as $realEstate) {
+                $this->entityManager->remove($realEstate);
+                $output->write('.');
+            }
+
+            $this->entityManager->flush();
+            $output->writeln("\nPurged real estate database and downloaded files.");
         }
 
         if ($dryRun) {
