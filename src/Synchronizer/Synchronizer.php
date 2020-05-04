@@ -83,6 +83,8 @@ class Synchronizer
         } catch (PermissionDeniedException $e) {
             $this->output(" > <error>API access for account '{$this->account->getDescription()}' failed: '{$e->getMessage()}'</error>");
 
+            restore_error_handler();
+
             return false;
         }
 
@@ -166,6 +168,8 @@ class Synchronizer
         $this->entityManager->commit();
 
         $this->output(" > Done - created: $created | updated: $updated | removed: $removed");
+
+        restore_error_handler();
 
         return true;
     }
