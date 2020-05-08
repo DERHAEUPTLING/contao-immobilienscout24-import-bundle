@@ -95,8 +95,13 @@ class Client
     {
         $response = $this->performRequest(sprintf('user/me/realestate/%s/attachment', $realEstate->realEstateId));
 
-        if (null === ($attachmentData = $response['common.attachments'][0]['attachment'] ?? null)) {
+        if (null === ($attachmentData = $response['common.attachments'][0]['attachment'] ?? null) || !\is_array($attachmentData)) {
             return [];
+        }
+
+        if (isset($attachmentData['@id'])) {
+            // handle single item (apparently the data structure changes then)
+            $attachmentData = [$attachmentData];
         }
 
         return array_filter(
