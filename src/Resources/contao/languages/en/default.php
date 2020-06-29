@@ -12,6 +12,12 @@ $GLOBALS['TL_LANG']['FMD']['immoscout24_real_estate_reader'] = ['Real estate rea
 
 // attribute labels
 $GLOBALS['TL_LANG']['immoscout24']['realEstateId'] = 'Real estate ID';
+$GLOBALS['TL_LANG']['immoscout24']['externalId'] = 'External ID';
+$GLOBALS['TL_LANG']['immoscout24']['groupNumber'] = 'Group number';
+$GLOBALS['TL_LANG']['immoscout24']['apiSearchData1'] = 'API search data (1)';
+$GLOBALS['TL_LANG']['immoscout24']['apiSearchData2'] = 'API search data (1)';
+$GLOBALS['TL_LANG']['immoscout24']['apiSearchData3'] = 'API search data (1)';
+$GLOBALS['TL_LANG']['immoscout24']['publishChannels'] = 'Publish channels';
 $GLOBALS['TL_LANG']['immoscout24']['title'] = 'Title';
 $GLOBALS['TL_LANG']['immoscout24']['createdAt'] = 'Offer created at';
 $GLOBALS['TL_LANG']['immoscout24']['modifiedAt'] = 'Offer last modified at';

@@ -940,6 +940,54 @@ class RealEstate extends DcaDefault
     public $realEstateId = '';
 
     /**
+     * @ORM\Column(name="external_id", type="text")
+     * @Immoscout24Api(name="externalId")
+     *
+     * @var string
+     */
+    public $externalId = '';
+
+    /**
+     * @ORM\Column(name="group_number", type="integer", nullable=true)
+     * @Immoscout24Api(name="groupNumber")
+     *
+     * @var ?int
+     */
+    public $groupNumber;
+
+    /**
+     * @ORM\Column(name="api_search_data1")
+     * @Immoscout24Api(name="apiSearchData::searchField1")
+     *
+     * @var string
+     */
+    public $apiSearchData1 = '';
+
+    /**
+     * @ORM\Column(name="api_search_data2")
+     * @Immoscout24Api(name="apiSearchData::searchField2")
+     *
+     * @var string
+     */
+    public $apiSearchData2 = '';
+
+    /**
+     * @ORM\Column(name="api_search_data3")
+     * @Immoscout24Api(name="apiSearchData::searchField3")
+     *
+     * @var string
+     */
+    public $apiSearchData3 = '';
+
+    /**
+     * @ORM\Column(name="publish_channels", type="simple_array", nullable=true)
+     * [manually mapped]
+     *
+     * @var array|null
+     */
+    public $publishChannels;
+
+    /**
      * @ORM\Column(name="title")
      * @Immoscout24Api(name="title")
      *
@@ -1300,6 +1348,7 @@ class RealEstate extends DcaDefault
         $realEstate->immoscoutAccount = $account;
         $realEstate->createdAt = self::getDateTime($data['creationDate'] ?? '');
         $realEstate->modifiedAt = self::getDateTime($data['lastModificationDate'] ?? '', $realEstate->createdAt);
+        $realEstate->publishChannels = self::getPublishChannels($data);
 
         // automatically mapped values
         if (self::autoMap($realEstate, $data)) {
@@ -1443,5 +1492,28 @@ class RealEstate extends DcaDefault
                     $attachment->isFloorPlan();
             }
         );
+    }
+
+    private static function getPublishChannels($data): array
+    {
+        $set = $data['common.publishChannels'][0]['publishChannel'] ?? null;
+
+        if (!\is_array($set)) {
+            return [];
+        }
+
+        $channels = [];
+
+        // the representation differs for one/many, so we walk though all leaves instead
+        array_walk_recursive(
+            $set,
+            static function ($value, $key) use (&$channels): void {
+                if ('@title' === $key) {
+                    $channels[] = (string) $value;
+                }
+            }
+        );
+
+        return $channels;
     }
 }
