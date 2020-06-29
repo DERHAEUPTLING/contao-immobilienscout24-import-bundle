@@ -325,7 +325,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $listed;
 
@@ -397,7 +397,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="address_latitude", type="decimal", precision=10, scale=8, nullable=true)
      * @Immoscout24Api(name="address::wgs84Coordinate::latitude")
      *
-     * @var ?float
+     * @var float|null
      */
     public $addressLatitude;
 
@@ -405,7 +405,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="address_longitude", type="decimal", precision=11, scale=8, nullable=true)
      * @Immoscout24Api(name="address::wgs84Coordinate::longitude")
      *
-     * @var ?float
+     * @var float|null
      */
     public $addressLongitude;
 
@@ -413,7 +413,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="price::value")
      *
-     * @var ?float
+     * @var float|null
      */
     public $price;
 
@@ -452,7 +452,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="number_of_floors", type="integer", nullable=true)
      * @Immoscout24Api(name="numberOfFloors")
      *
-     * @var ?int
+     * @var int|null
      */
     public $numberOfFloors;
 
@@ -460,7 +460,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="number_of_rooms", type="integer", nullable=true)
      * @Immoscout24Api(name="numberOfRooms")
      *
-     * @var ?int
+     * @var int|null
      */
     public $numberOfRooms;
 
@@ -468,7 +468,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="number_of_bathrooms", type="integer", nullable=true)
      * @Immoscout24Api(name="numberOfBathRooms")
      *
-     * @var ?int
+     * @var int|null
      */
     public $numberOfBathrooms;
 
@@ -476,7 +476,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="number_of_bedrooms", type="integer", nullable=true)
      * @Immoscout24Api(name="numberOfBedRooms")
      *
-     * @var ?int
+     * @var int|null
      */
     public $numberOfBedrooms;
 
@@ -492,7 +492,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $cellar;
 
@@ -508,7 +508,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $builtInKitchen;
 
@@ -524,7 +524,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $balcony;
 
@@ -540,7 +540,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $garden;
 
@@ -556,7 +556,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $guestToilet;
 
@@ -564,7 +564,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="living_space", type="float", nullable=true)
      * @Immoscout24Api(name="livingSpace")
      *
-     * @var ?float
+     * @var float|null
      */
     public $livingSpace;
 
@@ -572,7 +572,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="plot_area", type="float", nullable=true)
      * @Immoscout24Api(name="plotArea")
      *
-     * @var ?float
+     * @var float|null
      */
     public $plotArea;
 
@@ -617,7 +617,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $lodgerFlat;
 
@@ -634,7 +634,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $summerResidencePractical;
 
@@ -650,7 +650,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $rented;
 
@@ -658,7 +658,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="rental_income", type="decimal", nullable=true)
      * @Immoscout24Api(name="rentalIncome")
      *
-     * @var ?float
+     * @var float|null
      */
     public $rentalIncome;
 
@@ -666,7 +666,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="construction_year", type="integer", nullable=true)
      * @Immoscout24Api(name="constructionYear")
      *
-     * @var ?int
+     * @var int|null
      */
     public $constructionYear;
 
@@ -687,7 +687,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="last_refurbishment", type="integer", nullable=true)
      * @Immoscout24Api(name="lastRefurbishment")
      *
-     * @var ?int
+     * @var int|null
      */
     public $lastRefurbishment;
 
@@ -797,7 +797,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="thermal_characteristic", type="float", nullable=true)
      * @Immoscout24Api(name="thermalCharacteristic")
      *
-     * @var ?float
+     * @var float|null
      */
     public $thermalCharacteristic;
 
@@ -814,7 +814,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $energyConsumptionContainsWarmWater;
 
@@ -830,7 +830,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $energyPerformanceCertificate;
 
@@ -838,7 +838,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="number_of_parking_spaces", type="integer", nullable=true)
      * @Immoscout24Api(name="numberOfParkingSpaces")
      *
-     * @var ?int
+     * @var int|null
      */
     public $numberOfParkingSpaces;
 
@@ -862,7 +862,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="parking_space_price", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="parkingSpacePrice")
      *
-     * @var ?float
+     * @var float|null
      */
     public $parkingSpacePrice;
 
@@ -878,7 +878,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $handicappedAccessible;
 
@@ -895,7 +895,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $courtage;
 
@@ -940,6 +940,54 @@ class RealEstate extends DcaDefault
     public $realEstateId = '';
 
     /**
+     * @ORM\Column(name="external_id", type="text")
+     * @Immoscout24Api(name="externalId")
+     *
+     * @var string
+     */
+    public $externalId = '';
+
+    /**
+     * @ORM\Column(name="group_number", type="integer", nullable=true)
+     * @Immoscout24Api(name="groupNumber")
+     *
+     * @var int|null
+     */
+    public $groupNumber;
+
+    /**
+     * @ORM\Column(name="api_search_data1")
+     * @Immoscout24Api(name="apiSearchData::searchField1")
+     *
+     * @var string
+     */
+    public $apiSearchData1 = '';
+
+    /**
+     * @ORM\Column(name="api_search_data2")
+     * @Immoscout24Api(name="apiSearchData::searchField2")
+     *
+     * @var string
+     */
+    public $apiSearchData2 = '';
+
+    /**
+     * @ORM\Column(name="api_search_data3")
+     * @Immoscout24Api(name="apiSearchData::searchField3")
+     *
+     * @var string
+     */
+    public $apiSearchData3 = '';
+
+    /**
+     * @ORM\Column(name="publish_channels", type="simple_array", nullable=true)
+     * [manually mapped]
+     *
+     * @var array|null
+     */
+    public $publishChannels;
+
+    /**
      * @ORM\Column(name="title")
      * @Immoscout24Api(name="title")
      *
@@ -951,7 +999,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="number_of_lifts", type="integer", nullable=true)
      * @Immoscout24Api(name="lift")
      *
-     * @var ?int
+     * @var int|null
      */
     public $numberOfLifts;
 
@@ -959,7 +1007,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="free_from_year", type="integer", nullable=true)
      * @Immoscout24Api(name="freeFrom")
      *
-     * @var ?int
+     * @var int|null
      */
     public $freeFromYear;
 
@@ -967,7 +1015,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="base_rent", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="baseRent")
      *
-     * @var ?float
+     * @var float|null
      */
     public $baseRent;
 
@@ -975,7 +1023,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="total_rent", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="totalRent")
      *
-     * @var ?float
+     * @var float|null
      */
     public $totalRent;
 
@@ -983,7 +1031,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="heating_costs", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="heatingCosts")
      *
-     * @var ?float
+     * @var float|null
      */
     public $heatingCosts;
 
@@ -1008,7 +1056,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $heatingCostsInServiceCharge;
 
@@ -1025,7 +1073,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $petsAllowed;
 
@@ -1041,7 +1089,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $basement;
 
@@ -1058,7 +1106,7 @@ class RealEstate extends DcaDefault
      *      "" = null
      * })
      *
-     * @var ?bool
+     * @var bool|null
      */
     public $buildingPermission;
 
@@ -1300,6 +1348,7 @@ class RealEstate extends DcaDefault
         $realEstate->immoscoutAccount = $account;
         $realEstate->createdAt = self::getDateTime($data['creationDate'] ?? '');
         $realEstate->modifiedAt = self::getDateTime($data['lastModificationDate'] ?? '', $realEstate->createdAt);
+        $realEstate->publishChannels = self::getPublishChannels($data);
 
         // automatically mapped values
         if (self::autoMap($realEstate, $data)) {
@@ -1443,5 +1492,28 @@ class RealEstate extends DcaDefault
                     $attachment->isFloorPlan();
             }
         );
+    }
+
+    private static function getPublishChannels($data): array
+    {
+        $set = $data['common.publishChannels'][0]['publishChannel'] ?? null;
+
+        if (!\is_array($set)) {
+            return [];
+        }
+
+        $channels = [];
+
+        // the representation differs for one/many, so we walk though all leaves instead
+        array_walk_recursive(
+            $set,
+            static function ($value, $key) use (&$channels): void {
+                if ('@title' === $key) {
+                    $channels[] = (string) $value;
+                }
+            }
+        );
+
+        return $channels;
     }
 }

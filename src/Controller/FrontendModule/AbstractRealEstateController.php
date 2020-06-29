@@ -107,6 +107,11 @@ abstract class AbstractRealEstateController extends AbstractFrontendModuleContro
             );
         }
 
+        // flatten arrays to comma separated values
+        if (\is_array($rawValue)) {
+            return implode(', ', $rawValue);
+        }
+
         // parse dates
         if ($rawValue instanceof \DateTime) {
             return $rawValue->format('d.m.Y H:i');
