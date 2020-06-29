@@ -36,7 +36,15 @@ Contao application (4.8+) and display them as native content.
     - The **Real estate reader** displays a single real estate object based on
       the url parameter (id).
 
-    - List items can be constrained individually by using a filter expression.
+    - List items can be constrained individually by using a filter expression.\
+      Some filter expression examples:
+      - one object by its ID `realEstateId == 111111111`
+      - some objects by its IDs `realEstateId in [111111111,222222222,333333333]`
+      - all active objects `state ==  STATUS_ACTIVE `
+      - all objects published to the homepage channel `'Homepage' in publishChannels`
+      - all objects with empty API-Searchfield1 `apiSearchData1 != null`
+      - all objects that match a KEYWORD in the title field `title matches "/KEYWORD/"`
+      - combine filter `'Homepage' in publishChannels` && `priceMarketingType == "Kauf"`
 
 
 ### Templates and values
