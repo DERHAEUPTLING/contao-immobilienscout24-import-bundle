@@ -983,9 +983,9 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="publish_channels", type="simple_array", nullable=true)
      * [manually mapped]
      *
-     * @var array|null
+     * @var array
      */
-    public $publishChannels;
+    public $publishChannels = [];
 
     /**
      * @ORM\Column(name="title")
