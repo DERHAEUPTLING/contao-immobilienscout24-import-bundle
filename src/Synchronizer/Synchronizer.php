@@ -60,6 +60,12 @@ class Synchronizer
             $this->output(" ! <error>$message</error>");
         });
 
+        // prevent mysql server from closing the connection prematurely
+        $this->entityManager
+            ->getConnection()
+            ->exec('SET SESSION wait_timeout = 28000, interactive_timeout = 28800')
+        ;
+
         // gather data from API
         $this->output("\n<comment>[{$this->account->getDescription()}]</comment>\n");
         $this->output(' > Importing from API...');
