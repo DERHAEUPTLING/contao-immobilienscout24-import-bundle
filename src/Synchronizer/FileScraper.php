@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\Synchronizer;
 
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\Dbafs;
 use Contao\FilesModel;
 use GuzzleHttp\Client;
@@ -27,7 +28,10 @@ class FileScraper
     /** @var string */
     private $projectDir;
 
-    public function __construct(string $projectDir)
+    /** @var ContaoFramework */
+    private $framework;
+
+    public function __construct(string $projectDir, ContaoFramework $framework)
     {
         $this->client = new Client(
             [
@@ -38,12 +42,15 @@ class FileScraper
         );
 
         $this->projectDir = $projectDir;
+        $this->framework = $framework;
     }
 
     public function scrape(string $sourceUri, string $targetPath): ?FilesModel
     {
         $this->ensureFolderExists($targetPath);
         $this->deleteFileIfExisting($targetPath);
+
+        $this->framework->initialize();
 
         try {
             // synchronous download
