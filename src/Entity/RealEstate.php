@@ -569,6 +569,30 @@ class RealEstate extends DcaDefault
     public $livingSpace;
 
     /**
+     * @ORM\Column(name="total_floor_space", type="float", nullable=true)
+     * @Immoscout24Api(name="totalFloorSpace")
+     *
+     * @var float|null
+     */
+    public $totalFloorSpace;
+
+    /**
+     * @ORM\Column(name="net_floor_space", type="float", nullable=true)
+     * @Immoscout24Api(name="netFloorSpace")
+     *
+     * @var float|null
+     */
+    public $netFloorSpace;
+
+    /**
+     * @ORM\Column(name="usable_floor_space", type="float", nullable=true)
+     * @Immoscout24Api(name="usableFloorSpace")
+     *
+     * @var float|null
+     */
+    public $usableFloorSpace;
+
+    /**
      * @ORM\Column(name="plot_area", type="float", nullable=true)
      * @Immoscout24Api(name="plotArea")
      *
