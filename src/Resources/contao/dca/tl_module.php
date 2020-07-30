@@ -26,9 +26,9 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['immoscout24_filter_explanation'] = [
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['immoscout24_filter'] = [
     'exclude' => true,
-    'eval' => ['tl_class' => 'clr', 'preserveTags' => true],
-    'inputType' => 'text',
-    'sql' => "varchar(256) NOT NULL default ''",
+    'eval' => ['tl_class' => 'clr', 'preserveTags' => true, 'maxlength' => 1204],
+    'inputType' => 'textarea',
+    'sql' => "varchar(1024) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['immoscout24_number_of_items'] = [
