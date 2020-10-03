@@ -26,6 +26,7 @@ services:
         arguments:
             - '@contao.image.picture_factory'
             - '%kernel.project_dir%'
+            - '@contao.framework'
         tags:
             - { name: 'doctrine.event_listener', event: 'postLoad' }
 

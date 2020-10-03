@@ -12,7 +12,9 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\EventListener;
 
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Image\PictureFactory;
+use Derhaeuptling\ContaoImmoscout24\Entity\Attachment;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 class AttachmentListener
@@ -23,18 +25,25 @@ class AttachmentListener
     /** @var string */
     private $projectDir;
 
-    public function __construct(PictureFactory $pictureFactory, string $projectDir)
+    /** @var ContaoFramework */
+    private $framework;
+
+    public function __construct(PictureFactory $pictureFactory, string $projectDir, ContaoFramework $framework)
     {
         $this->pictureFactory = $pictureFactory;
         $this->projectDir = $projectDir;
+        $this->framework = $framework;
     }
 
     public function postLoad(LifecycleEventArgs $args): void
     {
         $entity = $args->getEntity();
 
-        if (method_exists($entity, 'setPictureRendererService')) {
-            $entity->setPictureRendererService($this->pictureFactory, $this->projectDir);
+        if (!$entity instanceof Attachment) {
+            return;
         }
+
+        $entity->setPictureRendererService($this->pictureFactory, $this->projectDir);
+        $entity->setContaoFramework($this->framework);
     }
 }

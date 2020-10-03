@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\Entity;
 
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Image\PictureFactory;
 use Contao\File;
 use Contao\FilesModel;
@@ -39,11 +40,14 @@ class Attachment extends DcaDefault
     public const CONTENT_WAITING_TO_BE_SCRAPED = 0;
     public const CONTENT_READY = 1;
 
-    /** @var PictureFactory */
+    /** @var PictureFactory|null */
     private $pictureFactory;
 
-    /** @var string */
+    /** @var string|null */
     private $projectDir;
+
+    /** @var ContaoFramework|null */
+    private $framework;
 
     /**
      * @ORM\Column(name="created_at", type="datetime")
@@ -130,6 +134,11 @@ class Attachment extends DcaDefault
         $this->projectDir = $projectDir;
     }
 
+    public function setContaoFramework(ContaoFramework $framework): void
+    {
+        $this->framework = $framework;
+    }
+
     public function getTargetIdentifier(): string
     {
         return md5($this->getScrapingUrl() ?? '');
@@ -183,6 +192,12 @@ class Attachment extends DcaDefault
         if (self::CONTENT_READY !== $this->getState()) {
             return null;
         }
+
+        if (null === $this->framework) {
+            throw new \RuntimeException('Contao framework was not set.');
+        }
+
+        $this->framework->initialize();
 
         return FilesModel::findByUuid($this->uuid);
     }
