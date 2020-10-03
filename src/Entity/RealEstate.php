@@ -932,7 +932,7 @@ class RealEstate extends DcaDefault
     public $courtageValue = '';
 
     /**
-     * @ORM\Column(name="courtage_note")
+     * @ORM\Column(name="courtage_note", type="text", length=65535)
      * @Immoscout24Api(name="courtage::courtageNote")
      *
      * @var string
