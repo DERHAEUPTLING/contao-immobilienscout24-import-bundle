@@ -50,22 +50,6 @@ class Attachment extends DcaDefault
     private $framework;
 
     /**
-     * @ORM\Column(name="created_at", type="datetime")
-     * [manually mapped]
-     *
-     * @var \DateTime
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(name="modified_at", type="datetime")
-     * [manually mapped]
-     *
-     * @var \DateTime
-     */
-    private $modifiedAt;
-
-    /**
      * @ORM\Column(name="type", type="smallint")
      * @Immoscout24Api(name="@xsi.type", enum={
      *      "common:Picture" = Attachment::TYPE_PICTURE,
@@ -83,6 +67,14 @@ class Attachment extends DcaDefault
      * @var string
      */
     private $title = '';
+
+    /**
+     * @ORM\Column(name="modified_at", length=30)
+     * @Immoscout24Api(name="@modification")
+     *
+     * @var string
+     */
+    private $modifiedAt;
 
     /**
      * @ORM\Column(name="is_floor_plan", type="boolean")
@@ -146,7 +138,6 @@ class Attachment extends DcaDefault
 
     public function update(self $newVersion): void
     {
-        $this->createdAt = $newVersion->createdAt;
         $this->modifiedAt = $newVersion->modifiedAt;
         $this->title = $newVersion->title;
         $this->isFloorPlan = $newVersion->isFloorPlan;
@@ -185,6 +176,11 @@ class Attachment extends DcaDefault
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    public function getModifiedAt(): string
+    {
+        return $this->modifiedAt;
     }
 
     public function getFile(): ?FilesModel
@@ -319,8 +315,6 @@ class Attachment extends DcaDefault
         $attachment->scraperUrls = serialize($urlData);
 
         $attachment->realEstate = $realEstate;
-        $attachment->createdAt = self::getDateTime($data['creationDate'] ?? '');
-        $attachment->modifiedAt = self::getDateTime($data['lastModificationDate'] ?? '', $attachment->createdAt);
 
         // automatically mapped values
         if (self::autoMap($attachment, $data)) {

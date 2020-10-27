@@ -14,7 +14,6 @@ namespace Derhaeuptling\ContaoImmoscout24\Entity;
 
 use Derhaeuptling\ContaoImmoscout24\Annotation\Immoscout24Api;
 use Derhaeuptling\ContaoImmoscout24\Annotation\Immoscout24ApiMapperTrait;
-use Derhaeuptling\ContaoImmoscout24\Synchronizer\ItemAlreadyUpToDateException;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -940,18 +939,18 @@ class RealEstate extends DcaDefault
     public $courtageNote = '';
 
     /**
-     * @ORM\Column(name="created_at", type="datetime")
-     * [manually mapped]
+     * @ORM\Column(name="created_at", length=30)
+     * @Immoscout24Api(name="creationDate")
      *
-     * @var \DateTime
+     * @var string
      */
     public $createdAt;
 
     /**
-     * @ORM\Column(name="modified_at", type="datetime")
-     * [manually mapped]
+     * @ORM\Column(name="modified_at", length=30)
+     * @Immoscout24Api(name="lastModificationDate")
      *
-     * @var \DateTime
+     * @var string
      */
     public $modifiedAt;
 
@@ -1370,8 +1369,6 @@ class RealEstate extends DcaDefault
 
         // manually mapped values
         $realEstate->immoscoutAccount = $account;
-        $realEstate->createdAt = self::getDateTime($data['creationDate'] ?? '');
-        $realEstate->modifiedAt = self::getDateTime($data['lastModificationDate'] ?? '', $realEstate->createdAt);
         $realEstate->publishChannels = self::getPublishChannels($data);
 
         // automatically mapped values
@@ -1382,17 +1379,10 @@ class RealEstate extends DcaDefault
         return null;
     }
 
-    /**
-     * @throws ItemAlreadyUpToDateException
-     */
     public function update(self $newVersion): void
     {
         if ($this->realEstateId !== $newVersion->realEstateId) {
             throw new \RuntimeException('Cannot merge items with different real estate ids.');
-        }
-
-        if ($this->modifiedAt >= $newVersion->modifiedAt) {
-            throw new ItemAlreadyUpToDateException($this->modifiedAt, $newVersion->modifiedAt);
         }
 
         // merge basic properties
