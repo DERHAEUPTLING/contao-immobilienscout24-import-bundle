@@ -14,6 +14,7 @@ namespace Derhaeuptling\ContaoImmoscout24\Annotation;
 
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\ORM\Mapping\Column;
 
 trait Immoscout24ApiMapperTrait
 {
@@ -148,29 +149,49 @@ trait Immoscout24ApiMapperTrait
             }
 
             // basic value
+            $enforceColumnTypes = static function (?Column $columnMapping, &$value): void {
+                if (null === $columnMapping) {
+                    return;
+                }
+
+                if ($columnMapping->nullable && null === $value) {
+                    return;
+                }
+
+                $type = $columnMapping->type;
+
+                if ('integer' === $type) {
+                    $value = (int) $value;
+
+                    return;
+                }
+
+                if ('float' === $type) {
+                    $value = (float) $value;
+
+                    return;
+                }
+
+                if ('boolean' === $type) {
+                    $value = (bool) $value;
+
+                    return;
+                }
+
+                if ('decimal' === $type) {
+                    $value = number_format((float) $value, $columnMapping->scale, '.', '');
+                }
+
+                $value = (string) $value;
+            };
+
+            /** @var Column|null $columnMapping */
+            $columnMapping = $reader->getPropertyAnnotation($reflectionProperty, Column::class);
+            $enforceColumnTypes($columnMapping, $apiValue);
+
             $object->$propertyName = $apiValue;
         }
 
         return true;
-    }
-
-    private static function getDateTime(string $value, \DateTime $fallback = null): \DateTime
-    {
-        try {
-            // extract and remove fractions as they won't be stored in the database (ISO 8601)
-            $dateTime = new \DateTime(
-                (new \DateTime($value))->format('c'),
-                new \DateTimeZone('GMT')
-            );
-        } catch (\Exception $e) {
-            // ignore
-            $dateTime = null;
-        }
-
-        if (!$dateTime instanceof \DateTime) {
-            $dateTime = $fallback ?? new \DateTime();
-        }
-
-        return $dateTime;
     }
 }

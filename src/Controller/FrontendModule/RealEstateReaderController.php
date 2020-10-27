@@ -13,13 +13,13 @@ declare(strict_types=1);
 namespace Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule;
 
 use Contao\CoreBundle\Exception\PageNotFoundException;
-use Contao\CoreBundle\Translation\Translator;
 use Contao\Input;
 use Contao\ModuleModel;
 use Contao\StringUtil;
 use Contao\Template;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
 use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
+use Derhaeuptling\ContaoImmoscout24\Util\RealEstateFormatter;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,9 +32,9 @@ class RealEstateReaderController extends AbstractRealEstateController
     /**
      * RealEstateList constructor.
      */
-    public function __construct(Registry $doctrineRegistry, Translator $translator)
+    public function __construct(Registry $doctrineRegistry, RealEstateFormatter $formatter)
     {
-        parent::__construct($translator);
+        parent::__construct($formatter);
 
         $this->realEstateRepository = $doctrineRegistry->getRepository(RealEstate::class);
     }

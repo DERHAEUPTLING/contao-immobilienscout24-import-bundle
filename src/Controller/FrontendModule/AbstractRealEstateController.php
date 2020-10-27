@@ -13,21 +13,18 @@ declare(strict_types=1);
 namespace Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule;
 
 use Contao\CoreBundle\Controller\FrontendModule\AbstractFrontendModuleController;
-use Contao\CoreBundle\Translation\Translator;
 use Contao\Template;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
+use Derhaeuptling\ContaoImmoscout24\Util\RealEstateFormatter;
 
 abstract class AbstractRealEstateController extends AbstractFrontendModuleController
 {
-    /** @var Translator */
-    private $translator;
+    /** @var RealEstateFormatter */
+    private $formatter;
 
-    /**
-     * RealEstateList constructor.
-     */
-    public function __construct(Translator $translator)
+    public function __construct(RealEstateFormatter $formatter)
     {
-        $this->translator = $translator;
+        $this->formatter = $formatter;
     }
 
     protected function addDataHelpers(Template $template): void
@@ -59,66 +56,7 @@ abstract class AbstractRealEstateController extends AbstractFrontendModuleContro
     {
         $rawValue = $realEstate->$attribute ?? null;
 
-        if (null === $rawValue) {
-            return null;
-        }
-
-        // don't alter strings and floats
-        if (\is_string($rawValue)) {
-            return $rawValue;
-        }
-        if (\is_float($rawValue)) {
-            return (string) $rawValue;
-        }
-
-        // convert booleans
-        if (\is_bool($rawValue)) {
-            return $rawValue ?
-                $this->translator->trans('immoscout24.yes', [], 'contao_default') :
-                $this->translator->trans('immoscout24.no', [], 'contao_default');
-        }
-
-        // try to resolve enumerations
-        if (\is_int($rawValue)) {
-            if ($rawValue >= 0) {
-                return $this->getEnumerationValue($attribute, $rawValue);
-            }
-
-            // resolve flags
-            $flags = [];
-            $value = -$rawValue;
-            $i = 0;
-
-            while (0 !== $value) {
-                if ($value & 1) {
-                    $flags[] = 1 << $i;
-                }
-
-                ++$i;
-                $value >>= 1;
-            }
-
-            // list as combined string
-            return implode(
-                ' / ',
-                array_map(function ($value) use ($attribute) {
-                    return $this->getEnumerationValue($attribute, $value);
-                }, $flags)
-            );
-        }
-
-        // flatten arrays to comma separated values
-        if (\is_array($rawValue)) {
-            return implode(', ', $rawValue);
-        }
-
-        // parse dates
-        if ($rawValue instanceof \DateTime) {
-            return $rawValue->format('d.m.Y H:i');
-        }
-
-        // fallback to 'none' value
-        return $this->translator->trans('immoscout24.none', [], 'contao_default');
+        return $this->formatter->format($rawValue, $attribute);
     }
 
     /**
@@ -128,27 +66,6 @@ abstract class AbstractRealEstateController extends AbstractFrontendModuleContro
      */
     protected function getAllAttributesWithLabels(): array
     {
-        // get all public fields as possible attributes
-        $attributes = array_keys(get_object_vars(new RealEstate()));
-
-        $attributesWithLabels = [];
-        foreach ($attributes as $attribute) {
-            $label = $this->translator->trans('immoscout24.'.$attribute, [], 'contao_default');
-            $attributesWithLabels[$attribute] = $label;
-        }
-
-        return $attributesWithLabels;
-    }
-
-    private function getEnumerationValue(string $attribute, int $rawValue): string
-    {
-        $key = sprintf('immoscout24.%s_.%d', $attribute, $rawValue);
-        $value = $this->translator->trans($key, [], 'contao_default');
-
-        if ($key !== $value) {
-            return $value;
-        }
-
-        return (string) $rawValue;
+        return $this->formatter->getAttributes();
     }
 }

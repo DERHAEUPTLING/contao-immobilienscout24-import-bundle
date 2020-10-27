@@ -14,7 +14,6 @@ namespace Derhaeuptling\ContaoImmoscout24\Entity;
 
 use Derhaeuptling\ContaoImmoscout24\Annotation\Immoscout24Api;
 use Derhaeuptling\ContaoImmoscout24\Annotation\Immoscout24ApiMapperTrait;
-use Derhaeuptling\ContaoImmoscout24\Synchronizer\ItemAlreadyUpToDateException;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -394,18 +393,18 @@ class RealEstate extends DcaDefault
     public $addressCity = '';
 
     /**
-     * @ORM\Column(name="address_latitude", type="decimal", precision=10, scale=8, nullable=true)
+     * @ORM\Column(name="address_latitude", type="decimal", precision=10, scale=5, nullable=true)
      * @Immoscout24Api(name="address::wgs84Coordinate::latitude")
      *
-     * @var float|null
+     * @var string|null
      */
     public $addressLatitude;
 
     /**
-     * @ORM\Column(name="address_longitude", type="decimal", precision=11, scale=8, nullable=true)
+     * @ORM\Column(name="address_longitude", type="decimal", precision=11, scale=5, nullable=true)
      * @Immoscout24Api(name="address::wgs84Coordinate::longitude")
      *
-     * @var float|null
+     * @var string|null
      */
     public $addressLongitude;
 
@@ -413,7 +412,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="price::value")
      *
-     * @var float|null
+     * @var string|null
      */
     public $price;
 
@@ -457,10 +456,10 @@ class RealEstate extends DcaDefault
     public $numberOfFloors;
 
     /**
-     * @ORM\Column(name="number_of_rooms", type="integer", nullable=true)
+     * @ORM\Column(name="number_of_rooms", type="float", nullable=true)
      * @Immoscout24Api(name="numberOfRooms")
      *
-     * @var int|null
+     * @var float|null
      */
     public $numberOfRooms;
 
@@ -679,10 +678,10 @@ class RealEstate extends DcaDefault
     public $rented;
 
     /**
-     * @ORM\Column(name="rental_income", type="decimal", nullable=true)
+     * @ORM\Column(name="rental_income", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="rentalIncome")
      *
-     * @var float|null
+     * @var string|null
      */
     public $rentalIncome;
 
@@ -886,7 +885,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="parking_space_price", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="parkingSpacePrice")
      *
-     * @var float|null
+     * @var string|null
      */
     public $parkingSpacePrice;
 
@@ -940,18 +939,18 @@ class RealEstate extends DcaDefault
     public $courtageNote = '';
 
     /**
-     * @ORM\Column(name="created_at", type="datetime")
-     * [manually mapped]
+     * @ORM\Column(name="created_at", length=30)
+     * @Immoscout24Api(name="creationDate")
      *
-     * @var \DateTime
+     * @var string
      */
     public $createdAt;
 
     /**
-     * @ORM\Column(name="modified_at", type="datetime")
-     * [manually mapped]
+     * @ORM\Column(name="modified_at", length=30)
+     * @Immoscout24Api(name="lastModificationDate")
      *
-     * @var \DateTime
+     * @var string
      */
     public $modifiedAt;
 
@@ -1028,18 +1027,18 @@ class RealEstate extends DcaDefault
     public $numberOfLifts;
 
     /**
-     * @ORM\Column(name="free_from_year", type="integer", nullable=true)
+     * @ORM\Column(name="free_from", length=50, nullable=true)
      * @Immoscout24Api(name="freeFrom")
      *
      * @var int|null
      */
-    public $freeFromYear;
+    public $freeFrom;
 
     /**
      * @ORM\Column(name="base_rent", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="baseRent")
      *
-     * @var float|null
+     * @var string|null
      */
     public $baseRent;
 
@@ -1047,7 +1046,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="total_rent", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="totalRent")
      *
-     * @var float|null
+     * @var string|null
      */
     public $totalRent;
 
@@ -1055,7 +1054,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="heating_costs", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="heatingCosts")
      *
-     * @var float|null
+     * @var string|null
      */
     public $heatingCosts;
 
@@ -1370,8 +1369,6 @@ class RealEstate extends DcaDefault
 
         // manually mapped values
         $realEstate->immoscoutAccount = $account;
-        $realEstate->createdAt = self::getDateTime($data['creationDate'] ?? '');
-        $realEstate->modifiedAt = self::getDateTime($data['lastModificationDate'] ?? '', $realEstate->createdAt);
         $realEstate->publishChannels = self::getPublishChannels($data);
 
         // automatically mapped values
@@ -1382,23 +1379,16 @@ class RealEstate extends DcaDefault
         return null;
     }
 
-    /**
-     * @throws ItemAlreadyUpToDateException
-     */
     public function update(self $newVersion): void
     {
         if ($this->realEstateId !== $newVersion->realEstateId) {
             throw new \RuntimeException('Cannot merge items with different real estate ids.');
         }
 
-        if ($this->modifiedAt >= $newVersion->modifiedAt) {
-            throw new ItemAlreadyUpToDateException($this->modifiedAt, $newVersion->modifiedAt);
-        }
-
         // merge basic properties
         $properties = array_diff(
             array_keys(get_object_vars($this)),
-            ['id', 'realEstateId', 'attachments', 'immoscoutAccount']
+            ['id', 'timestamp', 'realEstateId', 'attachments', 'immoscoutAccount']
         );
 
         foreach ($properties as $property) {

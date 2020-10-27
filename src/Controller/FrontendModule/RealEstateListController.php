@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule;
 
-use Contao\CoreBundle\Translation\Translator;
 use Contao\ModuleModel;
 use Contao\PageModel;
 use Contao\StringUtil;
@@ -21,6 +20,7 @@ use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
 use Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository;
 use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
+use Derhaeuptling\ContaoImmoscout24\Util\RealEstateFormatter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -35,9 +35,9 @@ class RealEstateListController extends AbstractRealEstateController
     /**
      * RealEstateList constructor.
      */
-    public function __construct(AccountRepository $accountRepository, RealEstateRepository $realEstateRepository, Translator $translator)
+    public function __construct(AccountRepository $accountRepository, RealEstateRepository $realEstateRepository, RealEstateFormatter $formatter)
     {
-        parent::__construct($translator);
+        parent::__construct($formatter);
 
         $this->accountRepository = $accountRepository;
         $this->realEstateRepository = $realEstateRepository;
