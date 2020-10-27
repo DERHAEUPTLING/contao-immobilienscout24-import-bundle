@@ -1388,7 +1388,7 @@ class RealEstate extends DcaDefault
         // merge basic properties
         $properties = array_diff(
             array_keys(get_object_vars($this)),
-            ['id', 'realEstateId', 'attachments', 'immoscoutAccount']
+            ['id', 'timestamp', 'realEstateId', 'attachments', 'immoscoutAccount']
         );
 
         foreach ($properties as $property) {
