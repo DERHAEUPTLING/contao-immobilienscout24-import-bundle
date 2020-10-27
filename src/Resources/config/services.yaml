@@ -1,6 +1,11 @@
 services:
     Derhaeuptling\ContaoImmoscout24\ExpressionLanguage\RealEstateFilterEvaluator:
 
+    # util
+    Derhaeuptling\ContaoImmoscout24\Util\RealEstateFormatter:
+        arguments:
+            - '@contao.translation.translator'
+
     # entity repositories
     Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository:
         arguments:
@@ -79,7 +84,7 @@ services:
         arguments:
             - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
             - '@Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository'
-            - '@contao.translation.translator'
+            - '@Derhaeuptling\ContaoImmoscout24\Util\RealEstateFormatter'
         tags:
             - { name: 'contao.frontend_module', category: 'immoscout24', type: 'immoscout24_real_estate_list' }
 
@@ -88,4 +93,4 @@ services:
             - { name: 'contao.frontend_module', category: 'immoscout24', type: 'immoscout24_real_estate_reader' }
         arguments:
             - '@doctrine'
-            - '@contao.translation.translator'
+            - '@Derhaeuptling\ContaoImmoscout24\Util\RealEstateFormatter'
