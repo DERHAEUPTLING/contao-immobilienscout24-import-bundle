@@ -393,18 +393,18 @@ class RealEstate extends DcaDefault
     public $addressCity = '';
 
     /**
-     * @ORM\Column(name="address_latitude", type="decimal", precision=10, scale=8, nullable=true)
+     * @ORM\Column(name="address_latitude", type="decimal", precision=10, scale=5, nullable=true)
      * @Immoscout24Api(name="address::wgs84Coordinate::latitude")
      *
-     * @var float|null
+     * @var string|null
      */
     public $addressLatitude;
 
     /**
-     * @ORM\Column(name="address_longitude", type="decimal", precision=11, scale=8, nullable=true)
+     * @ORM\Column(name="address_longitude", type="decimal", precision=11, scale=5, nullable=true)
      * @Immoscout24Api(name="address::wgs84Coordinate::longitude")
      *
-     * @var float|null
+     * @var string|null
      */
     public $addressLongitude;
 
@@ -412,7 +412,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="price::value")
      *
-     * @var float|null
+     * @var string|null
      */
     public $price;
 
@@ -456,10 +456,10 @@ class RealEstate extends DcaDefault
     public $numberOfFloors;
 
     /**
-     * @ORM\Column(name="number_of_rooms", type="integer", nullable=true)
+     * @ORM\Column(name="number_of_rooms", type="float", nullable=true)
      * @Immoscout24Api(name="numberOfRooms")
      *
-     * @var int|null
+     * @var float|null
      */
     public $numberOfRooms;
 
@@ -678,10 +678,10 @@ class RealEstate extends DcaDefault
     public $rented;
 
     /**
-     * @ORM\Column(name="rental_income", type="decimal", nullable=true)
+     * @ORM\Column(name="rental_income", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="rentalIncome")
      *
-     * @var float|null
+     * @var string|null
      */
     public $rentalIncome;
 
@@ -885,7 +885,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="parking_space_price", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="parkingSpacePrice")
      *
-     * @var float|null
+     * @var string|null
      */
     public $parkingSpacePrice;
 
@@ -1027,18 +1027,18 @@ class RealEstate extends DcaDefault
     public $numberOfLifts;
 
     /**
-     * @ORM\Column(name="free_from_year", type="integer", nullable=true)
+     * @ORM\Column(name="free_from", length=50, nullable=true)
      * @Immoscout24Api(name="freeFrom")
      *
      * @var int|null
      */
-    public $freeFromYear;
+    public $freeFrom;
 
     /**
      * @ORM\Column(name="base_rent", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="baseRent")
      *
-     * @var float|null
+     * @var string|null
      */
     public $baseRent;
 
@@ -1046,7 +1046,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="total_rent", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="totalRent")
      *
-     * @var float|null
+     * @var string|null
      */
     public $totalRent;
 
@@ -1054,7 +1054,7 @@ class RealEstate extends DcaDefault
      * @ORM\Column(name="heating_costs", type="decimal", precision=10, scale=2, nullable=true)
      * @Immoscout24Api(name="heatingCosts")
      *
-     * @var float|null
+     * @var string|null
      */
     public $heatingCosts;
 
