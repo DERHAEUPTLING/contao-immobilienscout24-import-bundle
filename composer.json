@@ -23,6 +23,7 @@
   "require": {
     "php": ">=7.2",
     "ext-json": "*",
+    "ext-mbstring": "*",
     "contao/core-bundle": "^4.8",
     "guzzlehttp/guzzle": "^6.3",
     "guzzlehttp/oauth-subscriber": "0.3.*",

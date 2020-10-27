@@ -18,6 +18,7 @@ use Derhaeuptling\ContaoImmoscout24\Api\PermissionDeniedException;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
 use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
+use Derhaeuptling\ContaoImmoscout24\Util\RealEstateFormatter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -33,6 +34,9 @@ class Synchronizer
     /** @var Client */
     private $client;
 
+    /** @var RealEstateFormatter */
+    private $formatter;
+
     /** @var OutputInterface */
     private $output;
 
@@ -42,11 +46,12 @@ class Synchronizer
     /**
      * Synchronizer constructor.
      */
-    public function __construct(RegistryInterface $registry, RealEstateRepository $realEstateRepository, Account $account, OutputInterface $output = null)
+    public function __construct(RegistryInterface $registry, RealEstateRepository $realEstateRepository, RealEstateFormatter $formatter, Account $account, OutputInterface $output = null)
     {
         $this->entityManager = $registry->getManager();
         $this->realEstateRepository = $realEstateRepository;
         $this->client = (new ClientFactory())->create($account);
+        $this->formatter = $formatter;
         $this->account = $account;
         $this->output = $output;
     }
@@ -68,7 +73,7 @@ class Synchronizer
 
         // gather data from API
         $this->output("\n<comment>[{$this->account->getDescription()}]</comment>\n");
-        $this->output(' > Importing from API...');
+        $this->output(' > Importing from API…');
 
         $apiItems = [];
         try {
@@ -95,19 +100,21 @@ class Synchronizer
         }
 
         // synchronize
-        $this->output(' > Synchronizing...');
+        $this->output(' > Synchronizing…');
+        $untouched = 0;
         $created = 0;
         $updated = 0;
         $removed = 0;
 
         $this->entityManager->beginTransaction();
 
-        $mappedElements = [];
+        $mappedElementIds = [];
+        $updatedElements = [];
 
         foreach ($apiItems as $apiItem) {
             /** @var RealEstate $localItem */
             $localItem = $this->realEstateRepository->findByRealEstateId($apiItem->getRealEstateId());
-            $mappedElements[] = $apiItem->getRealEstateId();
+            $mappedElementIds[] = $apiItem->getRealEstateId();
 
             // add new
             if (null === $localItem) {
@@ -135,30 +142,15 @@ class Synchronizer
                 continue;
             }
 
-            try {
-                $localItem->update($apiItem);
-                ++$updated;
-
-                $this->output(
-                    sprintf('   * <fg=yellow>Merged record ID %s</>',
-                        $apiItem->getRealEstateId()
-                    )
-                );
-            } catch (ItemAlreadyUpToDateException $e) {
-                $this->output(
-                    sprintf('   * Already up to date: Skipping ID %s (%s)',
-                        $apiItem->getRealEstateId(),
-                        $e->getMessage()
-                    )
-                );
-            }
+            $localItem->update($apiItem);
+            $updatedElements[] = $localItem;
         }
 
         if ($removeIfUnavailable) {
             // remove obsolete
             /** @var RealEstate $item */
             foreach ($this->account->getRealEstates() as $item) {
-                if (!\in_array($item->getRealEstateId(), $mappedElements, true)) {
+                if (!\in_array($item->getRealEstateId(), $mappedElementIds, true)) {
                     $this->entityManager->remove($item);
                     ++$removed;
 
@@ -171,9 +163,41 @@ class Synchronizer
             }
         }
 
+        $unitOfWork = $this->entityManager->getUnitOfWork();
+        $unitOfWork->computeChangeSets();
+        $attributesWithLabels = $this->formatter->getAttributes();
+
+        $formatProperty = function ($input, string $property) {
+            $string = $this->formatter->format($input, $property) ?: '""';
+
+            return mb_strimwidth($string, 0, 50, '…');
+        };
+
+        foreach ($updatedElements as $item) {
+            $changeSet = $unitOfWork->getEntityChangeSet($item);
+
+            if (!empty($changeSet)) {
+                ++$updated;
+
+                $this->output(sprintf('   * <fg=yellow>Updated record ID %s</>', $item->getRealEstateId()));
+
+                foreach ($changeSet as $property => $change) {
+                    $this->output(
+                        sprintf('     - %s: %s → %s',
+                            $attributesWithLabels[$property] ?? '?',
+                            $formatProperty($change[0], $property),
+                            $formatProperty($change[1], $property),
+                        )
+                    );
+                }
+            } else {
+                ++$untouched;
+            }
+        }
+
         $this->entityManager->commit();
 
-        $this->output(" > Done - created: $created | updated: $updated | removed: $removed");
+        $this->output(" > Done - created: $created | updated: $updated | removed: $removed | untouched: $untouched");
 
         restore_error_handler();
 
