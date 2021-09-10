@@ -19,7 +19,7 @@ use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
 use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Synchronizer
@@ -42,7 +42,7 @@ class Synchronizer
     /**
      * Synchronizer constructor.
      */
-    public function __construct(RegistryInterface $registry, RealEstateRepository $realEstateRepository, Account $account, OutputInterface $output = null)
+    public function __construct(ManagerRegistry $registry, RealEstateRepository $realEstateRepository, Account $account, OutputInterface $output = null)
     {
         $this->entityManager = $registry->getManager();
         $this->realEstateRepository = $realEstateRepository;

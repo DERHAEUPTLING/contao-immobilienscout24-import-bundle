@@ -14,11 +14,11 @@ namespace Derhaeuptling\ContaoImmoscout24\Repository;
 
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AccountRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Account::class);
     }

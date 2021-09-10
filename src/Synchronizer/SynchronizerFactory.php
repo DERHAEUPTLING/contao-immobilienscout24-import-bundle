@@ -14,18 +14,18 @@ namespace Derhaeuptling\ContaoImmoscout24\Synchronizer;
 
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SynchronizerFactory
 {
-    /** @var RegistryInterface */
+    /** @var ManagerRegistry */
     private $registry;
 
     /** @var RealEstateRepository */
     private $realEstateRepository;
 
-    public function __construct(RegistryInterface $registry, RealEstateRepository $realEstateRepository)
+    public function __construct(ManagerRegistry $registry, RealEstateRepository $realEstateRepository)
     {
         $this->registry = $registry;
         $this->realEstateRepository = $realEstateRepository;

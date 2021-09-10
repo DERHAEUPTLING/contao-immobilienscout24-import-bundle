@@ -16,14 +16,14 @@ use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
 use Derhaeuptling\ContaoImmoscout24\ExpressionLanguage\RealEstateFilterEvaluator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 class RealEstateRepository extends ServiceEntityRepository
 {
     /** @var RealEstateFilterEvaluator */
     private $realEstateFilterEvaluator;
 
-    public function __construct(RegistryInterface $registry, RealEstateFilterEvaluator $realEstateFilterEvaluator)
+    public function __construct(ManagerRegistry $registry, RealEstateFilterEvaluator $realEstateFilterEvaluator)
     {
         parent::__construct($registry, RealEstate::class);
 
