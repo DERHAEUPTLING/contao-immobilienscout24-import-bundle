@@ -35,9 +35,8 @@
   },
   "require-dev": {
     "contao/manager-plugin": "^2.0",
-    "friendsofphp/php-cs-fixer": "^2.2",
-    "phpunit/phpunit": "^7.5",
-    "symfony/phpunit-bridge": "^4.3",
+    "friendsofphp/php-cs-fixer": "^3.1",
+    "phpunit/phpunit": "^9.5",
     "php-http/guzzle6-adapter": "^2.0"
   },
   "autoload": {
@@ -47,5 +46,9 @@
   },
   "extra": {
     "contao-manager-plugin": "Derhaeuptling\\ContaoImmoscout24\\ContaoManager\\Plugin"
+  },
+  "scripts": {
+    "cs": ["@php vendor/bin/php-cs-fixer fix"],
+    "tests": ["@php vendor/bin/phpunit"]
   }
 }
