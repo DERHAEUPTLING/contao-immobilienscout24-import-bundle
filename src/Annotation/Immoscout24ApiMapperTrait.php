@@ -67,7 +67,7 @@ trait Immoscout24ApiMapperTrait
                     if (!\is_array($container) || !\is_string($key)) {
                         trigger_error(
                             "Warning: Cannot extract data of enumeration for `{$annotationData->name}`. Illegal types.",
-                            E_USER_WARNING
+                            \E_USER_WARNING
                         );
 
                         return null;
@@ -76,7 +76,7 @@ trait Immoscout24ApiMapperTrait
                     if (!\array_key_exists($key, $container)) {
                         trigger_error(
                             "Warning: Enumeration for `{$annotationData->name}` does not contain the value `$key`.",
-                            E_USER_WARNING
+                            \E_USER_WARNING
                         );
                     }
 
@@ -110,7 +110,7 @@ trait Immoscout24ApiMapperTrait
                     if (!\is_array($apiValue)) {
                         trigger_error(
                             "Warning: Cannot parse enumeration for `{$annotationData->name}`. Should be multi dimensional.",
-                            E_USER_WARNING
+                            \E_USER_WARNING
                         );
                     } else {
                         foreach ($extractFirstScalarArray($apiValue)  as $apiFlagValue) {
@@ -122,7 +122,7 @@ trait Immoscout24ApiMapperTrait
                             if (!is_numeric($flag) || 0 === (int) $flag) {
                                 trigger_error(
                                     "Warning: Illegal flag `$flag` in enumeration for `{$annotationData->name}`.",
-                                    E_USER_WARNING
+                                    \E_USER_WARNING
                                 );
                             } else {
                                 // store flags as negative numbers to be able

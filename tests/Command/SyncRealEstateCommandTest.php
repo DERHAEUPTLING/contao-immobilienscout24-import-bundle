@@ -19,7 +19,7 @@ use Derhaeuptling\ContaoImmoscout24\Synchronizer\Synchronizer;
 use Derhaeuptling\ContaoImmoscout24\Synchronizer\SynchronizerFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\MockObject\Matcher\Invocation;
+use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -36,7 +36,7 @@ class SyncRealEstateCommandTest extends TestCase
         $display = $tester->getDisplay();
 
         $this->assertSame(0, $code);
-        $this->assertNotContains(self::MESSAGE_DRY_RUN, $display);
+        $this->assertStringNotContainsString(self::MESSAGE_DRY_RUN, $display);
     }
 
     public function testSyncWithDryRunning(): void
@@ -46,7 +46,7 @@ class SyncRealEstateCommandTest extends TestCase
         $display = $tester->getDisplay();
 
         $this->assertSame(0, $code);
-        $this->assertContains(self::MESSAGE_DRY_RUN, $display);
+        $this->assertStringContainsString(self::MESSAGE_DRY_RUN, $display);
     }
 
     public function testSyncReturnsErrorWhenFailing(): void
@@ -105,10 +105,10 @@ class SyncRealEstateCommandTest extends TestCase
         $display = $tester->getDisplay();
 
         $this->assertSame(1, $code);
-        $this->assertContains(self::MESSAGE_NOTHING_TO_DO, $display);
+        $this->assertStringContainsString(self::MESSAGE_NOTHING_TO_DO, $display);
     }
 
-    private function getDefaultCommand(Invocation $shouldPersistChanges): SyncRealEstateCommand
+    private function getDefaultCommand(InvocationOrder $shouldPersistChanges): SyncRealEstateCommand
     {
         $enabledAccount1 = $this->getAccount(true);
         $enabledAccount2 = $this->getAccount(true);
@@ -129,7 +129,7 @@ class SyncRealEstateCommandTest extends TestCase
         return $this->getSyncRealEstateCommand($synchronizerFactory, $accountRepository);
     }
 
-    private function getCommandWithFooAccount(bool $enabled, Invocation $shouldRun)
+    private function getCommandWithFooAccount(bool $enabled, InvocationOrder $shouldRun)
     {
         $account = $this->getAccount($enabled);
 
@@ -185,7 +185,7 @@ class SyncRealEstateCommandTest extends TestCase
         return $accountRepository;
     }
 
-    private function getSynchronizer(bool $withError, Invocation $shouldRun, Invocation $shouldPersistChanges): Synchronizer
+    private function getSynchronizer(bool $withError, InvocationOrder $shouldRun, InvocationOrder $shouldPersistChanges): Synchronizer
     {
         $synchronizer = $this->createMock(Synchronizer::class);
         $synchronizer

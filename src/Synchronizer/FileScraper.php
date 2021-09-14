@@ -66,7 +66,7 @@ class FileScraper
 
             // todo meta data
             return Dbafs::addResource($relativePath);
-        } catch (GuzzleException | \Exception $e) {
+        } catch (GuzzleException|\Exception $e) {
             $this->deleteFileIfExisting($targetPath);
 
             return null;
