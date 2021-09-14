@@ -14,11 +14,11 @@ namespace Derhaeuptling\ContaoImmoscout24\Repository;
 
 use Derhaeuptling\ContaoImmoscout24\Entity\Attachment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AttachmentRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Attachment::class);
     }

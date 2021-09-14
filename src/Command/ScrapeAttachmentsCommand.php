@@ -15,7 +15,7 @@ namespace Derhaeuptling\ContaoImmoscout24\Command;
 use Derhaeuptling\ContaoImmoscout24\Repository\AttachmentRepository;
 use Derhaeuptling\ContaoImmoscout24\Synchronizer\FileScraper;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -35,7 +35,7 @@ class ScrapeAttachmentsCommand extends Command
     /** @var string */
     private $projectDir;
 
-    public function __construct(AttachmentRepository $attachmentRepository, FileScraper $imageScraper, RegistryInterface $registry, string $projectDir)
+    public function __construct(AttachmentRepository $attachmentRepository, FileScraper $imageScraper, ManagerRegistry $registry, string $projectDir)
     {
         parent::__construct();
 
