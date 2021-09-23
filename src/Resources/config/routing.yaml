@@ -1,0 +1,3 @@
+immoscout24:
+  resource: '../../Controller/'
+  type: annotation

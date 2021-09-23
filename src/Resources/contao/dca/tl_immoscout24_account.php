@@ -76,8 +76,9 @@ $GLOBALS['TL_DCA']['tl_immoscout24_account'] =
         'palettes' => [
             '__selector__' => [],
             'default' => '{basic_legend},description;'.
-                '{credentials_legend},api_explanation,api_consumer_key,api_consumer_secret,api_access_token,api_access_token_secret;'.
-                '{sync_legend},enabled;', // . '{media_legend},upload_directory;',
+                '{credentials_legend},api_explanation,api_consumer_key,api_consumer_secret;'.
+                '{token_legend},api_access_token,api_access_token_secret,token_explanation,provision_access_token;'.
+                '{sync_legend},enabled;',
         ],
 
         // Subpalettes
@@ -96,12 +97,32 @@ $GLOBALS['TL_DCA']['tl_immoscout24_account'] =
             ],
             'api_explanation' => [
                 'exclude' => true,
-                'input_field_callback' => static function (Contao\DataContainer $dc) {
+                'input_field_callback' => static function () {
                     return sprintf(
-                        '<div class="widget"><p class="tl_info">%s</p></div>',
+                        '<div class="widget clr"><p class="tl_info">%s</p></div>',
                         $GLOBALS['TL_LANG']['tl_immoscout24_account']['api_explanation']
                     );
                 },
+            ],
+            'token_explanation' => [
+                'exclude' => true,
+                'input_field_callback' => static function () {
+                    return sprintf(
+                        '<div class="widget clr"><p class="tl_info">%s</p></div>',
+                        $GLOBALS['TL_LANG']['tl_immoscout24_account']['token_explanation']
+                    );
+                },
+            ],
+            'provision_access_token' => [
+                'exclude' => true,
+                'inputType' => 'checkbox',
+                'eval' => ['doNotSaveEmpty' => true, 'tl_class' => 'w50'],
+                'save_callback' => [
+                    // Do not save
+                    static function () {
+                        return null;
+                    },
+                ],
             ],
             'api_consumer_key' => [
                 'exclude' => true,
@@ -116,12 +137,12 @@ $GLOBALS['TL_DCA']['tl_immoscout24_account'] =
             'api_access_token' => [
                 'exclude' => true,
                 'inputType' => 'text',
-                'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50', 'preserveTags' => true],
+                'eval' => ['maxlength' => 255, 'tl_class' => 'w50', 'preserveTags' => true],
             ],
             'api_access_token_secret' => [
                 'exclude' => true,
                 'inputType' => 'text',
-                'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50', 'preserveTags' => true],
+                'eval' => ['maxlength' => 255, 'tl_class' => 'w50', 'preserveTags' => true],
             ],
             'enabled' => [
                 'exclude' => true,
@@ -133,12 +154,8 @@ $GLOBALS['TL_DCA']['tl_immoscout24_account'] =
                         return '1' === $value;
                     },
                 ],
+                // Keep this for MySQL Strict mode. Otherwise, Contao would save an empty string
+                'sql' => ['type' => 'boolean', 'default' => true],
             ],
-            //                'upload_directory' => [
-            //                        'label' => &$GLOBALS['TL_LANG']['tl_immoscout24_account']['upload_directory'],
-            //                        'exclude' => true,
-            //                        'inputType' => 'fileTree',
-            //                        'eval' => ['mandatory' => true, 'fieldType' => 'radio'],
-            //                    ],
         ],
     ];

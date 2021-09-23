@@ -64,6 +64,8 @@ services:
         arguments:
             - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
             - '@contao.translation.translator'
+            - '@request_stack'
+            - '@router'
         tags:
             - { name: 'terminal42_service_annotation' }
 
@@ -73,6 +75,18 @@ services:
             - '@Derhaeuptling\ContaoImmoscout24\ExpressionLanguage\RealEstateFilterEvaluator'
         tags:
             - { name: 'terminal42_service_annotation' }
+
+    Derhaeuptling\ContaoImmoscout24\Controller\BackEnd\AccessTokenController:
+        public: true
+        arguments:
+            - '@security.helper'
+            - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
+            - '@doctrine.orm.entity_manager'
+            - '@contao.translation.translator'
+            - '@contao.framework'
+
+        calls:
+            - [setContainer, ['@service_container']]
 
     # frontend
     Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule\RealEstateListController:
