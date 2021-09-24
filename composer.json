@@ -30,8 +30,10 @@
     "doctrine/annotations": "^1.6",
     "doctrine/doctrine-bundle": "^1.8 || ^2.0",
     "symfony/expression-language": "^4.3 || ^5.3",
+    "symfony/security-bundle": "^4.3 || ^5.3",
     "codefog/contao-haste": "^4.9",
-    "webmozart/path-util": "^2.3"
+    "webmozart/path-util": "^2.3",
+    "league/oauth1-client": "^1.10"
   },
   "require-dev": {
     "contao/manager-plugin": "^2.0",

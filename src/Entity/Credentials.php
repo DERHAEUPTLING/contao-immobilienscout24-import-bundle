@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Derhaeuptling\ContaoImmoscout24\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use League\OAuth1\Client\Credentials\TokenCredentials;
 
 /**
  * @ORM\Embeddable()
@@ -73,5 +74,11 @@ class Credentials
     public function getAccessTokenSecret(): string
     {
         return $this->accessTokenSecret;
+    }
+
+    public function setAccessTokenCredentials(TokenCredentials $tokenCredentials): void
+    {
+        $this->accessToken = $tokenCredentials->getIdentifier();
+        $this->accessTokenSecret = $tokenCredentials->getSecret();
     }
 }

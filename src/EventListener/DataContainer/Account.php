@@ -12,13 +12,20 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\EventListener\DataContainer;
 
+use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\ServiceAnnotation\Callback;
 use Contao\CoreBundle\Translation\Translator;
+use Contao\DataContainer;
+use Contao\Message;
+use Derhaeuptling\ContaoImmoscout24\Controller\BackEnd\AccessTokenController;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account as AccountEntity;
+use Derhaeuptling\ContaoImmoscout24\OAuth\Server;
 use Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository;
-use Terminal42\ServiceAnnotationBundle\ServiceAnnotationInterface;
+use League\OAuth1\Client\Credentials\CredentialsException;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class Account implements ServiceAnnotationInterface
+class Account
 {
     /** @var AccountRepository */
     private $accountRepository;
@@ -26,13 +33,21 @@ class Account implements ServiceAnnotationInterface
     /** @var Translator */
     private $translator;
 
+    /** @var RequestStack */
+    private $requestStack;
+
+    /** @var UrlGeneratorInterface */
+    private $urlGenerator;
+
     /**
      * Account constructor.
      */
-    public function __construct(AccountRepository $accountRepository, Translator $translator)
+    public function __construct(AccountRepository $accountRepository, Translator $translator, RequestStack $requestStack, UrlGeneratorInterface $urlGenerator)
     {
         $this->accountRepository = $accountRepository;
         $this->translator = $translator;
+        $this->requestStack = $requestStack;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -53,5 +68,54 @@ class Account implements ServiceAnnotationInterface
             $account->getDescription(),
             $syncedElementsLabel
         );
+    }
+
+    /**
+     * @Callback(table="tl_immoscout24_account", target="config.onsubmit")
+     */
+    public function provisionAccessToken(DataContainer $dc): void
+    {
+        if ('1' !== $_POST['provision_access_token']) {
+            return;
+        }
+
+        $callbackUri = $this->urlGenerator->generate(
+            'immoscout24_confirm',
+            [],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+
+        $server = new Server(
+            $dc->activeRecord->api_consumer_key,
+            $dc->activeRecord->api_consumer_secret,
+            $callbackUri
+        );
+
+        // Get temporary credentials
+        try {
+            $temporaryCredentials = $server->getTemporaryCredentials();
+        } catch (CredentialsException $e) {
+            Message::addError(
+                $this->translator->trans('tl_immoscout24_account.access_token_error_1', [], 'contao_default')
+            );
+
+            return;
+        }
+
+        if (null === ($request = $this->requestStack->getCurrentRequest()) || !$request->hasSession()) {
+            throw new \RuntimeException('Could not access session.');
+        }
+
+        // Persist process information into session
+        $session = $request->getSession();
+
+        $session->set(AccessTokenController::SESSION_KEY__TEMPORARY_CREDENTIALS, serialize($temporaryCredentials));
+        $session->set(AccessTokenController::SESSION_KEY__ACCOUNT, (int) $dc->id);
+        $session->set(AccessTokenController::SESSION_KEY__BASE_URI, $request->getUri());
+
+        // Redirect
+        $authorizationUrl = $server->getAuthorizationUrl($temporaryCredentials);
+
+        throw new RedirectResponseException($authorizationUrl);
     }
 }
