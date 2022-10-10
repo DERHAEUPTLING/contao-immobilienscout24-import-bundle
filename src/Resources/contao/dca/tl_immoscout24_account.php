@@ -146,7 +146,7 @@ $GLOBALS['TL_DCA']['tl_immoscout24_account'] =
             ],
             'enabled' => [
                 'exclude' => true,
-                'default' => false,
+                'default' => 0,
                 'inputType' => 'checkbox',
                 'eval' => ['isBoolean' => true],
                 'save_callback' => [
@@ -155,7 +155,7 @@ $GLOBALS['TL_DCA']['tl_immoscout24_account'] =
                     },
                 ],
                 // Keep this for MySQL Strict mode. Otherwise, Contao would save an empty string
-                'sql' => ['type' => 'boolean', 'default' => true],
+                'sql' => ['type' => 'boolean', 'default' => false],
             ],
         ],
     ];
