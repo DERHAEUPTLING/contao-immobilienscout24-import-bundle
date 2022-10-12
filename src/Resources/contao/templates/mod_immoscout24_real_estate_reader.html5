@@ -18,7 +18,7 @@ $this->extend('block_searchable'); ?>
     <?php endif; ?>
 
     <!-- attributes -->
-    <h3>Attributes</h3>
+    <h3>Attributes left</h3>
     <dl>
         <?php foreach ($this->attributes as $attribute => $label): ?>
             <?php if($this->hasData($this->realEstate, $attribute)): ?>
