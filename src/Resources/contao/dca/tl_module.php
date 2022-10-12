@@ -39,5 +39,13 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['immoscout24_number_of_items'] = [
     'sql' => 'smallint(5) unsigned NOT NULL default 0',
 ];
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['immoscout24_alt_image_size'] =
-    $GLOBALS['TL_DCA']['tl_module']['fields']['imgSize'];
+$GLOBALS['TL_DCA']['tl_module']['fields']['immoscout24_alt_image_size'] = [
+    'exclude' => true,
+    'inputType' => 'imageSize',
+    'reference' => &$GLOBALS['TL_LANG']['MSC'],
+    'eval' => ['rgxp' => 'natural', 'includeBlankOption' => true, 'nospace' => true, 'helpwizard' => true, 'tl_class' => 'w50'],
+    'options_callback' => static function () {
+        return System::getContainer()->get('contao.image.image_sizes')->getOptionsForUser(BackendUser::getInstance());
+    },
+    'sql' => "varchar(255) NOT NULL default ''"
+];
