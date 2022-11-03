@@ -15,24 +15,28 @@ namespace Derhaeuptling\ContaoImmoscout24\Api;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Entity\Attachment;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\ClientException;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Client
 {
-    /** @var GuzzleClient */
-    private $client;
-
-    /** @var Account */
-    private $account;
+    /** @var HttpClientInterface */
+    private readonly HttpClientInterface $client;
 
     /**
      * Api constructor.
      */
-    public function __construct(GuzzleClient $guzzleClient, Account $account)
+    public function __construct(private readonly Account $account)
     {
-        $this->client = $guzzleClient;
-        $this->account = $account;
+        $this->client = new OAuthHttpClient($account->getCredentials(), [
+            'base_uri' => 'https://rest.immobilienscout24.de/restapi/api/offer/v1.0/',
+            'headers' => [
+                'Accept' => 'application/json'
+            ],
+        ]);
     }
 
     /**
@@ -139,27 +143,27 @@ class Client
     private function performRequest($endpoint): ?array
     {
         try {
-            $response = $this->client->get($endpoint);
+            $response = $this->client->request('GET', $endpoint);
 
             if (200 !== $response->getStatusCode()) {
                 return null;
             }
 
-            $contents = $response->getBody()->getContents();
-            $data = \GuzzleHttp\json_decode($contents, true);
+            $contents = $response->getContent();
+            $data = json_decode($contents, true);
 
             return \is_array($data) ? $data : null;
-        } catch (ClientException $e) {
+        } catch (ClientExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface|TransportExceptionInterface $e) {
             // handle 401 (unauthorized)
             if ((null !== ($response = $e->getResponse())) && 401 === $response->getStatusCode()) {
                 try {
-                    // in case of an error the API ignores the accept header and always returns XML
+                    // in case of an error the API ignores the 'accept' header and always returns XML
                     /** @noinspection PhpComposerExtensionStubsInspection */
                     $contents = json_decode(json_encode(
-                        (array) simplexml_load_string($response->getBody()->getContents())
+                        (array) simplexml_load_string($response->getContent())
                     ), true);
                     $message = $contents['message']['message'];
-                } catch (\Exception $e2) {
+                } catch (\Throwable) {
                     $message = $e->getMessage();
                 }
 

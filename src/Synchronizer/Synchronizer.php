@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Derhaeuptling\ContaoImmoscout24\Synchronizer;
 
 use Derhaeuptling\ContaoImmoscout24\Api\Client;
-use Derhaeuptling\ContaoImmoscout24\Api\ClientFactory;
 use Derhaeuptling\ContaoImmoscout24\Api\PermissionDeniedException;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
@@ -46,7 +45,7 @@ class Synchronizer
     {
         $this->entityManager = $registry->getManager();
         $this->realEstateRepository = $realEstateRepository;
-        $this->client = (new ClientFactory())->create($account);
+        $this->client = new Client($account);
         $this->account = $account;
         $this->output = $output;
     }
