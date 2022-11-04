@@ -127,7 +127,7 @@ in a failure-tolerant way:
     <div>
         <h2>Title Picture</h2>
         <?php if(null !== ($titlePictureFigure = $this->getFigureFromAttachment($this->realEstate->getTitlePictureAttachment()))): ?>
-            <?php $this->insert('image', $titlePictureFigure->getLegacyTemplateData()) ?>
+            <?php $this->insert('image', $titlePictureFigure->getLegacyTemplateData()); ?>
         <?php else: ?>
             <span>There is no title picture.</span>
         <?php endif; ?>

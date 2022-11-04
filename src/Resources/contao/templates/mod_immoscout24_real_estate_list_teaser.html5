@@ -14,7 +14,7 @@ $this->extend('block_unsearchable'); ?>
             <h2><?php echo $realEstate->getTitle(); ?></h2>
 
             <?php if(null !== ($titlePictureFigure = $this->getFigureFromAttachment($realEstate->getTitlePictureAttachment()))): ?>
-                <?php $this->insert('image', $titlePictureFigure->getLegacyTemplateData()) ?>
+                <?php $this->insert('image', $titlePictureFigure->getLegacyTemplateData()); ?>
             <?php endif; ?>
 
             <p><?php echo $realEstate->descriptionNote; ?></p>

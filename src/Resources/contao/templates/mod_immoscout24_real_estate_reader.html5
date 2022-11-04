@@ -12,7 +12,7 @@ $this->extend('block_searchable'); ?>
 
     <!-- title picture -->
     <?php if(null !== ($titlePictureFigure = $this->getFigureFromAttachment($realEstate->getTitlePictureAttachment()))): ?>
-        <?php $this->insert('image', $titlePictureFigure->getLegacyTemplateData()) ?>
+        <?php $this->insert('image', $titlePictureFigure->getLegacyTemplateData()); ?>
     <?php endif; ?>
 
     <!-- attributes -->
@@ -34,7 +34,7 @@ $this->extend('block_searchable'); ?>
             foreach ($floorPlans as $floorPlan): ?>
                 <li>
                     <?php if(null !== ($floorPlanFigure = $this->getFigureFromAttachment($floorPlan, $this->alternativeImageSize))): ?>
-                        <?php $this->insert('image', $floorPlanFigure->getLegacyTemplateData()) ?>
+                        <?php $this->insert('image', $floorPlanFigure->getLegacyTemplateData()); ?>
                     <?php endif; ?>
                 </li>
             <?php endforeach; ?>
@@ -50,7 +50,7 @@ $this->extend('block_searchable'); ?>
                 <li>
                     <figure>
                         <?php if(null !== ($pictureFigure = $this->getFigureFromAttachment($picture, $this->alternativeImageSize))): ?>
-                            <?php $this->insert('image', $pictureFigure->getLegacyTemplateData()) ?>
+                            <?php $this->insert('image', $pictureFigure->getLegacyTemplateData()); ?>
                         <?php endif; ?>
                 </li>
             <?php endforeach; ?>
