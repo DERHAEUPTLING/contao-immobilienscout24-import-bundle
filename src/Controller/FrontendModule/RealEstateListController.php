@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule;
 
+use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
+use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\CoreBundle\Translation\Translator;
 use Contao\ModuleModel;
 use Contao\PageModel;
@@ -26,15 +28,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RealEstateListController extends AbstractRealEstateController
 {
-    /**
-     * RealEstateList constructor.
-     */
     public function __construct(
         private readonly AccountRepository $accountRepository,
         private readonly RealEstateRepository $realEstateRepository,
-        Translator $translator)
-    {
-        parent::__construct($translator);
+        Studio $studio,
+        VirtualFilesystemInterface $immoscoutAttachmentStorage,
+        Translator $translator
+    ) {
+        parent::__construct($studio, $immoscoutAttachmentStorage, $translator);
     }
 
     protected function getResponse(Template $template, ModuleModel $model, Request $request): ?Response
@@ -69,7 +70,7 @@ class RealEstateListController extends AbstractRealEstateController
         $template->defaultImageSize = StringUtil::deserialize($model->imgSize, true);
 
         // labels & data extraction helpers
-        $this->addDataHelpers($template);
+        $this->addDataHelpers($template, $model);
 
         // url generation
         $jumpToPage = PageModel::findByPk($model->jumpTo);

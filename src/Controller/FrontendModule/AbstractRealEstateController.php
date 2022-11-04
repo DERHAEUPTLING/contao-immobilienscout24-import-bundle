@@ -13,20 +13,28 @@ declare(strict_types=1);
 namespace Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule;
 
 use Contao\CoreBundle\Controller\FrontendModule\AbstractFrontendModuleController;
+use Contao\CoreBundle\Exception\InvalidResourceException;
+use Contao\CoreBundle\File\Metadata;
+use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
+use Contao\CoreBundle\Image\Studio\Figure;
+use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\CoreBundle\Translation\Translator;
+use Contao\ModuleModel;
 use Contao\Template;
+use Derhaeuptling\ContaoImmoscout24\Entity\Attachment;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
+use Symfony\Component\Filesystem\Path;
 
 abstract class AbstractRealEstateController extends AbstractFrontendModuleController
 {
-    /**
-     * RealEstateList constructor.
-     */
-    public function __construct(private readonly Translator $translator)
-    {
+    public function __construct(
+        private readonly Studio $studio,
+        private readonly VirtualFilesystemInterface $immoscoutAttachmentStorage,
+        private readonly Translator $translator,
+    ) {
     }
 
-    protected function addDataHelpers(Template $template): void
+    protected function addDataHelpers(Template $template, ModuleModel $model): void
     {
         $template->attributes = $this->getAllAttributesWithLabels();
 
@@ -36,6 +44,35 @@ abstract class AbstractRealEstateController extends AbstractFrontendModuleContro
 
         $template->getFormatted = function (RealEstate $realEstate, string $attribute): ?string {
             return $this->getFormatted($realEstate, $attribute);
+        };
+
+        $template->getFigureFromAttachment = function (?Attachment $attachment, $size = null) use ($model): ?Figure {
+            if (null === $attachment) {
+                return null;
+            }
+
+            $figureBuilder = $this->studio
+              ->createFigureBuilder()
+              ->setSize($size ?? $model->imgSize ?: null)
+              ->setMetadata(new Metadata([Metadata::VALUE_ALT => $attachment->getTitle()]))
+            ;
+
+            if (method_exists($figureBuilder, 'fromStorage')) {
+                $figureBuilder->fromStorage($this->immoscoutAttachmentStorage, $attachment->getFile());
+            } else {
+                // Workaround for Contao < 5
+                $stream = $this->immoscoutAttachmentStorage->readStream($attachment->getFile());
+                $metadata = stream_get_meta_data($stream);
+                $uri = $metadata['uri'];
+
+                if ('STDIO' !== $metadata['stream_type'] || 'plainfile' !== $metadata['wrapper_type'] || !Path::isAbsolute($uri)) {
+                    throw new InvalidResourceException(sprintf('Only streams of type STDIO/plainfile pointing to an absolute path are currently supported when reading an image from a storage, got "%s/%s" with URI "%s".', $metadata['stream_type'], $metadata['wrapper_type'], $uri));
+                }
+
+                $figureBuilder->fromPath($uri);
+            }
+
+            return $figureBuilder->buildIfResourceExists();
         };
     }
 

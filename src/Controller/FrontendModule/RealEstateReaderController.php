@@ -13,29 +13,26 @@ declare(strict_types=1);
 namespace Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule;
 
 use Contao\CoreBundle\Exception\PageNotFoundException;
+use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
+use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\CoreBundle\Translation\Translator;
 use Contao\Input;
 use Contao\ModuleModel;
 use Contao\StringUtil;
 use Contao\Template;
-use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
 use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class RealEstateReaderController extends AbstractRealEstateController
 {
-    private RealEstateRepository $realEstateRepository;
-
-    /**
-     * RealEstateList constructor.
-     */
-    public function __construct(Registry $doctrineRegistry, Translator $translator)
-    {
-        parent::__construct($translator);
-
-        $this->realEstateRepository = $doctrineRegistry->getRepository(RealEstate::class);
+    public function __construct(
+        private readonly RealEstateRepository $realEstateRepository,
+        Studio $studio,
+        VirtualFilesystemInterface $immoscoutAttachmentStorage,
+        Translator $translator
+    ) {
+        parent::__construct($studio, $immoscoutAttachmentStorage, $translator);
     }
 
     protected function getResponse(Template $template, ModuleModel $model, Request $request): ?Response
@@ -55,7 +52,7 @@ class RealEstateReaderController extends AbstractRealEstateController
         $template->alternativeImageSize = StringUtil::deserialize($model->immoscout24_alt_image_size, true);
 
         // labels & data extraction helpers
-        $this->addDataHelpers($template);
+        $this->addDataHelpers($template, $model);
 
         return new Response($template->parse());
     }
