@@ -27,27 +27,15 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Account
 {
-    /** @var AccountRepository */
-    private $accountRepository;
-
-    /** @var Translator */
-    private $translator;
-
-    /** @var RequestStack */
-    private $requestStack;
-
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-
     /**
      * Account constructor.
      */
-    public function __construct(AccountRepository $accountRepository, Translator $translator, RequestStack $requestStack, UrlGeneratorInterface $urlGenerator)
+    public function __construct(
+        private readonly AccountRepository $accountRepository,
+        private readonly Translator $translator,
+        private readonly RequestStack $requestStack,
+        private readonly UrlGeneratorInterface $urlGenerator)
     {
-        $this->accountRepository = $accountRepository;
-        $this->translator = $translator;
-        $this->requestStack = $requestStack;
-        $this->urlGenerator = $urlGenerator;
     }
 
     /**

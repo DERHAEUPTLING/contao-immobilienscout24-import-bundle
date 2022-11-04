@@ -211,7 +211,7 @@ class Attachment extends DcaDefault
             return null;
         }
 
-        $urlCandidate = (array_pop($urlCandidates))['@href'] ?? null;
+        $urlCandidate = array_pop($urlCandidates)['@href'] ?? null;
         if (null === $urlCandidate) {
             return null;
         }
@@ -304,8 +304,6 @@ class Attachment extends DcaDefault
 
     /**
      * @throws AnnotationException
-     *
-     * @return Attachment|null
      */
     public static function createFromApiResponse(array $data, RealEstate $realEstate): ?self
     {

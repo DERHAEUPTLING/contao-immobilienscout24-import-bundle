@@ -18,11 +18,8 @@ use League\OAuth1\Client\Server\Server as BaseServer;
 
 class Server extends BaseServer
 {
-    /** @var string */
-    private $domain = 'immobilienscout24.de';
-
-    /** @var string|null */
-    private $verifier;
+    private string $domain = 'immobilienscout24.de';
+    private ?string $verifier;
 
     public function __construct(string $key, string $secret, string $callbackUri = null)
     {

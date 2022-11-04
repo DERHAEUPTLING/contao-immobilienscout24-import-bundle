@@ -20,16 +20,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SynchronizerFactory
 {
-    /** @var ManagerRegistry */
-    private $registry;
-
-    /** @var RealEstateRepository */
-    private $realEstateRepository;
-
-    public function __construct(ManagerRegistry $registry, RealEstateRepository $realEstateRepository)
+    public function __construct(
+        private readonly ManagerRegistry $registry,
+        private readonly RealEstateRepository $realEstateRepository)
     {
-        $this->registry = $registry;
-        $this->realEstateRepository = $realEstateRepository;
     }
 
     public function create(Client $client, Account $account, OutputInterface $output): Synchronizer

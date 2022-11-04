@@ -19,20 +19,11 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 
 class AttachmentListener
 {
-    /** @var PictureFactory */
-    private $pictureFactory;
-
-    /** @var string */
-    private $projectDir;
-
-    /** @var ContaoFramework */
-    private $framework;
-
-    public function __construct(PictureFactory $pictureFactory, string $projectDir, ContaoFramework $framework)
+    public function __construct(
+        private readonly PictureFactory $pictureFactory,
+        private readonly string $projectDir,
+        private readonly ContaoFramework $framework)
     {
-        $this->pictureFactory = $pictureFactory;
-        $this->projectDir = $projectDir;
-        $this->framework = $framework;
     }
 
     public function postLoad(LifecycleEventArgs $args): void

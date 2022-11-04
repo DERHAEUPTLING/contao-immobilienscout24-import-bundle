@@ -1,5 +1,14 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * Immobilienscout24 bundle for Contao Open Source CMS
+ *
+ * @copyright  Copyright © derhaeuptling (https://derhaeuptling.com/)
+ * @author     Moritz Vondano
+ * @license    MIT
+ */
 
 namespace Derhaeuptling\ContaoImmoscout24\Api;
 
@@ -19,12 +28,11 @@ class OAuthHttpClient implements HttpClientInterface
         private readonly array $defaultOptions,
         int $timeout,
         int $maxHostConnections
-    )
-    {
+    ) {
         $this->inner = HttpClient::create(['timeout' => $timeout], $maxHostConnections);
 
         $this->key = sprintf(
-            "%s&%s",
+            '%s&%s',
             rawurlencode($this->credentials->getConsumerSecret()),
             rawurlencode($this->credentials->getAccessTokenSecret())
         );
@@ -33,7 +41,7 @@ class OAuthHttpClient implements HttpClientInterface
     public function request(string $method, string $url, array $options = []): ResponseInterface
     {
         $allOptions = [...$this->defaultOptions, ...$options];
-        $effectiveUrl = ltrim(rtrim($allOptions['base_uri'] ?? '', '/') . '/' . $url, '/');
+        $effectiveUrl = ltrim(rtrim($allOptions['base_uri'] ?? '', '/').'/'.$url, '/');
 
         return $this->inner->request(
             $method,
@@ -57,7 +65,7 @@ class OAuthHttpClient implements HttpClientInterface
         parse_str($urlParts['query'] ?? '', $queryParts);
 
         // Sign request
-        $nonce = sha1(uniqid('', true) . $urlParts['host'] . $urlParts['path']);
+        $nonce = sha1(uniqid('', true).$urlParts['host'].$urlParts['path']);
 
         $oauthParams = [
             'oauth_consumer_key' => $this->credentials->getConsumerKey(),
@@ -72,10 +80,10 @@ class OAuthHttpClient implements HttpClientInterface
         uksort($params, 'strcmp');
 
         $baseString = sprintf(
-            "%s&%s&%s",
+            '%s&%s&%s',
             strtoupper($method),
             rawurlencode(strtok($url, '?')),
-            rawurlencode(http_build_query($params, '', '&', PHP_QUERY_RFC3986))
+            rawurlencode(http_build_query($params, '', '&', \PHP_QUERY_RFC3986))
         );
 
         $oauthParams['oauth_signature'] = base64_encode(hash_hmac('sha1', $baseString, $this->key, true));
@@ -84,10 +92,10 @@ class OAuthHttpClient implements HttpClientInterface
         uksort($oauthParams, 'strcmp');
 
         foreach ($oauthParams as $key => $value) {
-            $oauthParams[$key] = sprintf('%s="%s"', $key, rawurlencode((string)$value));
+            $oauthParams[$key] = sprintf('%s="%s"', $key, rawurlencode((string) $value));
         }
 
-        $options['headers']['Authorization'] = 'OAuth ' . implode(', ', $oauthParams);
+        $options['headers']['Authorization'] = 'OAuth '.implode(', ', $oauthParams);
 
         return $options;
     }

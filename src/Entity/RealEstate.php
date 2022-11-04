@@ -1361,8 +1361,6 @@ class RealEstate extends DcaDefault
 
     /**
      * @throws AnnotationException
-     *
-     * @return RealEstate|null
      */
     public static function createFromApiResponse(array $data, Account $account): ?self
     {

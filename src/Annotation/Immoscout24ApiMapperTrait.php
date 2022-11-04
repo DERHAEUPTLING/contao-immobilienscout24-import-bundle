@@ -20,8 +20,6 @@ trait Immoscout24ApiMapperTrait
     /**
      * Map object properties.
      *
-     * @param $object
-     *
      * @throws AnnotationException
      */
     private static function autoMap($object, array $apiData): bool
@@ -93,7 +91,7 @@ trait Immoscout24ApiMapperTrait
 
                         $value = $array[array_key_first($array)];
 
-                        if (is_scalar($value)) {
+                        if (\is_scalar($value)) {
                             break;
                         }
 

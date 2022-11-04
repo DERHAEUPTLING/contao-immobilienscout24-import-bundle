@@ -26,21 +26,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RealEstateListController extends AbstractRealEstateController
 {
-    /** @var AccountRepository */
-    private $accountRepository;
-
-    /** @var RealEstateRepository */
-    private $realEstateRepository;
-
     /**
      * RealEstateList constructor.
      */
-    public function __construct(AccountRepository $accountRepository, RealEstateRepository $realEstateRepository, Translator $translator)
+    public function __construct(
+        private readonly AccountRepository $accountRepository,
+        private readonly RealEstateRepository $realEstateRepository,
+        Translator $translator)
     {
         parent::__construct($translator);
-
-        $this->accountRepository = $accountRepository;
-        $this->realEstateRepository = $realEstateRepository;
     }
 
     protected function getResponse(Template $template, ModuleModel $model, Request $request): ?Response

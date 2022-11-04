@@ -34,8 +34,7 @@ class Synchronizer
         private readonly Client $client,
         private readonly Account $account,
         OutputInterface $output = null
-    )
-    {
+    ) {
         $this->entityManager = $registry->getManager();
         $this->output = $output;
     }

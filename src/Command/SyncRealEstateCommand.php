@@ -31,8 +31,7 @@ class SyncRealEstateCommand extends Command
         private readonly AccountRepository $accountRepository,
         private readonly RealEstateRepository $realEstateRepository,
         private readonly EntityManagerInterface $entityManager
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -44,7 +43,7 @@ class SyncRealEstateCommand extends Command
             ->addOption('purge', 'p', InputOption::VALUE_NONE, 'Purge the database and downloaded files.')
             ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Run dry, do not apply changes.')
             ->addOption('connections', 'c', InputOption::VALUE_REQUIRED, 'Max host connections.', 6)
-            ->addOption('timeout', 't', InputOption::VALUE_REQUIRED, 'Request timeout.', 5);
+            ->addOption('timeout', 't', InputOption::VALUE_REQUIRED, 'Request timeout.', 5)
         ;
     }
 

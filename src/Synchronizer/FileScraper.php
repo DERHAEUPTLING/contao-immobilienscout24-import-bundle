@@ -22,16 +22,11 @@ use Symfony\Component\Filesystem\Path;
 
 class FileScraper
 {
-    /** @var Client */
-    private $client;
+    private Client $client;
 
-    /** @var string */
-    private $projectDir;
-
-    /** @var ContaoFramework */
-    private $framework;
-
-    public function __construct(string $projectDir, ContaoFramework $framework)
+    public function __construct(
+        private readonly string $projectDir,
+        private readonly ContaoFramework $framework)
     {
         $this->client = new Client(
             [
@@ -40,9 +35,6 @@ class FileScraper
                 ],
             ]
         );
-
-        $this->projectDir = $projectDir;
-        $this->framework = $framework;
     }
 
     public function scrape(string $sourceUri, string $targetPath): ?FilesModel

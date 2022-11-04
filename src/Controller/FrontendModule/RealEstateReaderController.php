@@ -26,8 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RealEstateReaderController extends AbstractRealEstateController
 {
-    /** @var RealEstateRepository */
-    private $realEstateRepository;
+    private RealEstateRepository $realEstateRepository;
 
     /**
      * RealEstateList constructor.

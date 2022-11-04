@@ -22,19 +22,13 @@ use Terminal42\ServiceAnnotationBundle\ServiceAnnotationInterface;
 
 class Module implements ServiceAnnotationInterface
 {
-    /** @var AccountRepository */
-    private $accountRepository;
-
-    /** @var RealEstateFilterEvaluator */
-    private $realEstateFilterEvaluator;
-
     /**
      * Account constructor.
      */
-    public function __construct(AccountRepository $accountRepository, RealEstateFilterEvaluator $realEstateFilterEvaluator)
+    public function __construct(
+        private readonly AccountRepository $accountRepository,
+        private readonly RealEstateFilterEvaluator $realEstateFilterEvaluator)
     {
-        $this->accountRepository = $accountRepository;
-        $this->realEstateFilterEvaluator = $realEstateFilterEvaluator;
     }
 
     /**

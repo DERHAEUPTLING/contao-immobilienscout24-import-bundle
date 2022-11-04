@@ -19,15 +19,11 @@ use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
 
 abstract class AbstractRealEstateController extends AbstractFrontendModuleController
 {
-    /** @var Translator */
-    private $translator;
-
     /**
      * RealEstateList constructor.
      */
-    public function __construct(Translator $translator)
+    public function __construct(private readonly Translator $translator)
     {
-        $this->translator = $translator;
     }
 
     protected function addDataHelpers(Template $template): void

@@ -16,6 +16,7 @@ use Doctrine\Common\Annotations\Annotation;
 
 /**
  * @Annotation
+ *
  * @Target({"PROPERTY"})
  */
 class Immoscout24Api extends Annotation

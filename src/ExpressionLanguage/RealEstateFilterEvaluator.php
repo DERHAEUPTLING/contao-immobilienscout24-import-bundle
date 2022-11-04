@@ -18,11 +18,10 @@ use Symfony\Component\ExpressionLanguage\SyntaxError;
 
 class RealEstateFilterEvaluator
 {
-    /** @var array */
-    private $realEstateClassConstants;
+    /** @var array<string, string> */
+    private array $realEstateClassConstants;
 
-    /** @var ExpressionLanguage */
-    private $expressionLanguage;
+    private ExpressionLanguage $expressionLanguage;
 
     public function __construct()
     {

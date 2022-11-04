@@ -21,7 +21,6 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Client
 {
-    /** @var HttpClientInterface */
     private readonly HttpClientInterface $client;
 
     /**
@@ -34,7 +33,7 @@ class Client
             [
                 'base_uri' => 'https://rest.immobilienscout24.de/restapi/api/offer/v1.0/',
                 'headers' => [
-                    'Accept' => 'application/json'
+                    'Accept' => 'application/json',
                 ],
             ],
             $timeout,
@@ -43,16 +42,16 @@ class Client
     }
 
     /**
-     * @return \Generator<RealEstate>
-     *
      * @throws TimeoutException
+     *
+     * @return \Generator<RealEstate>
      */
     public function getAllRealEstate(): \Generator
     {
         // Synchronously get all list data
         $list = [];
 
-        $populateList = function(int $pageNumberOffset = 0, int $pageSize = 100) use (&$populateList, &$list): void {
+        $populateList = function (int $pageNumberOffset = 0, int $pageSize = 100) use (&$populateList, &$list): void {
             $pageSize = max(1, min(100, $pageSize)); // must be in the range [1 .. 100]
             $pageNumber = max(1, $pageNumberOffset + 1); // must be >= 1
 
@@ -61,7 +60,7 @@ class Client
                 sprintf('user/me/realestate?pageSize=%s&pagenumber=%s&archivedobjectsincluded=true', $pageSize, $pageNumber)
             );
 
-            if(
+            if (
                 200 !== $response->getStatusCode() ||
                 null === ($data = $this->getData($response)) ||
                 null === ($listChunk = $data['realestates.realEstates']['realEstateList']['realEstateElement'] ?? null)
@@ -71,7 +70,7 @@ class Client
 
             $list = [...$list, ...$listChunk];
 
-            if(isset($data['realestates.realEstates']['Paging']['next']['@xlink.href'])) {
+            if (isset($data['realestates.realEstates']['Paging']['next']['@xlink.href'])) {
                 $populateList($pageNumberOffset + 1, $pageSize);
             }
         };
@@ -97,7 +96,7 @@ class Client
         // Process responses
         yield from $this->processAsync(
             $responses,
-            function(array $data): ?RealEstate {
+            function (array $data): ?RealEstate {
                 if (!\is_string($objectType = array_key_first($data))) {
                     return null;
                 }
@@ -109,7 +108,7 @@ class Client
 
                 return RealEstate::createFromApiResponse($realEstateData, $this->account);
             },
-            static function(array $userData): void {
+            static function (array $userData): void {
                 throw new TimeoutException(sprintf('The API timed out while requesting real estate ID %s', $userData['realEstateId']));
             }
         );
@@ -117,9 +116,10 @@ class Client
 
     /**
      * @param list<RealEstate> $realEstateObjects
-     * @return \Generator<array{0:string, 1:int}>
      *
      * @throws TimeoutException
+     *
+     * @return \Generator<array{0:string, 1:int}>
      */
     public function getAndSetAttachments(array $realEstateObjects): \Generator
     {
@@ -137,8 +137,8 @@ class Client
         // Process responses
         yield from $this->processAsync(
             $responses,
-            function(array $data, array $userData): ?array {
-                if (!is_array(($attachmentData = $data['common.attachments'][0]['attachment'] ?? null))) {
+            static function (array $data, array $userData): ?array {
+                if (!\is_array($attachmentData = $data['common.attachments'][0]['attachment'] ?? null)) {
                     return null;
                 }
 
@@ -152,7 +152,7 @@ class Client
 
                 $attachments = array_filter(
                     array_map(
-                        static fn($attachmentData) => Attachment::createFromApiResponse($attachmentData, $realEstate),
+                        static fn ($attachmentData) => Attachment::createFromApiResponse($attachmentData, $realEstate),
                         $attachmentData
                     )
                 );
@@ -161,7 +161,7 @@ class Client
 
                 return [$realEstate->getRealEstateId(), \count($attachments)];
             },
-            static function(array $userData): void {
+            static function (array $userData): void {
                 /** @var RealEstate $realEstate */
                 $realEstate = $userData['realEstate'];
 
@@ -171,10 +171,11 @@ class Client
     }
 
     /**
-     * @param list<ResponseInterface>     $responses
-     * @param \Closure<array> $handleResponseData
+     * @param list<ResponseInterface> $responses
+     * @param \Closure<array>         $handleResponseData
      */
-    private function processAsync(array $responses, \Closure $handleResponseData, \Closure $handleTimeout): \Generator {
+    private function processAsync(array $responses, \Closure $handleResponseData, \Closure $handleTimeout): \Generator
+    {
         foreach ($this->client->stream($responses) as $response => $chunk) {
             if ($chunk->isTimeout()) {
                 $response->cancel();
@@ -199,9 +200,10 @@ class Client
         }
     }
 
-    private function getData(ResponseInterface $response): ?array {
+    private function getData(ResponseInterface $response): ?array
+    {
         try {
-            return json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+            return json_decode($response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
         } catch (TransportException|\JsonException) {
             return null;
         }

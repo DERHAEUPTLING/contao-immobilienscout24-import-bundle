@@ -15,6 +15,7 @@ namespace Derhaeuptling\ContaoImmoscout24\Controller\BackEnd;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Translation\Translator;
 use Contao\Message;
+use Contao\System;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\OAuth\Server;
 use Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository;
@@ -27,7 +28,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
-use System;
 
 class AccessTokenController extends AbstractController
 {
@@ -35,28 +35,13 @@ class AccessTokenController extends AbstractController
     public const SESSION_KEY__ACCOUNT = 'immoscout24.account';
     public const SESSION_KEY__BASE_URI = 'immoscout24.base_uri';
 
-    /** @var Security */
-    private $security;
-
-    /** @var AccountRepository */
-    private $accountRepository;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var Translator */
-    private $translator;
-
-    /** @var ContaoFramework */
-    private $framework;
-
-    public function __construct(Security $security, AccountRepository $accountRepository, EntityManagerInterface $entityManager, Translator $translator, ContaoFramework $framework)
+    public function __construct(
+        private readonly Security $security,
+        private readonly AccountRepository $accountRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly Translator $translator,
+        private readonly ContaoFramework $framework)
     {
-        $this->security = $security;
-        $this->accountRepository = $accountRepository;
-        $this->entityManager = $entityManager;
-        $this->translator = $translator;
-        $this->framework = $framework;
     }
 
     /**
