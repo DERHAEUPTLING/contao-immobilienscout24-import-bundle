@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\Synchronizer;
 
+use Derhaeuptling\ContaoImmoscout24\Api\Client;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -31,8 +32,8 @@ class SynchronizerFactory
         $this->realEstateRepository = $realEstateRepository;
     }
 
-    public function create(Account $account, OutputInterface $output): Synchronizer
+    public function create(Client $client, Account $account, OutputInterface $output): Synchronizer
     {
-        return new Synchronizer($this->registry, $this->realEstateRepository, $account, $output);
+        return new Synchronizer($this->registry, $this->realEstateRepository, $client, $account, $output);
     }
 }

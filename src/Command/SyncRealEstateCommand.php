@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\Command;
 
+use Derhaeuptling\ContaoImmoscout24\Api\Client;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository;
 use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
@@ -25,26 +26,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SyncRealEstateCommand extends Command
 {
-    /** @var SynchronizerFactory */
-    private $synchronizerFactory;
-
-    /** @var AccountRepository */
-    private $accountRepository;
-
-    /** @var RealEstateRepository */
-    private $realEstateRepository;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    public function __construct(SynchronizerFactory $synchronizerFactory, AccountRepository $accountRepository, RealEstateRepository $realEstateRepository, EntityManagerInterface $entityManager)
+    public function __construct(
+        private readonly SynchronizerFactory $synchronizerFactory,
+        private readonly AccountRepository $accountRepository,
+        private readonly RealEstateRepository $realEstateRepository,
+        private readonly EntityManagerInterface $entityManager
+    )
     {
         parent::__construct();
-
-        $this->synchronizerFactory = $synchronizerFactory;
-        $this->accountRepository = $accountRepository;
-        $this->realEstateRepository = $realEstateRepository;
-        $this->entityManager = $entityManager;
     }
 
     protected function configure(): void
@@ -54,6 +43,8 @@ class SyncRealEstateCommand extends Command
             ->addArgument('id', InputArgument::OPTIONAL, 'Account id or description.')
             ->addOption('purge', 'p', InputOption::VALUE_NONE, 'Purge the database and downloaded files.')
             ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Run dry, do not apply changes.')
+            ->addOption('connections', 'c', InputOption::VALUE_REQUIRED, 'Max host connections.', 6)
+            ->addOption('timeout', 't', InputOption::VALUE_REQUIRED, 'Request timeout.', 5);
         ;
     }
 
@@ -100,7 +91,13 @@ class SyncRealEstateCommand extends Command
 
         $error = false;
         foreach ($accounts as $account) {
-            $synchronizer = $this->synchronizerFactory->create($account, $output);
+            $client = new Client(
+                $account,
+                (int) $input->getOption('timeout'),
+                (int) $input->getOption('connections')
+            );
+
+            $synchronizer = $this->synchronizerFactory->create($client, $account, $output);
             $success = $synchronizer->synchronizeAllRealEstate();
 
             if ($success && !$dryRun) {

@@ -15,11 +15,9 @@ namespace Derhaeuptling\ContaoImmoscout24\Api;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Entity\Attachment;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Client
 {
@@ -29,148 +27,182 @@ class Client
     /**
      * Api constructor.
      */
-    public function __construct(private readonly Account $account)
+    public function __construct(private readonly Account $account, int $timeout = 5, int $maxHostConnections = 6)
     {
-        $this->client = new OAuthHttpClient($account->getCredentials(), [
-            'base_uri' => 'https://rest.immobilienscout24.de/restapi/api/offer/v1.0/',
-            'headers' => [
-                'Accept' => 'application/json'
+        $this->client = new OAuthHttpClient(
+            $account->getCredentials(),
+            [
+                'base_uri' => 'https://rest.immobilienscout24.de/restapi/api/offer/v1.0/',
+                'headers' => [
+                    'Accept' => 'application/json'
+                ],
             ],
-        ]);
-    }
-
-    /**
-     * @throws PermissionDeniedException
-     */
-    public function getRealEstate(string $realEstateId): ?RealEstate
-    {
-        $data = $this->extractAndTagResponse(
-            $this->performRequest(sprintf('user/me/realestate/%s', $realEstateId))
+            $timeout,
+            $maxHostConnections
         );
-
-        if (null === $data) {
-            return null;
-        }
-
-        return RealEstate::createFromApiResponse($data, $this->account);
     }
 
     /**
-     * @return \Generator|RealEstate[]
+     * @return \Generator<RealEstate>
+     *
+     * @throws TimeoutException
      */
-    public function getAllRealEstate(int $pageNumberOffset = 0, int $pageSize = 100): \Generator
+    public function getAllRealEstate(): \Generator
     {
-        $pageSize = max(1, min(100, $pageSize)); // must be in the range [1 .. 100]
-        $pageNumber = max(1, $pageNumberOffset + 1); // must be >= 1
+        // Synchronously get all list data
+        $list = [];
 
-        $requestUrl = sprintf('user/me/realestate?pageSize=%s&pagenumber=%s&archivedobjectsincluded=true', $pageSize, $pageNumber);
-        $data = $this->performRequest($requestUrl);
+        $populateList = function(int $pageNumberOffset = 0, int $pageSize = 100) use (&$populateList, &$list): void {
+            $pageSize = max(1, min(100, $pageSize)); // must be in the range [1 .. 100]
+            $pageNumber = max(1, $pageNumberOffset + 1); // must be >= 1
 
-        $list = $data['realestates.realEstates']['realEstateList']['realEstateElement'] ?? null;
-        $next = $data['realestates.realEstates']['Paging']['next']['@xlink.href'] ?? null;
+            $response = $this->client->request(
+                'GET',
+                sprintf('user/me/realestate?pageSize=%s&pagenumber=%s&archivedobjectsincluded=true', $pageSize, $pageNumber)
+            );
 
-        if (null === $list) {
-            return;
-        }
+            if(
+                200 !== $response->getStatusCode() ||
+                null === ($data = $this->getData($response)) ||
+                null === ($listChunk = $data['realestates.realEstates']['realEstateList']['realEstateElement'] ?? null)
+            ) {
+                return;
+            }
+
+            $list = [...$list, ...$listChunk];
+
+            if(isset($data['realestates.realEstates']['Paging']['next']['@xlink.href'])) {
+                $populateList($pageNumberOffset + 1, $pageSize);
+            }
+        };
+
+        $populateList();
+
+        // Compose asynchronously handled responses
+        $responses = [];
 
         foreach ($list as $realEstateData) {
-            // note: do not use RealEstate::createFromApiResponse($realEstate) here
-            // as the current request does not include all data for some odd reason;
-            // falling back to use single sub requests instead
-            if (!\is_array($realEstateData) || !isset($realEstateData['@id'])) {
+            if (!\is_array($realEstateData) || null === ($realEstateId = ($realEstateData['@id'] ?? null))) {
                 continue;
             }
 
-            $realEstate = $this->getRealEstate($realEstateData['@id']);
-            if (null !== $realEstate) {
-                yield $realEstate;
-            }
+            // make a separate request to get the full data for this real estate object
+            $responses[] = $this->client->request(
+                'GET',
+                sprintf('user/me/realestate/%s', $realEstateId),
+                ['user_data' => ['realEstateId' => $realEstateId]]
+            );
         }
 
-        if (null !== $next) {
-            yield from $this->getAllRealEstate($pageNumberOffset + 1, $pageSize);
-        }
-    }
-
-    /**
-     * @return Attachment[]
-     */
-    public function getAttachments(RealEstate $realEstate): array
-    {
-        $response = $this->performRequest(sprintf('user/me/realestate/%s/attachment', $realEstate->realEstateId));
-
-        if (null === ($attachmentData = $response['common.attachments'][0]['attachment'] ?? null) || !\is_array($attachmentData)) {
-            return [];
-        }
-
-        if (isset($attachmentData['@id'])) {
-            // handle single item (apparently the data structure changes then)
-            $attachmentData = [$attachmentData];
-        }
-
-        return array_filter(
-            array_map(static function ($data) use ($realEstate) {
-                if (!\is_array($data)) {
+        // Process responses
+        yield from $this->processAsync(
+            $responses,
+            function(array $data): ?RealEstate {
+                if (!\is_string($objectType = array_key_first($data))) {
                     return null;
                 }
 
-                return Attachment::createFromApiResponse($data, $realEstate);
-            }, $attachmentData)
+                $realEstateData = [
+                    ...$data[$objectType],
+                    '_object_type' => $objectType,
+                ];
+
+                return RealEstate::createFromApiResponse($realEstateData, $this->account);
+            },
+            static function(array $userData): void {
+                throw new TimeoutException(sprintf('The API timed out while requesting real estate ID %s', $userData['realEstateId']));
+            }
         );
     }
 
-    private function extractAndTagResponse($data): ?array
+    /**
+     * @param list<RealEstate> $realEstateObjects
+     * @return \Generator<array{0:string, 1:int}>
+     *
+     * @throws TimeoutException
+     */
+    public function getAndSetAttachments(array $realEstateObjects): \Generator
     {
-        if (!\is_array($data)) {
-            return null;
+        // Compose asynchronously handled responses
+        $responses = [];
+
+        foreach ($realEstateObjects as $realEstate) {
+            $responses[] = $this->client->request(
+                'GET',
+                sprintf('user/me/realestate/%s/attachment', $realEstate->getRealEstateId()),
+                ['user_data' => ['realEstate' => $realEstate]]
+            );
         }
 
-        $objectType = array_key_first($data);
-        if (!\is_string($objectType)) {
-            return null;
-        }
+        // Process responses
+        yield from $this->processAsync(
+            $responses,
+            function(array $data, array $userData): ?array {
+                if (!is_array(($attachmentData = $data['common.attachments'][0]['attachment'] ?? null))) {
+                    return null;
+                }
 
-        // tag data with object type
-        $realEstateData = $data[$objectType];
-        $realEstateData['_object_type'] = $objectType;
+                if (isset($attachmentData['@id'])) {
+                    // handle single item (apparently the data structure changes then)
+                    $attachmentData = [$attachmentData];
+                }
 
-        return $realEstateData;
+                /** @var RealEstate $realEstate */
+                $realEstate = $userData['realEstate'];
+
+                $attachments = array_filter(
+                    array_map(
+                        static fn($attachmentData) => Attachment::createFromApiResponse($attachmentData, $realEstate),
+                        $attachmentData
+                    )
+                );
+
+                $realEstate->setAttachments($attachments);
+
+                return [$realEstate->getRealEstateId(), \count($attachments)];
+            },
+            static function(array $userData): void {
+                /** @var RealEstate $realEstate */
+                $realEstate = $userData['realEstate'];
+
+                throw new TimeoutException(sprintf('The API timed out while requesting attachments for real estate ID %s', $realEstate->getRealEstateId()));
+            }
+        );
     }
 
     /**
-     * @throws PermissionDeniedException
+     * @param list<ResponseInterface>     $responses
+     * @param \Closure<array> $handleResponseData
      */
-    private function performRequest($endpoint): ?array
-    {
+    private function processAsync(array $responses, \Closure $handleResponseData, \Closure $handleTimeout): \Generator {
+        foreach ($this->client->stream($responses) as $response => $chunk) {
+            if ($chunk->isTimeout()) {
+                $response->cancel();
+                $handleTimeout($response->getInfo()['user_data'] ?? []);
+
+                continue;
+            }
+
+            if ($chunk->isFirst() && 200 !== $response->getStatusCode()) {
+                $response->cancel();
+
+                continue;
+            }
+
+            if (
+                $chunk->isLast() &&
+                null !== ($data = $this->getData($response)) &&
+                null !== ($result = $handleResponseData($data, $response->getInfo()['user_data'] ?? []))
+            ) {
+                yield $result;
+            }
+        }
+    }
+
+    private function getData(ResponseInterface $response): ?array {
         try {
-            $response = $this->client->request('GET', $endpoint);
-
-            if (200 !== $response->getStatusCode()) {
-                return null;
-            }
-
-            $contents = $response->getContent();
-            $data = json_decode($contents, true);
-
-            return \is_array($data) ? $data : null;
-        } catch (ClientExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface|TransportExceptionInterface $e) {
-            // handle 401 (unauthorized)
-            if ((null !== ($response = $e->getResponse())) && 401 === $response->getStatusCode()) {
-                try {
-                    // in case of an error the API ignores the 'accept' header and always returns XML
-                    /** @noinspection PhpComposerExtensionStubsInspection */
-                    $contents = json_decode(json_encode(
-                        (array) simplexml_load_string($response->getContent())
-                    ), true);
-                    $message = $contents['message']['message'];
-                } catch (\Throwable) {
-                    $message = $e->getMessage();
-                }
-
-                throw new PermissionDeniedException($message);
-            }
-
-            // ignore
+            return json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        } catch (TransportException|\JsonException) {
             return null;
         }
     }

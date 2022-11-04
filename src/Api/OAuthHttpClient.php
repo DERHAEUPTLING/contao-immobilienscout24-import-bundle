@@ -14,9 +14,14 @@ class OAuthHttpClient implements HttpClientInterface
     private readonly HttpClientInterface $inner;
     private readonly string $key;
 
-    public function __construct(private readonly Credentials $credentials, private readonly array $defaultOptions)
+    public function __construct(
+        private readonly Credentials $credentials,
+        private readonly array $defaultOptions,
+        int $timeout,
+        int $maxHostConnections
+    )
     {
-        $this->inner = HttpClient::create();
+        $this->inner = HttpClient::create(['timeout' => $timeout], $maxHostConnections);
 
         $this->key = sprintf(
             "%s&%s",
