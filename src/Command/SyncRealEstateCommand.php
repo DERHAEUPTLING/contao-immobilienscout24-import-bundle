@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\Command;
 
+use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
 use Derhaeuptling\ContaoImmoscout24\Api\Client;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository;
@@ -30,7 +31,8 @@ class SyncRealEstateCommand extends Command
         private readonly SynchronizerFactory $synchronizerFactory,
         private readonly AccountRepository $accountRepository,
         private readonly RealEstateRepository $realEstateRepository,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
+        private readonly VirtualFilesystemInterface $immoscoutAttachmentStorage
     ) {
         parent::__construct();
     }
@@ -66,8 +68,13 @@ class SyncRealEstateCommand extends Command
                 $output->write('.');
             }
 
+            foreach ($this->immoscoutAttachmentStorage->listContents('', true)->files() as $item) {
+                $this->immoscoutAttachmentStorage->delete($item->getPath());
+                $output->write('.');
+            }
+
             $this->entityManager->flush();
-            $output->writeln("\nPurged real estate database and downloaded files.");
+            $output->writeln("\nPurged real estate database and storage.");
         }
 
         if ($dryRun) {

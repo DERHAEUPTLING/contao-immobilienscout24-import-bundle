@@ -15,8 +15,6 @@ namespace Derhaeuptling\ContaoImmoscout24\Entity;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Image\PictureFactory;
 use Contao\File;
-use Contao\FilesModel;
-use Contao\FrontendTemplate;
 use Contao\StringUtil;
 use Derhaeuptling\ContaoImmoscout24\Annotation\Immoscout24Api;
 use Derhaeuptling\ContaoImmoscout24\Annotation\Immoscout24ApiMapperTrait;
@@ -124,24 +122,15 @@ class Attachment extends DcaDefault
     private $scraperUrls;
 
     /**
-     * @ORM\Column(name="uuid", type="binary_string", length=16, options={"fixed": true}, nullable=true)
+     * @ORM\Column(name="file", nullable=true)
+     *
+     * @var string|null
      */
-    private $uuid;
-
-    public function setPictureRendererService(PictureFactory $pictureFactory, string $projectDir): void
-    {
-        $this->pictureFactory = $pictureFactory;
-        $this->projectDir = $projectDir;
-    }
-
-    public function setContaoFramework(ContaoFramework $framework): void
-    {
-        $this->framework = $framework;
-    }
+    private $file;
 
     public function getTargetIdentifier(): string
     {
-        return md5($this->getScrapingUrl() ?? '');
+        return sha1($this->getScrapingUrl() ?? '');
     }
 
     public function update(self $newVersion): void
@@ -164,7 +153,7 @@ class Attachment extends DcaDefault
             return self::CONTENT_NONE;
         }
 
-        return null === $this->uuid ? self::CONTENT_WAITING_TO_BE_SCRAPED : self::CONTENT_READY;
+        return null === $this->file ? self::CONTENT_WAITING_TO_BE_SCRAPED : self::CONTENT_READY;
     }
 
     public function isPicture(): bool
@@ -185,21 +174,6 @@ class Attachment extends DcaDefault
     public function getTitle(): string
     {
         return $this->title;
-    }
-
-    public function getFile(): ?FilesModel
-    {
-        if (self::CONTENT_READY !== $this->getState()) {
-            return null;
-        }
-
-        if (null === $this->framework) {
-            throw new \RuntimeException('Contao framework was not set.');
-        }
-
-        $this->framework->initialize();
-
-        return FilesModel::findByUuid($this->uuid);
     }
 
     public function getScrapingUrl(): ?string
@@ -224,13 +198,18 @@ class Attachment extends DcaDefault
         return $urlCandidate;
     }
 
-    public function setImage(FilesModel $file): void
+    public function setFile(string $filename): void
     {
         if (self::CONTENT_WAITING_TO_BE_SCRAPED !== $this->getState()) {
             throw new \RuntimeException('This attachment does not await scraping results.');
         }
 
-        $this->uuid = $file->uuid;
+        $this->file = $filename;
+    }
+
+    public function getFile(): ?string
+    {
+        return $this->file;
     }
 
     public function getRealEstate(): RealEstate
@@ -241,65 +220,6 @@ class Attachment extends DcaDefault
     public function setRealEstate(RealEstate $realEstate): void
     {
         $this->realEstate = $realEstate;
-    }
-
-    /**
-     * Render the attachment as html markup.
-     *
-     * @param mixed|null $imageSize
-     */
-    public function render($imageSize = null): ?string
-    {
-        // currently only supports pictures
-        if (!$this->isPicture()) {
-            return null;
-        }
-
-        $file = $this->getFile();
-        if (null === $file) {
-            return null;
-        }
-
-        if (null === $this->pictureFactory || null === $this->projectDir) {
-            throw new \RuntimeException('Picture factory or project dir was not set.');
-        }
-
-        $path = $this->projectDir.'/'.$file->path;
-        $picture = $this->pictureFactory->create($path, $imageSize);
-
-        $template = new FrontendTemplate('picture_default');
-        $template->setData([
-            'alt' => $this->title,
-            'img' => $picture->getImg($this->projectDir),
-            'sources' => $picture->getSources($this->projectDir),
-        ]);
-
-        return $template->parse();
-    }
-
-    /**
-     * @ORM\PreRemove()
-     *
-     * @internal
-     */
-    public function drop(): void
-    {
-        // todo: In the future this could be put into a separate class/event
-        //       handler which checks things like if the same file (uuid) is
-        //       referenced anywhere else and if there aren't any pending
-        //       deletes for this same file and then act accordingly. For now
-        //       a 1:1 relationship between files (uuid) and attachments is
-        //       assumed.
-
-        $file = $this->getFile();
-
-        if (null === $file) {
-            return;
-        }
-
-        (new File($file->path))->delete();
-
-        $this->uuid = null;
     }
 
     /**

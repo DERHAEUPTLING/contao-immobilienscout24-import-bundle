@@ -1465,6 +1465,14 @@ class RealEstate extends DcaDefault
     }
 
     /**
+     * @return Collection<Attachment>
+     */
+    public function getAttachments(): Collection
+    {
+        return $this->attachments;
+    }
+
+    /**
      * Get the first picture attachment which is tagged as 'title picture'.
      */
     public function getTitlePictureAttachment(): ?Attachment

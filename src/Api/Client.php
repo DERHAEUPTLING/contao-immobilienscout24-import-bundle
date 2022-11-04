@@ -12,10 +12,12 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\Api;
 
+use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Entity\Attachment;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
-use Symfony\Component\HttpClient\Exception\TransportException;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -23,9 +25,6 @@ class Client
 {
     private readonly HttpClientInterface $client;
 
-    /**
-     * Api constructor.
-     */
     public function __construct(private readonly Account $account, int $timeout = 5, int $maxHostConnections = 6)
     {
         $this->client = new OAuthHttpClient(
@@ -62,7 +61,7 @@ class Client
 
             if (
                 200 !== $response->getStatusCode() ||
-                null === ($data = $this->getData($response)) ||
+                null === ($data = $this->decode($response->getContent())) ||
                 null === ($listChunk = $data['realestates.realEstates']['realEstateList']['realEstateElement'] ?? null)
             ) {
                 return;
@@ -96,8 +95,8 @@ class Client
         // Process responses
         yield from $this->processAsync(
             $responses,
-            function (array $data): ?RealEstate {
-                if (!\is_string($objectType = array_key_first($data))) {
+            function (string $raw): ?RealEstate {
+                if (null === ($data = $this->decode($raw)) || !\is_string($objectType = array_key_first($data))) {
                     return null;
                 }
 
@@ -137,8 +136,8 @@ class Client
         // Process responses
         yield from $this->processAsync(
             $responses,
-            static function (array $data, array $userData): ?array {
-                if (!\is_array($attachmentData = $data['common.attachments'][0]['attachment'] ?? null)) {
+            function (string $raw, array $userData): ?array {
+                if (null === ($data = $this->decode($raw)) || !\is_array($attachmentData = $data['common.attachments'][0]['attachment'] ?? null)) {
                     return null;
                 }
 
@@ -171,6 +170,62 @@ class Client
     }
 
     /**
+     * @param list<Attachment> $attachments
+     *
+     * @throws TimeoutException
+     *
+     * @return \Generator<list<string>>
+     */
+    public function scrapeAndUpdateAttachments(array $attachments, VirtualFilesystemInterface $storage): \Generator
+    {
+        $filesystem = new Filesystem();
+
+        // Compose asynchronously handled responses
+        $responses = [];
+
+        foreach ($attachments as $attachment) {
+            if (null === ($url = $attachment->getScrapingUrl())) {
+                continue;
+            }
+
+            $responses[] = $this->client->request(
+                'GET',
+                $url,
+                ['user_data' => ['attachment' => $attachment]]
+            );
+        }
+
+        yield from $this->processAsync(
+            $responses,
+            static function (string $raw, array $userData) use ($storage) {
+                /** @var Attachment $attachment */
+                $attachment = $userData['attachment'];
+
+                if (null === ($scrapingUrl = $attachment->getScrapingUrl())) {
+                    return null;
+                }
+
+                $filename = sprintf(
+                    '%s.%s',
+                    $attachment->getTargetIdentifier(),
+                    Path::getExtension($scrapingUrl)
+                );
+
+                $storage->write($filename, $raw);
+                $attachment->setFile($filename);
+
+                return $filename;
+            },
+            static function (array $userData): void {
+                /** @var Attachment $attachment */
+                $attachment = $userData['attachment'];
+
+                throw new TimeoutException(sprintf('The server timed out while downloading attachment % of real estate ID %s', $attachment->getScrapingUrl(), $attachment->getRealEstate()->getRealEstateId()));
+            }
+        );
+    }
+
+    /**
      * @param list<ResponseInterface> $responses
      * @param \Closure<array>         $handleResponseData
      */
@@ -190,21 +245,24 @@ class Client
                 continue;
             }
 
-            if (
-                $chunk->isLast() &&
-                null !== ($data = $this->getData($response)) &&
-                null !== ($result = $handleResponseData($data, $response->getInfo()['user_data'] ?? []))
-            ) {
-                yield $result;
+            if ($chunk->isLast()) {
+                $result = $handleResponseData(
+                    $response->getContent(),
+                    $response->getInfo()['user_data'] ?? []
+                );
+
+                if (null !== $result) {
+                    yield $result;
+                }
             }
         }
     }
 
-    private function getData(ResponseInterface $response): ?array
+    private function decode(string $data): ?array
     {
         try {
-            return json_decode($response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
-        } catch (TransportException|\JsonException) {
+            return json_decode($data, true, 512, \JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
             return null;
         }
     }

@@ -12,12 +12,14 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\Synchronizer;
 
+use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
 use Derhaeuptling\ContaoImmoscout24\Api\Client;
 use Derhaeuptling\ContaoImmoscout24\Entity\Account;
 use Derhaeuptling\ContaoImmoscout24\Entity\RealEstate;
 use Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use League\Flysystem\UnableToDeleteFile;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Synchronizer
@@ -25,14 +27,12 @@ class Synchronizer
     private ObjectManager $entityManager;
     private ?OutputInterface $output;
 
-    /**
-     * Synchronizer constructor.
-     */
     public function __construct(
         ManagerRegistry $registry,
         private readonly RealEstateRepository $realEstateRepository,
         private readonly Client $client,
         private readonly Account $account,
+        private readonly VirtualFilesystemInterface $immoscoutAttachmentStorage,
         OutputInterface $output = null
     ) {
         $this->entityManager = $registry->getManager();
@@ -71,10 +71,6 @@ class Synchronizer
             $this->output("   * ID $realEstateId ($attachmentCount attachments)");
         }
 
-        $duration = round(microtime(true) - $startTime, 2);
-        $count = \count($apiItems);
-        $this->output(" > Downloaded {$count} elements in {$duration}s.");
-
         // synchronize
         $this->output(' > Synchronizing...');
         $created = 0;
@@ -84,6 +80,7 @@ class Synchronizer
         $this->entityManager->beginTransaction();
 
         $mappedElements = [];
+        $attachmentsToScrape = [];
 
         foreach ($apiItems as $apiItem) {
             /** @var RealEstate $localItem */
@@ -93,6 +90,7 @@ class Synchronizer
             // add new
             if (null === $localItem) {
                 $this->entityManager->persist($apiItem);
+                $attachmentsToScrape = [...$attachmentsToScrape, ...$apiItem->getAttachments()->toArray()];
                 ++$created;
 
                 $this->output(
@@ -106,6 +104,8 @@ class Synchronizer
 
             // update (potentially) modified
             if ($apiItem->getImmoscoutAccount()->getId() !== $localItem->getImmoscoutAccount()->getId()) {
+                $attachmentsToScrape = [...$attachmentsToScrape, ...$apiItem->getAttachments()->toArray()];
+
                 $this->output(
                     sprintf('   * <bg=red>Warning: Skipping ID %s (already persisted via account \'%s\')</>',
                         $apiItem->getRealEstateId(),
@@ -140,6 +140,16 @@ class Synchronizer
             /** @var RealEstate $item */
             foreach ($this->account->getRealEstates() as $item) {
                 if (!\in_array($item->getRealEstateId(), $mappedElements, true)) {
+                    foreach ($item->getAttachments() as $attachment) {
+                        if (null !== ($file = $attachment->getFile())) {
+                            try {
+                                $this->immoscoutAttachmentStorage->delete($file);
+                            } catch (UnableToDeleteFile) {
+                                // ignore
+                            }
+                        }
+                    }
+
                     $this->entityManager->remove($item);
                     ++$removed;
 
@@ -152,9 +162,21 @@ class Synchronizer
             }
         }
 
+        // scrape attachments
+        $downloaded = 0;
+        $this->output(' > Scraping attachment files...');
+
+        foreach ($this->client->scrapeAndUpdateAttachments($attachmentsToScrape, $this->immoscoutAttachmentStorage) as $file) {
+            $this->output("   * Downloaded file '$file'");
+            ++$downloaded;
+        }
+
         $this->entityManager->commit();
 
-        $this->output(" > Done - created: $created | updated: $updated | removed: $removed");
+        $duration = round(microtime(true) - $startTime, 2);
+
+        $this->output(" > Done - created: $created | updated: $updated | removed: $removed | downloaded files: $downloaded");
+        $this->output(" > This operation took {$duration}s.");
 
         restore_error_handler();
 
