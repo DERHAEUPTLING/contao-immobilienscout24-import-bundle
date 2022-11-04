@@ -35,8 +35,7 @@
   },
   "require-dev": {
     "contao/manager-plugin": "^2.0",
-    "friendsofphp/php-cs-fixer": "^3.13",
-    "phpunit/phpunit": "^9.5"
+    "friendsofphp/php-cs-fixer": "^3.13"
   },
   "autoload": {
     "psr-4": {
@@ -51,8 +50,7 @@
     }
   },
   "scripts": {
-    "cs": ["@php vendor/bin/php-cs-fixer fix"],
-    "tests": ["@php vendor/bin/phpunit"]
+    "cs": ["@php vendor/bin/php-cs-fixer fix"]
   },
   "config": {
     "allow-plugins": {

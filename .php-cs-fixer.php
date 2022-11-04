@@ -20,7 +20,7 @@ EOF;
 
 $finder = PhpCsFixer\Finder::create()
     ->notPath('languages')
-    ->in([__DIR__.'/src', __DIR__.'/tests'])
+    ->in(__DIR__.'/src')
 ;
 
 return (new PhpCsFixer\Config())
