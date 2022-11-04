@@ -25,8 +25,10 @@ Contao application (4.8+) and display them as native content.
     persisting the changes. Use the option `--purge` to clear the database
     table and all downloaded files completely beforehand.
 
- 4. If you also want to import attachments, set up a cron job that executes
-    the `immoscout24:scrape-attachments` command afterwards.
+ 4. We are using Contao's Virtual Filesystem feature. If you also want to adjust
+    where the downloaded attachments should be stored, simply mount the
+    `immoscout24` directory at another place. See the [Contao developer docs](https://docs.contao.org/dev/framework/filesystem/config/)
+    for more information about this topic.
 
  5. Add one or more Immoscout24 modules in your theme and use it in the frontend:
     - The **Real estate list** displays a list of real estate objects. If you
@@ -100,16 +102,34 @@ easily be differentiated from regular enumeration values.
 Real estate objects can have multiple attachments. Note: that currently only images
 are supported attachment types.
 
-To render an attachment (as picture tag) you can utilize it's `render()` function.
-It allows passing in an image size configuration:
+To render an attachment (as an image) you can utilize the `getFigureFromAttachment()`
+function present in the templates. It allows passing in an alternative image size as
+second argument:
 ```php
-  // use the settings from the modules ...
-  echo $attachment->render($this->defaultImageSize);
-  echo $attachment->render($this->alternativeImageSize);
+  $figure = $this->getFigureFromAttachment($realEstate->getTitlePictureAttachment());
 
-  // ... or define your own
-  echo $attachment->render($myImageSizeConfiguration);
+  $figure = $this->getFigureFromAttachment(
+      $realEstate->getTitlePictureAttachment(),
+      $this->alternativeImageSize
+  );
 ```
 
-Keep in mind, that the attachment owns the referenced file. This means: Once the
-attachment is deleted the file will be gone as well.
+To output the `Figure`, pass its data to the template you want render. In case of the
+legacy `image` template, make sure to expand the image data beforehand by calling
+`getLegacyTemplateData()`:
+```php
+  $this->insert('image', $titlePictureFigure->getLegacyTemplateData());
+```
+
+Here is the full example how to output the title picture with the default image size
+in a failure-tolerant way:
+```php
+    <div>
+        <h2>Title Picture</h2>
+        <?php if(null !== ($titlePictureFigure = $this->getFigureFromAttachment($this->realEstate->getTitlePictureAttachment()))): ?>
+            <?php $this->insert('image', $titlePictureFigure->getLegacyTemplateData()) ?>
+        <?php else: ?>
+            <span>There is no title picture.</span>
+        <?php endif; ?>
+    </div>
+```
