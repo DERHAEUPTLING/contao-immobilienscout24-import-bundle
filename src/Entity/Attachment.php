@@ -14,7 +14,6 @@ namespace Derhaeuptling\ContaoImmoscout24\Entity;
 
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Image\PictureFactory;
-use Contao\File;
 use Contao\StringUtil;
 use Derhaeuptling\ContaoImmoscout24\Annotation\Immoscout24Api;
 use Derhaeuptling\ContaoImmoscout24\Annotation\Immoscout24ApiMapperTrait;

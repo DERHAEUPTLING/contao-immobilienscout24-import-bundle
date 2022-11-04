@@ -27,9 +27,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Account
 {
-    /**
-     * Account constructor.
-     */
     public function __construct(
         private readonly AccountRepository $accountRepository,
         private readonly Translator $translator,

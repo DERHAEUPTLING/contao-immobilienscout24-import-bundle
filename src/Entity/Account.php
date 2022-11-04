@@ -50,9 +50,6 @@ class Account extends DcaDefault
      */
     private $realEstates;
 
-    /**
-     * Account constructor.
-     */
     public function __construct()
     {
         $this->realEstates = new ArrayCollection();

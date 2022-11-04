@@ -1346,9 +1346,6 @@ class RealEstate extends DcaDefault
      */
     private $attachments;
 
-    /**
-     * RealEstate constructor.
-     */
     public function __construct()
     {
         $this->attachments = new ArrayCollection();
