@@ -1389,7 +1389,7 @@ class RealEstate extends DcaDefault
             throw new \RuntimeException('Cannot merge items with different real estate ids.');
         }
 
-        if ($this->modifiedAt >= $newVersion->modifiedAt) {
+        if (!self::isNewerThan($this->modifiedAt, $newVersion->modifiedAt)) {
             throw new ItemAlreadyUpToDateException($this->modifiedAt, $newVersion->modifiedAt);
         }
 

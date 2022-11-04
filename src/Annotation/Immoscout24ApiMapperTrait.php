@@ -157,10 +157,9 @@ trait Immoscout24ApiMapperTrait
         try {
             // extract and remove fractions as they won't be stored in the database (ISO 8601)
             $dateTime = new \DateTime(
-                (new \DateTime($value))->format('c'),
-                new \DateTimeZone('GMT')
+                (new \DateTime($value))->format('Y-m-d H:i:s'),
             );
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // ignore
             $dateTime = null;
         }
@@ -170,5 +169,10 @@ trait Immoscout24ApiMapperTrait
         }
 
         return $dateTime;
+    }
+
+    private static function isNewerThan(\DateTime $existing, \DateTime $new): bool
+    {
+        return $new > $existing;
     }
 }
