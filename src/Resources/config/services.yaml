@@ -21,20 +21,12 @@ services:
         tags:
             - { name: 'doctrine.repository_service' }
 
-    # attachments
-    Derhaeuptling\ContaoImmoscout24\EventListener\AttachmentListener:
-        arguments:
-            - '@contao.image.picture_factory'
-            - '%kernel.project_dir%'
-            - '@contao.framework'
-        tags:
-            - { name: 'doctrine.event_listener', event: 'postLoad' }
-
     # synchronization & scraping
     Derhaeuptling\ContaoImmoscout24\Synchronizer\SynchronizerFactory:
         arguments:
             - '@doctrine'
             - '@Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository'
+            - '@contao.filesystem.virtual.immoscout_attachments'
 
     Derhaeuptling\ContaoImmoscout24\Command\SyncRealEstateCommand:
         arguments:
@@ -42,22 +34,9 @@ services:
             - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
             - '@Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository'
             - '@doctrine.orm.entity_manager'
+            - '@contao.filesystem.virtual.immoscout_attachments'
         tags:
             - { name: 'console.command', command: 'immoscout24:sync' }
-
-    Derhaeuptling\ContaoImmoscout24\Command\ScrapeAttachmentsCommand:
-        arguments:
-            - '@Derhaeuptling\ContaoImmoscout24\Repository\AttachmentRepository'
-            - '@Derhaeuptling\ContaoImmoscout24\Synchronizer\FileScraper'
-            - '@doctrine'
-            - '%kernel.project_dir%'
-        tags:
-            - { name: 'console.command', command: 'immoscout24:scrape-attachments' }
-
-    Derhaeuptling\ContaoImmoscout24\Synchronizer\FileScraper:
-        arguments:
-            - '%kernel.project_dir%'
-            - '@contao.framework'
 
     # backend
     Derhaeuptling\ContaoImmoscout24\EventListener\DataContainer\Account:
@@ -84,7 +63,6 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@contao.translation.translator'
             - '@contao.framework'
-
         calls:
             - [setContainer, ['@service_container']]
 
@@ -93,13 +71,17 @@ services:
         arguments:
             - '@Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository'
             - '@Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository'
+            - '@contao.image.studio'
+            - '@contao.filesystem.virtual.immoscout_attachments'
             - '@contao.translation.translator'
         tags:
             - { name: 'contao.frontend_module', category: 'immoscout24', type: 'immoscout24_real_estate_list' }
 
     Derhaeuptling\ContaoImmoscout24\Controller\FrontendModule\RealEstateReaderController:
+        arguments:
+            - '@Derhaeuptling\ContaoImmoscout24\Repository\RealEstateRepository'
+            - '@contao.image.studio'
+            - '@contao.filesystem.virtual.immoscout_attachments'
+            - '@contao.translation.translator'
         tags:
             - { name: 'contao.frontend_module', category: 'immoscout24', type: 'immoscout24_real_estate_reader' }
-        arguments:
-            - '@doctrine'
-            - '@contao.translation.translator'

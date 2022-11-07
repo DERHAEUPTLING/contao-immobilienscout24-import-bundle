@@ -12,12 +12,14 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\DependencyInjection;
 
+use Contao\CoreBundle\DependencyInjection\Filesystem\ConfigureFilesystemInterface;
+use Contao\CoreBundle\DependencyInjection\Filesystem\FilesystemConfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class DerhaeuptlingContaoImmobilienscout24Extension extends Extension
+class DerhaeuptlingContaoImmobilienscout24Extension extends Extension implements ConfigureFilesystemInterface
 {
     /**
      * Loads a specific configuration.
@@ -33,8 +35,16 @@ class DerhaeuptlingContaoImmobilienscout24Extension extends Extension
         $loader = new YamlFileLoader(
             $container,
             new FileLocator(__DIR__.'/../Resources/config')
-        )
-        ;
+        );
+
         $loader->load('services.yaml');
+    }
+
+    public function configureFilesystem(FilesystemConfiguration $config): void
+    {
+        $config
+            ->mountLocalAdapter('immoscout24', 'immoscout24')
+            ->addVirtualFilesystem('immoscout_attachments', 'immoscout24')
+        ;
     }
 }

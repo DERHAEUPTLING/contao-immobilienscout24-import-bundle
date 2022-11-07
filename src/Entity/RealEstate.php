@@ -1346,9 +1346,6 @@ class RealEstate extends DcaDefault
      */
     private $attachments;
 
-    /**
-     * RealEstate constructor.
-     */
     public function __construct()
     {
         $this->attachments = new ArrayCollection();
@@ -1361,8 +1358,6 @@ class RealEstate extends DcaDefault
 
     /**
      * @throws AnnotationException
-     *
-     * @return RealEstate|null
      */
     public static function createFromApiResponse(array $data, Account $account): ?self
     {
@@ -1391,7 +1386,7 @@ class RealEstate extends DcaDefault
             throw new \RuntimeException('Cannot merge items with different real estate ids.');
         }
 
-        if ($this->modifiedAt >= $newVersion->modifiedAt) {
+        if (!self::isNewerThan($this->modifiedAt, $newVersion->modifiedAt)) {
             throw new ItemAlreadyUpToDateException($this->modifiedAt, $newVersion->modifiedAt);
         }
 
@@ -1464,6 +1459,14 @@ class RealEstate extends DcaDefault
     public function setAttachments(array $attachments): void
     {
         $this->attachments = new ArrayCollection($attachments);
+    }
+
+    /**
+     * @return Collection<Attachment>
+     */
+    public function getAttachments(): Collection
+    {
+        return $this->attachments;
     }
 
     /**

@@ -12,6 +12,6 @@ declare(strict_types=1);
 
 namespace Derhaeuptling\ContaoImmoscout24\Api;
 
-class PermissionDeniedException extends \Exception
+class TimeoutException extends \RuntimeException
 {
 }

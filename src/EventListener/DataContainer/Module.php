@@ -18,23 +18,13 @@ use Derhaeuptling\ContaoImmoscout24\Entity\Account as AccountEntity;
 use Derhaeuptling\ContaoImmoscout24\ExpressionLanguage\RealEstateFilterEvaluator;
 use Derhaeuptling\ContaoImmoscout24\Repository\AccountRepository;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
-use Terminal42\ServiceAnnotationBundle\ServiceAnnotationInterface;
 
-class Module implements ServiceAnnotationInterface
+class Module
 {
-    /** @var AccountRepository */
-    private $accountRepository;
-
-    /** @var RealEstateFilterEvaluator */
-    private $realEstateFilterEvaluator;
-
-    /**
-     * Account constructor.
-     */
-    public function __construct(AccountRepository $accountRepository, RealEstateFilterEvaluator $realEstateFilterEvaluator)
+    public function __construct(
+        private readonly AccountRepository $accountRepository,
+        private readonly RealEstateFilterEvaluator $realEstateFilterEvaluator)
     {
-        $this->accountRepository = $accountRepository;
-        $this->realEstateFilterEvaluator = $realEstateFilterEvaluator;
     }
 
     /**

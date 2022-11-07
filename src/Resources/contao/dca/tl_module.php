@@ -47,5 +47,5 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['immoscout24_alt_image_size'] = [
     'options_callback' => static function () {
         return System::getContainer()->get('contao.image.image_sizes')->getOptionsForUser(BackendUser::getInstance());
     },
-    'sql' => "varchar(255) NOT NULL default ''"
+    'sql' => "varchar(255) NOT NULL default ''",
 ];

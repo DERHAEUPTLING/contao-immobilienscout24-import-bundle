@@ -11,10 +11,8 @@ $this->extend('block_searchable'); ?>
     <h2><?php echo $realEstate->getTitle(); ?></h2>
 
     <!-- title picture -->
-    <?php if(null !== ($titlePicture = $realEstate->getTitlePictureAttachment())): ?>
-        <figure class="titlePicture">
-            <?php echo $titlePicture->render($this->defaultImageSize); ?>
-        </figure>
+    <?php if(null !== ($titlePictureFigure = $this->getFigureFromAttachment($realEstate->getTitlePictureAttachment()))): ?>
+        <?php $this->insert('image', $titlePictureFigure->getLegacyTemplateData()); ?>
     <?php endif; ?>
 
     <!-- attributes -->
@@ -33,15 +31,11 @@ $this->extend('block_searchable'); ?>
         <h3>Floor plans</h3>
         <ul class="floorPlans">
             <?php
-            /** @var Attachment $floorPlan */
             foreach ($floorPlans as $floorPlan): ?>
                 <li>
-                    <figure>
-                        <?php echo $floorPlan->render($this->alternativeImageSize); ?>
-                        <?php if($floorPlan->getTitle()): ?>
-                            <label><?php echo $floorPlan->getTitle(); ?></label>
-                        <?php endif; ?>
-                    </figure>
+                    <?php if(null !== ($floorPlanFigure = $this->getFigureFromAttachment($floorPlan, $this->alternativeImageSize))): ?>
+                        <?php $this->insert('image', $floorPlanFigure->getLegacyTemplateData()); ?>
+                    <?php endif; ?>
                 </li>
             <?php endforeach; ?>
         </ul>
@@ -52,15 +46,12 @@ $this->extend('block_searchable'); ?>
         <h3>Pictures</h3>
         <ul class="gallery">
             <?php
-            /** @var Attachment $picture */
             foreach ($pictures as $picture): ?>
                 <li>
                     <figure>
-                        <?php echo $picture->render($this->alternativeImageSize); ?>
-                        <?php if($picture->getTitle()): ?>
-                            <label><?php echo $picture->getTitle(); ?></label>
+                        <?php if(null !== ($pictureFigure = $this->getFigureFromAttachment($picture, $this->alternativeImageSize))): ?>
+                            <?php $this->insert('image', $pictureFigure->getLegacyTemplateData()); ?>
                         <?php endif; ?>
-                    </figure>
                 </li>
             <?php endforeach; ?>
         </ul>

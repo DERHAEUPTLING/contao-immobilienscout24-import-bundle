@@ -20,14 +20,11 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class RealEstateRepository extends ServiceEntityRepository
 {
-    /** @var RealEstateFilterEvaluator */
-    private $realEstateFilterEvaluator;
-
-    public function __construct(ManagerRegistry $registry, RealEstateFilterEvaluator $realEstateFilterEvaluator)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly RealEstateFilterEvaluator $realEstateFilterEvaluator
+    ) {
         parent::__construct($registry, RealEstate::class);
-
-        $this->realEstateFilterEvaluator = $realEstateFilterEvaluator;
     }
 
     public function findByRealEstateId(string $realEstateId): ?RealEstate
